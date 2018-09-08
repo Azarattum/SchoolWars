@@ -7,6 +7,7 @@
 			$url = $_GET["url"];
 			$url = rtrim($url, '/');
 			$url = explode('/', $url);
+
 			if (empty($url[0]))
 				$url[0] = "main";
 			$file = "controllers/".$url[0].".ctrl.php";
@@ -34,31 +35,34 @@
 				$controller->$url[1]($url[2]);
 			else if (isset($url[1]))
 				$controller->$url[1]();
+
+			//Prevent die output
+			function on_die()
+			{
+				//ob_end_clean(); //сделать норм обработку
+			}
+
+			register_shutdown_function("on_die");
 		}
 		
 		public function load_libraries($path)
 		{
-			//Prevent die output
-			function on_die()
-			{
-				ob_end_clean();
-			}
-			register_shutdown_function("on_die");
-			ob_start();
-			
+			//ob_start();
+
 			//Scan for libraries
 			$libs = scandir($path);
+
 			foreach ($libs as $lib)
 			{
-				if (str_ends_with($lib, ".php"))
-					require_once($lib);
+				if ($this->str_ends_with($lib, ".php"))
+					require_once($path."/".$lib);
 			}
 			
-			ob_end_clean();
+			//ob_end_clean();
 		}
 		
 		//Ends with function
-		function str_ends_with($haystack, $needle)
+		private function str_ends_with($haystack, $needle)
 		{
 			$length = strlen($needle);
 			return $length === 0 || (substr($haystack, -$length) === $needle);
