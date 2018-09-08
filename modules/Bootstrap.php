@@ -7,18 +7,26 @@
 			$url = $_GET["url"];
 			$url = rtrim($url, '/');
 			$url = explode('/', $url);
-			$file = "controllers".$url[0].".ctrl.php";
-			
+			if (empty($url[0]))
+				$url[0] = "main";
+			$file = "controllers/".$url[0].".ctrl.php";
+
 			//Require
 			require_once("modules/Controller.php");
-			if (file_exists($file))
-				require($file);
-			else
+			if ($url[0] == "error")
+			{
+				require("controllers/error.ctrl.php");
+				$controller = new Error(403);
+				return false;
+			}
+			else if (!file_exists($file))
 			{
 				require("controllers/error.ctrl.php");
 				$controller = new Error(404);
 				return false;
 			}
+			else
+				require($file);
 			
 			//Init
 			$controller = new $url[0];
