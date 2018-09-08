@@ -3,6 +3,13 @@
 	{
 		public function __construct()
 		{
+			//Prevent die output
+			function on_die()
+			{
+				ob_end_clean();
+			}
+			register_shutdown_function("on_die");
+			
 			//Parse
 			$url = $_GET["url"];
 			$url = rtrim($url, '/');
@@ -38,27 +45,21 @@
 		
 		public function load_libraries($path)
 		{
-			//Prevent die output
-			function on_die()
-			{
-				ob_end_clean();
-			}
-			register_shutdown_function("on_die");
 			ob_start();
 			
 			//Scan for libraries
 			$libs = scandir($path);
 			foreach ($libs as $lib)
 			{
-				if (str_ends_with($lib, ".php"))
+				if ($this->str_ends_with($lib, ".php"))
 					require_once($lib);
 			}
-			
+				
 			ob_end_clean();
 		}
 		
 		//Ends with function
-		function str_ends_with($haystack, $needle)
+		private function str_ends_with($haystack, $needle)
 		{
 			$length = strlen($needle);
 			return $length === 0 || (substr($haystack, -$length) === $needle);
