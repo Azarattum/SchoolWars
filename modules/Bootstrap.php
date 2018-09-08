@@ -10,7 +10,7 @@
 			$file = "controllers".$url[0].".ctrl.php";
 			
 			//Require
-			require_once("libs/Controller.php");
+			require_once("modules/Controller.php");
 			if (file_exists($file))
 				require($file);
 			else
@@ -30,13 +30,6 @@
 		
 		public function load_libraries($path)
 		{
-			//Ends with function
-			function str_ends_with($haystack, $needle)
-			{
-				$length = strlen($needle);
-				return $length === 0 || (substr($haystack, -$length) === $needle);
-			}
-			
 			//Prevent die output
 			function on_die()
 			{
@@ -54,6 +47,13 @@
 			}
 			
 			ob_end_clean();
+		}
+		
+		//Ends with function
+		function str_ends_with($haystack, $needle)
+		{
+			$length = strlen($needle);
+			return $length === 0 || (substr($haystack, -$length) === $needle);
 		}
 	}
 ?>
