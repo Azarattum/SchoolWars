@@ -3,13 +3,6 @@
 	{
 		public function __construct()
 		{
-			//Prevent die output
-			function on_die()
-			{
-				ob_end_clean();
-			}
-			register_shutdown_function("on_die");
-			
 			//Parse
 			$url = $_GET["url"];
 			$url = rtrim($url, '/');
