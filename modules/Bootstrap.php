@@ -3,6 +3,13 @@
 	{
 		public function __construct()
 		{
+			//Prevent die output
+			function on_die()
+			{
+				ob_end_clean();
+			}
+			register_shutdown_function("on_die");
+			
 			//Parse
 			$url = $_GET["url"];
 			$url = rtrim($url, '/');
@@ -35,6 +42,7 @@
 				$controller->$url[1]($url[2]);
 			else if (isset($url[1]))
 				$controller->$url[1]();
+<<<<<<< HEAD
 
 			//Prevent die output
 			function on_die()
@@ -43,22 +51,36 @@
 			}
 
 			register_shutdown_function("on_die");
+=======
+>>>>>>> fbf56857cd55ddec01fa882f5f53b1baf7408744
 		}
 		
 		public function load_libraries($path)
 		{
+<<<<<<< HEAD
 			//ob_start();
 
+=======
+			ob_start();
+			
+>>>>>>> fbf56857cd55ddec01fa882f5f53b1baf7408744
 			//Scan for libraries
 			$libs = scandir($path);
 
 			foreach ($libs as $lib)
 			{
 				if ($this->str_ends_with($lib, ".php"))
+<<<<<<< HEAD
 					require_once($path."/".$lib);
 			}
 			
 			//ob_end_clean();
+=======
+					require_once($lib);
+			}
+				
+			ob_end_clean();
+>>>>>>> fbf56857cd55ddec01fa882f5f53b1baf7408744
 		}
 		
 		//Ends with function
