@@ -12,24 +12,21 @@ function request(request, param1, param2, param3)
 	var script = _DefaultRequestScript;
 	var async, callback;
 
-	switch (typeof(param1))
-	{
+	switch (typeof(param1)) {
 		case "string": script = param1; break;
 		case "object": arguments = param1; break;
 		case "function": callback = param1; break;
 		case "boolean": async = param1; break;
 	}
 	
-	switch (typeof(param2))
-	{
+	switch (typeof(param2)) {
 		case "string": script = param2; break;
 		case "object": arguments = param2; break;
 		case "function": callback = param2; break;
 		case "boolean": async = param2; break;
 	}
 	
-	switch (typeof(param3))
-	{
+	switch (typeof(param3)) {
 		case "string": script = param3; break;
 		case "object": arguments = param3; break;
 		case "function": callback = param3; break;
@@ -51,32 +48,28 @@ function _request(request, arguments, script, async, callback)
 	x.setRequestHeader("Request", _encode(request));
 	x.setRequestHeader("Arguments", _encode(JSON.stringify(arguments)));
 	
-	if (async)
-	{
-		x.onload = function (progressEvent)
-		{
+	if (async) {
+		x.onload = function (progressEvent) {
 			var response = _decode(progressEvent.target.responseText);
-			if (response.indexOf("<!--error-->") == 0)
-			{
+			if (response.indexOf("<!--error-->") == 0) {
 				console.error(response);
 				if (callback)
 					callback(null);
-			}
-			else if (callback)
+			} else if (callback)
 				callback(response);
 		}
 	}
 	
 	x.send(null);
 	
-	if (!async)
-	{
+	if (!async) {
 		var response = _decode(x.responseText);
 		if (response.indexOf("<!--error-->") == 0)
 			console.error(response);
 		else
 			return response;
 	}
+
 	return null;
 }
 
