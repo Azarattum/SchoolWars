@@ -112,6 +112,7 @@
 		{
 			$query = "DROP DATABASE sw";
 			$result = mysql_query($query);
+			
 			return $result;
 		}
 	}

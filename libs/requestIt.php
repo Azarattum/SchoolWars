@@ -33,8 +33,7 @@
 			die($echos.$result);
 		} else
 			die("<!--error-->Warning: Function has not found!");
-	}
-	else
+	} else
 		die("<!--error-->Warning: Function has not found!");
 	
 	function str_ends_with($haystack, $needle)
