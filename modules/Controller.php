@@ -36,8 +36,7 @@
 			
 			/*Load javascript libraries*/
 			$files = scandir("libs");
-			foreach ($files as $file)
-			{
+			foreach ($files as $file) {
 				if (preg_match("/.+[.]js/", $file))
 					echo "<script src=\"libs/".$file."\" type=\"text/javascript\"></script>";
 			}
@@ -51,8 +50,7 @@
 				scandir($this->JS_DIRECTORY)));
 				
 			//Load only files from this page
-			foreach ($files as $file)
-			{
+			foreach ($files as $file) {
 				$matches = array();
 				if (preg_match("/(".$page."|^)[.]\S+[.](html|css|js)/", $file, $matches))
 					call_user_func("load_".$matches[2], $file, $this);

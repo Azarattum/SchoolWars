@@ -32,7 +32,6 @@
 				}
 
 				$query = rtrim($query, " UNION ALL");
-				//echo $query;
 				$result = mysql_query($query);
 			}
 
@@ -78,7 +77,6 @@
 						"\"".$start_x."\" AS x, \"".$start_y."\" AS y, \"".$team_id."\" AS value", $query);
 				}
 
-				//echo $query;
 				$result = mysql_query($query);
 			}
 			

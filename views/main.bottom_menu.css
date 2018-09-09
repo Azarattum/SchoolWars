@@ -1,5 +1,4 @@
-html, body 
-{
+html, body {
 	overflow: hidden;
 	position: fixed;
 	width: 100%;
@@ -8,13 +7,11 @@ html, body
 	margin: 0px;
 }
 
-body
-{
+body {
 	position: relative
 }
 
-.tab-bar
-{
+.tab-bar {
 	position: absolute;
 	left: -8px;
 	bottom: -8px;
@@ -27,8 +24,7 @@ body
 	background-color: rgb(23,23,23);
 }
 
-.tab-item
-{
+.tab-item {
 	position:relative;
 	float: left;
 	
@@ -39,8 +35,7 @@ body
 	height: 100%;
 }
 
-.tab-icon
-{
+.tab-icon {
 	width: 96px;
 	height: 96px;
 	

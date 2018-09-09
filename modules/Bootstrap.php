@@ -14,19 +14,15 @@
 
 			//Require
 			require_once("modules/Controller.php");
-			if ($url[0] == "error")
-			{
+			if ($url[0] == "error") {
 				require("controllers/error.ctrl.php");
 				$controller = new Error(403);
 				return false;
-			}
-			else if (!file_exists($file))
-			{
+			} else if (!file_exists($file)) {
 				require("controllers/error.ctrl.php");
 				$controller = new Error(404);
 				return false;
-			}
-			else
+			} else
 				require($file);
 			
 			//Init
@@ -43,8 +39,7 @@
 			//Scan for libraries
 			$libs = scandir($path);
 
-			foreach ($libs as $lib)
-			{
+			foreach ($libs as $lib) {
 				if ($this->str_ends_with($lib, ".php"))
 					require_once($path."/".$lib);
 			}
