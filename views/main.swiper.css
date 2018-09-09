@@ -4,7 +4,7 @@
 	bottom: 0px;
 	
     width: 100%;
-    height: calc(100vh - 152px);
+    height: calc(100% - 152px);
 	
 	opacity: 0;
 	transition: 0.3s;
@@ -12,7 +12,7 @@
 
 .swiper-wrapper
 {
-	width: 200vw;
+	width: 200%;
 	height: 100%;
 	overflow: hidden;
 }
