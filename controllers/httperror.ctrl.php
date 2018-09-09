@@ -1,5 +1,5 @@
 <?php
-	class Error extends Controller
+	class HttpError extends Controller
 	{
 		public function __construct($code)
 		{

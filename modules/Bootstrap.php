@@ -15,13 +15,13 @@
 			//Require
 			require_once("modules/Controller.php");
 
-			if ($url[0] == "error") {
-				require("controllers/error.ctrl.php");
-				$controller = new Error(403);
+			if ($url[0] == "httperror") {
+				require("controllers/httperror.ctrl.php");
+				$controller = new HttpError(403);
 				return false;
 			} else if (!file_exists($file)) {
-				require("controllers/error.ctrl.php");
-				$controller = new Error(404);
+				require("controllers/httperror.ctrl.php");
+				$controller = new HttpError(404);
 				return false;
 			} else
 				require($file);
