@@ -35,8 +35,9 @@
 				$controller->$url[1]();
 		}
 		
-		public function load_libraries($path)
+		public function load_components($path)
 		{
+			//Prevent outputing while loading
 			ob_start();
 			//Scan for libraries
 			$libs = scandir($path);
