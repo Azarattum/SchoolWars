@@ -6,10 +6,13 @@
 		$script .= preg_replace("/\\\\/", "", preg_replace("/\\w*[.]\\w+$/u", "", parse_url($headers["referer"], PHP_URL_PATH)));
 		$script .= '/'.urldecode($headers["script"]);
 	}
+
 	if (isset($headers["request"]) or die("<!--error-->Warning: Wrong request!"))
 		$request = urldecode($headers["request"]);
+
 	if (isset($headers["arguments"]) or die("<!--error-->Warning: Wrong request!"))
 		$arguments = json_decode(urldecode($headers["arguments"]), false);
+	
 	
 	if (!str_ends_with(strtolower($script),".php"))
 		$script .= ".php";

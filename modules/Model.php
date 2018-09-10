@@ -1,18 +1,22 @@
 <?php
 	class Model
 	{
+		protected $database;
+
 		public function __construct()
 		{
 			//Base model constuctor
 
-			function create_players_table()
+			function create_players_table($model)
 			{
-				mysql_query("CREATE TABLE IF NOT EXISTS sw_players(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, team TINYINT, clicks_count INT)") or die("Не получилось создать таблицу игроков.");
+				$model->query("CREATE TABLE IF NOT EXISTS sw_players(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, team TINYINT, clicks_count INT)")
+					or die("Не получилось создать таблицу игроков.");
 			}
 
-			function create_teams_table($teams)
+			function create_teams_table($teams, $model)
 			{
-				mysql_query("CREATE TABLE IF NOT EXISTS sw_teams(id INT NOT NULL PRIMARY KEY, name VARCHAR(16) NOT NULL, color VARCHAR(21), start_x TINYINT, start_y TINYINT)") or die("Не получилось создать таблицу команд.");
+				$model->query("CREATE TABLE IF NOT EXISTS sw_teams(id TINYINT NOT NULL PRIMARY KEY, name VARCHAR(16), r TINYINT UNSIGNED, g TINYINT UNSIGNED, b TINYINT UNSIGNED, start_x TINYINT, start_y TINYINT)")
+					or die("Не получилось создать таблицу команд.");
 
 				$teams_count = count($teams);
 				$query = "INSERT IGNORE INTO sw_teams";
@@ -32,36 +36,42 @@
 				}
 
 				$query = rtrim($query, " UNION ALL");
-				$result = mysql_query($query);
+				$result = $model->query($query);
 			}
 
-			function create_map_table($teams)
+			function create_map_table($teams, $model)
 			{
-				mysql_query("CREATE TABLE IF NOT EXISTS sw_map(x SMALLINT NOT NULL, y SMALLINT NOT NULL, value TINYINT NOT NULL)") or die("Не получилось создать таблицу клеток карты.");
+				$model->query("CREATE TABLE IF NOT EXISTS sw_map(id INT NOT NULL PRIMARY KEY, x SMALLINT NOT NULL, y SMALLINT NOT NULL, holder TINYINT, value TINYINT)")
+					or die("Не получилось создать таблицу клеток карты.");
 
 				$cells = array(
-					array('x' => 0, 'y' => 0, 'value' => 0),
-					array('x' => 1, 'y' => 0, 'value' => 0),
-					array('x' => 2, 'y' => 0, 'value' => 0),
-					array('x' => 0, 'y' => 1, 'value' => 0),
-					array('x' => 1, 'y' => 1, 'value' => 0),
-					array('x' => 2, 'y' => 1, 'value' => 0),
-					array('x' => 0, 'y' => 2, 'value' => 0),
-					array('x' => 1, 'y' => 2, 'value' => 0),
-					array('x' => 2, 'y' => 2, 'value' => 0)
+					array('x' => 0, 'y' => 0),
+					array('x' => 1, 'y' => 0),
+					array('x' => 2, 'y' => 0),
+					array('x' => 0, 'y' => 1, 'value' => 2),
+					array('x' => 1, 'y' => 1),
+					array('x' => 2, 'y' => 1),
+					array('x' => 0, 'y' => 2),
+					array('x' => 1, 'y' => 2, 'value' => 3),
+					array('x' => 2, 'y' => 2)
 				);
 
 				//Building query
 				$cell_count = count($cells);
 				$query = "INSERT IGNORE INTO sw_map";
 
-				for ($i = 0; $i < $cell_count; $i++) {
-					$cell = $cells[$i];
+				for ($id = 0; $id < $cell_count; $id++) {
+					$cell = $cells[$id];
+
 					$x = $cell['x'];
 					$y = $cell['y'];
+					$holder = $cell['holder'];
 					$value = $cell['value'];
 
-					$query .= " SELECT \"$x\" AS x, \"$y\" AS y, \"$value\" AS value UNION ALL";
+					if (!$holder) $holder = 0;
+					if (!$value) $value = 1;
+
+					$query .= " SELECT '$id' AS id, '$x' AS x, '$y' AS y, '$holder' AS holder, '$value' AS value UNION ALL";
 				}
 
 				$query = rtrim($query, " UNION ALL");
@@ -69,15 +79,15 @@
 				$teams_count = count($teams);
 
 				for ($i = 0; $i < $teams_count; $i++) {
+					$team_id = $teams[$i]['id'];
 					$start_x = $teams[$i]['start_x'];
 					$start_y = $teams[$i]['start_y'];
-					$team_id = $teams[$i]['id'];
 
-					$query = str_replace("\"".$start_x."\" AS x, \"".$start_y."\" AS y, \"0\" AS value",
-						"\"".$start_x."\" AS x, \"".$start_y."\" AS y, \"".$team_id."\" AS value", $query);
+					$query = str_replace("'".$start_x."' AS x, '".$start_y."' AS y, '0' AS holder",
+						"'".$start_x."' AS x, '".$start_y."' AS y, '".-$team_id."' AS holder", $query);
 				}
 
-				$result = mysql_query($query);
+				return $model->query($query);
 			}
 			
 			define("HOST", "localhost");
@@ -86,34 +96,45 @@
 			define("MYSQL_PASS", "");
 
 			$teams = array(
-				array('id' => 1, 'name' => "10А", 'color' => "rgb(0,0,0)", 'start_x' => 0, 'start_y' => 0),
-				array('id' => 2, 'name' => "10Б", 'color' => "rgb(0,0,0)", 'start_x' => 1, 'start_y' => 0),
-				array('id' => 3, 'name' => "10В", 'color' => "rgb(0,0,0)", 'start_x' => 2, 'start_y' => 0),
-				array('id' => 4, 'name' => "10Г", 'color' => "rgb(0,0,0)", 'start_x' => 0, 'start_y' => 1),
-				array('id' => 5, 'name' => "11А", 'color' => "rgb(0,0,0)", 'start_x' => 2, 'start_y' => 1),
-				array('id' => 6, 'name' => "11Б", 'color' => "rgb(0,0,0)", 'start_x' => 0, 'start_y' => 2),
-				array('id' => 7, 'name' => "11В", 'color' => "rgb(0,0,0)", 'start_x' => 1, 'start_y' => 2),
-				array('id' => 8, 'name' => "11Г", 'color' => "rgb(0,0,0)", 'start_x' => 2, 'start_y' => 2)
+				array('id' => 1, 'name' => "10А", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 0, 'start_y' => 0),
+				array('id' => 2, 'name' => "10Б", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 1, 'start_y' => 0),
+				array('id' => 3, 'name' => "10В", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 2, 'start_y' => 0),
+				array('id' => 4, 'name' => "10Г", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 0, 'start_y' => 1),
+				array('id' => 5, 'name' => "11А", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 2, 'start_y' => 1),
+				array('id' => 6, 'name' => "11Б", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 0, 'start_y' => 2),
+				array('id' => 7, 'name' => "11В", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 1, 'start_y' => 2),
+				array('id' => 8, 'name' => "11Г", 'r' => 0, 'g' => 0, 'b' => 0, 'start_x' => 2, 'start_y' => 2)
 			);
 
 			//DB connection
-			$link = mysql_connect(HOST, MYSQL_USER, MYSQL_PASS) or die("Нет соединения с MySQL сервером.");
-			mysql_query("CREATE DATABASE IF NOT EXISTS ".DATABASE) or die("Не получилось создать базу данных.");
-			mysql_select_db(DATABASE) or die("Нет соединения с базой данных.");
+			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die("Нет соединения с MySQL сервером.");
+			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE) or die("Не получилось создать базу данных.");
+			$this->database->select_db(DATABASE);
 
 			//Tables creation
-			create_players_table();
-			create_teams_table($teams);
-			create_map_table($teams);
+			create_players_table($this);
+			create_teams_table($teams, $this);
+			create_map_table($teams, $this);
 		}
 
+
+		/*
+		protected function query($query)
+		{
+			return $this->database->query($query);
+		}
+		*/
+
 		//For debuging!!!
+		public function query($query)
+		{
+			$result = $this->database->query($query);
+			return $result;
+		}
+
 		public function delete_db()
 		{
-			$query = "DROP DATABASE sw";
-			$result = mysql_query($query);
-			
-			return $result;
+			return $this->query("DROP DATABASE sw");
 		}
 	}
 ?>

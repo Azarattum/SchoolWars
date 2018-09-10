@@ -51,7 +51,8 @@
 			$files = array_unique(array_merge(
 				scandir($this->HTML_DIRECTORY),
 				scandir($this->CSS_DIRECTORY),
-				scandir($this->JS_DIRECTORY)));
+				scandir($this->JS_DIRECTORY))
+			);
 				
 			//Load only files from this page
 			foreach ($files as $file) {
