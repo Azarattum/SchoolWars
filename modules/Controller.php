@@ -25,24 +25,33 @@
 			{
 				$file_path = $class->CSS_DIRECTORY."/".$file_name;
 
-				if (file_exists($file_path))
-					echo "<link rel=\"stylesheet\" href=\"".$file_path."\" type=\"text/css\">";
+				if (file_exists($file_path)) {
+					$css_connection = "<link rel=\"stylesheet\" href=\"".$file_path."\" type=\"text/css\">";
+					$class->files_connection .= $css_connection;
+				}
 			}
 			
 			function load_js($file_name, $class)
 			{
 				$file_path = $class->JS_DIRECTORY."/".$file_name;
 
-				if (file_exists($file_path))
-					echo "<script src=\"".$file_path."\" type=\"text/javascript\"></script>";
+				if (file_exists($file_path)) {
+					$js_connection = "<script src=\"".$file_path."\" type=\"text/javascript\"></script>";
+					$class->files_connection .= $js_connection;
+				}
 			}
+
+
+			$files_connection = "";
 			
 			/*Load javascript libraries*/
-			$files = scandir("libs");
+			$libs = scandir("libs");
 
-			foreach ($files as $file) {
-				if (preg_match("/.+[.]js/", $file))
-					echo "<script src=\"libs/".$file."\" type=\"text/javascript\"></script>";
+			foreach ($libs as $file) {
+				if (preg_match("/.+[.]js/", $file)) {
+					$lib_connection = "<script src=\"libs/".$file."\" type=\"text/javascript\"></script>";
+					$this->files_connection .= $lib_connection;
+				}
 			}
 			
 			/*Load page data*/
@@ -51,8 +60,8 @@
 			$files = array_unique(array_merge(
 				scandir($this->HTML_DIRECTORY),
 				scandir($this->CSS_DIRECTORY),
-				scandir($this->JS_DIRECTORY))
-			);
+				scandir($this->JS_DIRECTORY)
+			));
 				
 			//Load only files from this page
 			foreach ($files as $file) {
@@ -61,6 +70,8 @@
 				if (preg_match("/(".$page."|^)[.]\S+[.](html|css|js)/", $file, $matches))
 					call_user_func("load_".$matches[2], $file, $this);
 			}
+
+			echo $this->files_connection;
 		}		
 	}
 ?>
