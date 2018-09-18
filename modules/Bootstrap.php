@@ -10,6 +10,7 @@
 
 			if (empty($url[0]))
 				$url[0] = "main";
+
 			$file = "controllers/".$url[0].".ctrl.php";
 
 			//Require
@@ -25,8 +26,13 @@
 				return false;
 			} else
 				require($file);
-			
-			//Init
+
+			$this->url = $url;
+		}
+
+		public function initialize()
+		{
+			$url = $this->url;
 			$controller = new $url[0];
 			
 			if (isset($url[2]))
@@ -39,6 +45,7 @@
 		{
 			//Prevent outputing while loading
 			ob_start();
+			
 			//Scan for libraries
 			$libs = scandir($path);
 

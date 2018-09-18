@@ -18,9 +18,6 @@ class Color
 	
 	static isColor(object)
 	{
-		if (object.R != undefined && object.G != undefined && object.B != undefined)
-			return true;
-		else
-			return false;
+		return (object.R != undefined && object.G != undefined && object.B != undefined);
 	}
 }

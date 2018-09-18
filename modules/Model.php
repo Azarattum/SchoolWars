@@ -9,14 +9,28 @@
 
 			function create_players_table($model)
 			{
-				$model->query("CREATE TABLE IF NOT EXISTS sw_players(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, team TINYINT, clicks_count INT)")
-					or die("Не получилось создать таблицу игроков.");
+				$query = "CREATE TABLE IF NOT EXISTS sw_players(
+					id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+					team TINYINT,
+					clicks_count INT DEFAULT 0
+				)";
+
+				$model->query($query);
 			}
 
 			function create_teams_table($teams, $model)
 			{
-				$model->query("CREATE TABLE IF NOT EXISTS sw_teams(id TINYINT NOT NULL PRIMARY KEY, name VARCHAR(16), r TINYINT UNSIGNED, g TINYINT UNSIGNED, b TINYINT UNSIGNED, start_x TINYINT, start_y TINYINT)")
-					or die("Не получилось создать таблицу команд.");
+				$query = "CREATE TABLE IF NOT EXISTS sw_teams(
+					id TINYINT NOT NULL PRIMARY KEY,
+					name VARCHAR(16),
+					r TINYINT UNSIGNED,
+					g TINYINT UNSIGNED,
+					b TINYINT UNSIGNED,
+					start_x TINYINT,
+					start_y TINYINT
+				)";
+
+				$model->query($query);
 
 				$teams_count = count($teams);
 				$query = "INSERT IGNORE INTO sw_teams";
@@ -36,13 +50,21 @@
 				}
 
 				$query = rtrim($query, " UNION ALL");
-				$result = $model->query($query);
+
+				$model->query($query);
 			}
 
 			function create_map_table($teams, $model)
 			{
-				$model->query("CREATE TABLE IF NOT EXISTS sw_map(id INT NOT NULL PRIMARY KEY, x SMALLINT NOT NULL, y SMALLINT NOT NULL, holder TINYINT, value TINYINT)")
-					or die("Не получилось создать таблицу клеток карты.");
+				$query = "CREATE TABLE IF NOT EXISTS sw_map(
+					id INT NOT NULL PRIMARY KEY,
+					x SMALLINT NOT NULL,
+					y SMALLINT NOT NULL,
+					holder TINYINT,
+					value TINYINT
+				)";
+
+				$model->query($query);
 
 				$cells = array(
 					array('x' => 0, 'y' => 0),
@@ -87,7 +109,7 @@
 						"'".$start_x."' AS x, '".$start_y."' AS y, '".-$team_id."' AS holder", $query);
 				}
 
-				return $model->query($query);
+				$model->query($query);
 			}
 			
 			define("HOST", "localhost");
@@ -107,29 +129,55 @@
 			);
 
 			//DB connection
-			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die("Нет соединения с MySQL сервером.");
-			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE) or die("Не получилось создать базу данных.");
+			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die( mysqli_error() );
+			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE);
 			$this->database->select_db(DATABASE);
 
 			//Tables creation
 			create_players_table($this);
 			create_teams_table($teams, $this);
 			create_map_table($teams, $this);
+
+			//!!!СНОС БАЗЫ
+			//$this->delete_db();
 		}
 
-
-		/*
-		protected function query($query)
-		{
-			return $this->database->query($query);
-		}
-		*/
 
 		//For debuging!!!
+		
+		//Сделать потом protected
 		public function query($query)
 		{
 			$result = $this->database->query($query);
-			return $result;
+
+			if (gettype($result) === "boolean") {
+				if ($result)
+					return $result;
+				else
+					die("Error: ".$this->database->error." in ".$query);
+			} else {
+				if ( mysqli_num_rows($result) ) {
+					//Fetching information
+					$data = array();
+
+					while ($row = mysqli_fetch_assoc($result)) {
+						$data_row = array();
+
+						foreach ($row as $key => $value) {
+							$data_row[$key] = $value;
+						}
+
+						array_push($data, $data_row);
+					}
+
+					if (count($data) === 1)
+						$data = $data[0];
+
+					echo json_encode($data);
+
+					return $data;
+				}
+			}
 		}
 
 		public function delete_db()
