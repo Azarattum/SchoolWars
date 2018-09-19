@@ -1,0 +1,60 @@
+@font-face {
+    font-family: "ui-text";
+    src: url("../fonts/ui-text.ttf") format("truetype");
+}
+
+.ui {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	
+	width: calc(100% - 16px * 2);
+	
+	margin: 16px;
+	
+	opacity: 0;
+	transition: 0.3s;
+}
+
+.ui-icon {
+	background-color: rgb(23,23,23);
+}
+
+.ui-text {
+	font-family: ui-text;
+	color: rgb(255, 255, 255);
+	text-shadow: 0px 0px 25px rgb(0, 0, 0);
+}
+
+.team-name {
+	font-size: 56px;
+}
+
+.user-id {
+	position: relative;
+	top: -8px;
+	
+	font-size: 48px;
+	opacity: 0.6;
+}
+
+.clicks-info {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.clicks-icon {
+	float: right;
+	
+	width: 64px;
+	height: 64px;
+	
+	margin-right: 16px;
+}
+
+.clicks {
+    float: right;
+	
+	font-size: 56px;
+}

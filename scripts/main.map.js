@@ -14,9 +14,10 @@ function initializeMap()
 	let width = canvas.width = $("#map").width();
 	let ctx = canvas.getContext("2d");
 	
-	$( "#map" ).mousemove(function(event) {
+	$(".map-screen").mousemove(function(event) {
 		Cursor.X = event.pageX;
 		Cursor.Y = event.pageY;
+		console.log(Cursor);
 	});
 	/*Temporary*/
 	var map = [
@@ -36,7 +37,7 @@ function initializeMap()
 	];
 	/*Temporary*/
 	
-	drawMap(ctx, map, 100, 100, 64);
+	drawMap(ctx, map, 100, 160, 64);
 	
 	/*Temporary*/ /*RENDER TEST!!!*/
 	setInterval(function() {
@@ -58,7 +59,7 @@ function initializeMap()
 			]
 		];
 
-		drawMap(ctx, map, 100, 100, 64);
+		drawMap(ctx, map, 100, 160, 64);
 	}, 20);
 	/*Temporary*/
 }
@@ -72,6 +73,7 @@ function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
 	var w = Math.sqrt(3) * (hexagonSize + 3);
 	var h = 2 * (hexagonSize + 3);
 	
+	ctx.clearRect(0,0, $(document).width(), $(document).height());
 	//Drawing background
 	ctx.drawImage(
 		image, 
@@ -84,7 +86,7 @@ function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
 	var w = Math.sqrt(3) * (64 + 3);
 	var h = 2 * (64 + 3);
 	let highleghtedY = Math.round((Cursor.Y - offsetY) / h / 3 * 4);
-	let highleghtedX = Math.round((Cursor.X - (highleghtedY % 2 == 1 ? w/2 : 0) - offsetX) / w);
+	let highleghtedX = Math.round(((Cursor.X - $("#map").position().left) - (highleghtedY % 2 == 1 ? w/2 : 0) - offsetX) / w);
 	
 	for	(let y = 0; y < map.length; y++) {
 		for	(let x = 0; x < map[y].length; x++) {

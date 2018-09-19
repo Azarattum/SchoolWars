@@ -1,4 +1,5 @@
 <div class="page">
+	<!--Tab Bar-->
 	<div class="tab-bar">
 		<button class="tab-item map-screen-item">
 			<div class="tab-icon"></div>
@@ -9,17 +10,28 @@
 			<div class="tab-label">Tab 2</div>
 		</button>
 	</div>
+	<!--Swipe screens-->
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide map-screen">
 				<!--Map Screen Here-->
 				<canvas id="map"></canvas>
-				<img id="background" src="assets/background.jpg" style="visibility:hidden">
+				<img id="background" <!--src="assets/background.jpg"--> style="visibility:hidden">
 			</div>
 			<div class="swiper-slide profile-screen">
 				<!--Profile Screen Here-->
 				
 			</div>
+		</div>
+	</div>
+	<!--User UI-->
+	<div class="ui">
+		<span class="ui-text team-name">Класс: ...</span>
+		<br>
+		<span class="ui-text user-id">#</span>
+		<div class="clicks-info">
+			<span class="ui-text clicks">42/48</span>
+			<div class="clicks-icon ui-icon"></div>
 		</div>
 	</div>
 </div>

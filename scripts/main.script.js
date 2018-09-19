@@ -13,8 +13,7 @@ function main()
 	initializeMap();
 	
 	console.log(UserData);
-
-
+	
 	var newTeamId = 2;
 	changeTeam(newTeamId);
 }
@@ -40,5 +39,9 @@ function changeTeam(newTeamId)
 		//...
 
 		console.log(UserData);
+		$(".ui").css("opacity", "1");
+		$(".team-name").text("Класс: " + UserData.team.name);
+		$(".user-id").text("#" + UserData.id);
 	});
+	
 }
