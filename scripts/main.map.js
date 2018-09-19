@@ -4,7 +4,7 @@
 **
 */
 
-var BackgroundCalibaration = {size: 0.7, x: 0, y: 0};
+var BackgroundCalibaration = {size: 0.7, x: 0, y: -50};
 var Cursor = {};
 
 function initializeMap()

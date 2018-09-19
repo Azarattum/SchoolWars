@@ -44,7 +44,6 @@ body
 	outline: none;
 	border: none;
 	background-color: transparent;
-	-webkit-tap-highlight-color: transparent;
 }
 
 .tab-icon

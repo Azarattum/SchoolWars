@@ -3,3 +3,58 @@
 	width: 100%;
 	height: 100%;
 }
+
+.capture-screen {
+	position: relative;
+	top: 16px;
+	
+	width: calc(100vw - 8px * 2);
+	height: 20vh;
+	transform: /*none;*/translateY(-100%);
+	
+	background-color: rgba(0, 0, 0, 0.6);
+	border: solid 8px rgb(0, 0, 0, 0.8);
+	border-radius: 16px;
+	
+	display: flex;
+	align-items: center;
+}
+
+.capture-button {	
+	width: calc(100% - 7vh - (16px * 2) - (32px * 2) - 130px);
+	height: 9vh;
+	margin: 32px;
+	
+	background-color: rgba(140, 0, 10, 0.4);
+	border: solid 8px rgb(140, 0, 10);
+	
+	font-size: 4.5vh;
+	
+	border-radius: 32px;
+	
+	transition: 0.2s;
+}
+
+.capture-button:active {
+	background-color: rgb(140, 0, 10);
+	border: solid 8px rgba(0, 0, 0, 0.4);
+}
+
+.clicks-cost {
+	display: flex;
+	align-items: center;
+}
+
+.cost-icon {
+	float: right;
+	
+	width: 7vh;
+	height: 7vh;
+}
+
+.cost {
+	float: right;
+	margin: 16px;
+	
+	font-size: 72px;
+}

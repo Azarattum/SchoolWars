@@ -35,13 +35,24 @@ function changeTeam(newTeamId)
 		if (data)
 			UserData['team'] = JSON.parse(data);
 
+		UserData.team.color = new Color(UserData.team.color.r, UserData.team.color.g, UserData.team.color.b);
+		
 		//Обработать данные
 		//...
 
 		console.log(UserData);
-		$(".ui").css("opacity", "1");
-		$(".team-name").text("Класс: " + UserData.team.name);
-		$(".user-id").text("#" + UserData.id);
+		renderDataChanges();
 	});
 	
+}
+
+function renderDataChanges()
+{
+	$(".ui").css("opacity", "1");
+	$(".team-name").text("Класс: " + UserData.team.name);
+	$(".user-id").text("#" + UserData.id);
+	let buttonColor = UserData.team.color;
+	$(".capture-button").css("border-color", buttonColor.toString());
+	buttonColor.A = 0.6;
+	$(".capture-button").css("background-color", buttonColor.toString());
 }
