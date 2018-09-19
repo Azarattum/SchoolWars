@@ -7,9 +7,9 @@
 		{
 			//Base model constuctor
 
-			function create_players_table($model)
+			function create_users_table($model)
 			{
-				$query = "CREATE TABLE IF NOT EXISTS sw_players(
+				$query = "CREATE TABLE IF NOT EXISTS sw_users(
 					id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 					team TINYINT,
 					clicks_count INT DEFAULT 0
@@ -134,7 +134,7 @@
 			$this->database->select_db(DATABASE);
 
 			//Tables creation
-			create_players_table($this);
+			create_users_table($this);
 			create_teams_table($teams, $this);
 			create_map_table($teams, $this);
 
@@ -172,8 +172,6 @@
 
 					if (count($data) === 1)
 						$data = $data[0];
-
-					echo json_encode($data);
 
 					return $data;
 				}

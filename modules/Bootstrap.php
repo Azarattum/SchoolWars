@@ -1,8 +1,12 @@
 <?php
 	class Bootstrap
 	{
-		public function __construct()
+		public function __construct($start_path)
 		{
+			session_start();
+			
+			$this->start_path = $start_path;
+
 			//Parse
 			$url = $_GET["url"];
 			$url = rtrim($url, '/');
@@ -11,17 +15,17 @@
 			if (empty($url[0]))
 				$url[0] = "main";
 
-			$file = "controllers/".$url[0].".ctrl.php";
+			$file = $this->start_path."controllers/".$url[0].".ctrl.php";
 
 			//Require
-			require_once("modules/Controller.php");
+			require_once($this->start_path."modules/Controller.php");
 
 			if ($url[0] == "httperror") {
-				require("controllers/httperror.ctrl.php");
+				require($this->start_path."controllers/httperror.ctrl.php");
 				$controller = new HttpError(403);
 				return false;
 			} else if (!file_exists($file)) {
-				require("controllers/httperror.ctrl.php");
+				require($this->start_path."controllers/httperror.ctrl.php");
 				$controller = new HttpError(404);
 				return false;
 			} else
@@ -45,6 +49,8 @@
 		{
 			//Prevent outputing while loading
 			ob_start();
+
+			$path = $this->start_path.$path;
 			
 			//Scan for libraries
 			$libs = scandir($path);

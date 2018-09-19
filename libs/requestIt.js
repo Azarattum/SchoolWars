@@ -34,7 +34,7 @@ function request(request, param1, param2, param3)
 	}
 	
 	if (async == undefined)
-		async = callback? true : false;
+		async = callback ? true : false;
 	
 	return _request(request, arguments, script, async, callback);
 }

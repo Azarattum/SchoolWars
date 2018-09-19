@@ -3,8 +3,6 @@
 	{
 		public function __construct()
 		{
-			session_start();
-
 			$this->load_page();
 
 			$user = new User();
