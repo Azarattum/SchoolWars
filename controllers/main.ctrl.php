@@ -6,32 +6,44 @@
 			$this->load_page();
 
 			$user = new User();
-			$data = $user->login();
+			$user_data = $user->login(); //Getting user's data
 
 			//Building js script
-			$user_data = "id: ".$data['id'];
-			$team_data = "";
+			if ( isset($user_data['team']) )
+				$user_team_data = ", teamId: ".$user_data['team'];
 
-			if (isset( $data['team'] ) && isset( $data['team']['id'] )) {
-				$team_data = ", team: {
-					id: ".$data['team']['id'].",
-					name: \"".$data['team']['name']."\",
-					color: {
-						r: ".$data['team']['color']['r'].",
-						g: ".$data['team']['color']['g'].",
-						b: ".$data['team']['color']['b']."
-					},
-					start: {
-						x: ".$data['team']['start']['x'].",
-						y: ".$data['team']['start']['y']."
-					}
-				}";
+			$user_data_script = "var UserData = {id: ".$user_data['id'].$user_team_data."};";
+
+			$teams_data = $user->get_team_data('all'); //Getting all teams' data
+
+			if ( $teams_data ) {
+				$teams_data_script = "var TeamsData = {";
+
+				foreach ($teams_data as $team_id => $team) {
+					$team_data = $team['id'].": {
+						name: \"".$team['name']."\",
+						color: {
+							r: ".$team['color']['r'].",
+							g: ".$team['color']['g'].",
+							b: ".$team['color']['b']."
+						},
+						start: {
+							x: ".$team['start']['x'].",
+							y: ".$team['start']['y']."
+						}
+					}, ";
+
+					$teams_data_script .= $team_data;
+				}
+
+				$query = rtrim($query, ", ");
+				$teams_data_script .= "};";
 			}
 
 			//!!!НАДО ЕЩЁ ПЕРЕДАВАТЬ МАССИВ КЛЕТОК ПОД КОНТРОЛЕМ!!!
 			//!!!НАДО ЕЩЁ ПЕРЕДАВАТЬ КОЛ-ВО ИГРОКОВ В КОМАНДЕ!!!
 
-			$js_script = "<script>var UserData = {".$user_data.$team_data."};</script>";
+			$js_script = "<script>".$user_data_script." ".$teams_data_script."</script>";
 			echo $js_script;
 		}
 	}

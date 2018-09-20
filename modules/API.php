@@ -20,7 +20,8 @@
 		load_all_components();
 
 		$user = new User();
-		$team_data = $user->change_user_team($new_team_id);
-		return json_encode($team_data);
+		$result = $user->change_user_team($new_team_id);
+
+		return $result;
 	}
 ?>

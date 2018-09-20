@@ -170,9 +170,6 @@
 						array_push($data, $data_row);
 					}
 
-					if (count($data) === 1)
-						$data = $data[0];
-
 					return $data;
 				}
 			}

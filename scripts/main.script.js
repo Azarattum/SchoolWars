@@ -11,11 +11,18 @@ function main()
 
 	intializeTabs();
 	initializeMap();
-	
+
+	//UserData - инфа о юзере (id, team_id)
+	//TeamsData - инфа всех команд ([id1, id2...])
+	transformTeamsColor();
+
 	console.log(UserData);
+	console.log(TeamsData);
+
+	renderUserData();
 	
-	var newTeamId = 2;
-	changeTeam(newTeamId);
+	//var newTeamId = 5;
+	//changeTeam(newTeamId);
 }
 
 function intializeTabs()
@@ -26,32 +33,38 @@ function intializeTabs()
 	$(".swiper-container").css("opacity", "1");
 }
 
+function transformTeamsColor()
+{
+	for (var teamId in TeamsData) {
+		var team = TeamsData[teamId];
+		team.color = new Color(team.color.r, team.color.g, team.color.b);
+	}
+}
+
 function changeTeam(newTeamId)
 {
 	request("change_team", [newTeamId], function(data) {
-		//Проверки
-		//...
+		//console.log(data);
 
-		if (data)
-			UserData['team'] = JSON.parse(data);
-
-		UserData.team.color = new Color(UserData.team.color.r, UserData.team.color.g, UserData.team.color.b);
-		
-		//Обработать данные
-		//...
-
-		console.log(UserData);
-		renderDataChanges();
+		if (data) {
+			UserData['teamId'] = newTeamId;
+			renderUserData();
+		}
 	});
 	
 }
 
-function renderDataChanges()
+function renderUserData()
 {
-	$(".ui").css("opacity", "1");
-	$(".team-name").text("Класс: " + UserData.team.name);
+	var userTeam = TeamsData[UserData.teamId];
+	console.log(userTeam);
+
+	$(".ui").animate({opacity: "1"}, 500);
+
+	$(".team-name").text("Класс: " + userTeam.name);
 	$(".user-id").text("#" + UserData.id);
-	let buttonColor = UserData.team.color;
+
+	let buttonColor = userTeam.color;
 	$(".capture-button").css("border-color", buttonColor.toString());
 	buttonColor.A = 0.6;
 	$(".capture-button").css("background-color", buttonColor.toString());

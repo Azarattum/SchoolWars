@@ -10,7 +10,9 @@
 	
 	width: calc(100vw - 8px * 2);
 	height: 20vh;
-	transform: /*none;*/translateY(-100%);
+
+	/*none;*/
+	transform: translateY(-100%);
 	
 	background-color: rgba(0, 0, 0, 0.6);
 	border: solid 8px rgb(0, 0, 0, 0.8);

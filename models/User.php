@@ -8,21 +8,15 @@
 			if (isset($_SESSION['user_id'])) {
 				$user_id = $_SESSION['user_id'];
 
-				//Getting data from DB
+				//Getting user data from DB
 				$query = "SELECT team AS team_id FROM sw_users WHERE id = '$user_id'";
 				$result = $this->query($query);
-				$team_id = $result['team_id'];
-
-				if ($team_id)
-					$team_data = $this->get_team_data($team_id);
+				$team_id = $result[0]['team_id'];
 
 				$user_data = array(
 					'id' => $user_id,
-					'team' => $team_data
+					'team' => $team_id
 				);
-
-				//!!!НАДО ЕЩЁ ПЕРЕДАВАТЬ МАССИВ КЛЕТОК ПОД КОНТРОЛЕМ!!!
-				//!!!НАДО ЕЩЁ ПЕРЕДАВАТЬ КОЛ-ВО ИГРОКОВ В КОМАНДЕ!!!
 
 				return $user_data;
 			} else {
@@ -43,29 +37,42 @@
 			//Last id
 			$query = "SELECT max(id) AS user_id FROM sw_users";
 			$result = $this->query($query);
-			$user_id = +$result['user_id'];
+			$user_id = +$result[0]['user_id'];
 
 			$_SESSION['user_id'] = $user_id;
 
 			return $user_id;
 		}
 
-		private function get_team_data($team_id)
+		public function get_team_data($team_id)
 		{
-			$query = "SELECT name AS team_name, r, g, b, start_x, start_y FROM sw_teams WHERE id = '$team_id'";
+			if ($team_id === 'all') {
+				$condition = "1 = 1";
+			} else if ( is_int($team_id) ) {
+				$condition = "id = '$team_id'";
+			}
+
+			$query = "SELECT id, name AS team_name, r, g, b, start_x, start_y FROM sw_teams WHERE $condition";
 			$result = $this->query($query);
 
 			if ($result) {
-				$team_name = $result['team_name'];
-				$team_color = array('r' => $result['r'], 'g' => $result['g'], 'b' => $result['b']);
-				$team_start = array('x' => $result['start_x'], 'y' => $result['start_y']);
+				$team_data = array();
 
-				$team_data = array(
-					'id' => $team_id,
-					'name' => $team_name,
-					'color' => $team_color,
-					'start' => $team_start
-				);
+				foreach ($result as $key => $team) {
+					$current_team_id = $team['id'];
+					$team_name = $team['team_name'];
+					$team_color = array('r' => $team['r'], 'g' => $team['g'], 'b' => $team['b']);
+					$team_start = array('x' => $team['start_x'], 'y' => $team['start_y']);
+
+					$current_team_data = array(
+						'id' => $current_team_id,
+						'name' => $team_name,
+						'color' => $team_color,
+						'start' => $team_start
+					);
+
+					$team_data[$current_team_id] = $current_team_data;
+				}
 
 				return $team_data;
 			}
@@ -78,16 +85,19 @@
 			if (!$user_id)
 				return false;
 
-			$team_data = $this->get_team_data($new_team_id);
+			//Check team existence
+			$query = "SELECT count(id) AS count FROM sw_teams WHERE id = '$new_team_id'";
+			$sql_result = $this->query($query);
+			$result = $sql_result[0]['count'];
 
-			if (!$team_data)
+			if ($result != 1)
 				return false;
 
 			$query = "UPDATE sw_users SET team = '$new_team_id' WHERE id = '$user_id'";
 			$result = $this->query($query);
 
 			if ($result)
-				return $team_data;
+				return true;
 			else
 				return false;
 		}

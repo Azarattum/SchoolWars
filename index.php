@@ -4,7 +4,7 @@
 	require_once("modules/Bootstrap.php");
 	
 	//Init application
-	$application = new Bootstrap("./");
+	$application = new Bootstrap("");
 	$application->load_components("modules");
 	$application->load_components("models");
 	$application->initialize();
