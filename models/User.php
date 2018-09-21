@@ -65,7 +65,6 @@
 					$team_start = array('x' => $team['start_x'], 'y' => $team['start_y']);
 
 					$current_team_data = array(
-						'id' => $current_team_id,
 						'name' => $team_name,
 						'color' => $team_color,
 						'start' => $team_start

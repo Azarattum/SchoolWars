@@ -24,4 +24,12 @@
 
 		return $result;
 	}
+
+	function get_map_data()
+	{
+		requestable;
+		
+		$result = true;
+		return $result;
+	}
 ?>

@@ -9,20 +9,28 @@ function main()
 {
 	setScript("/modules/API.php");
 
-	intializeTabs();
-	initializeMap();
+	transformTeamsColor();
 
 	//UserData - инфа о юзере (id, team_id)
 	//TeamsData - инфа всех команд ([id1, id2...])
-	transformTeamsColor();
-
+	//MapData - инфа всех клеток карты ([id0, id1...])
 	console.log(UserData);
 	console.log(TeamsData);
+	console.log(MapData);
 
-	renderUserData();
+	intializeTabs();
+	initializeMap();
+
+	if (UserData.teamId)
+		renderUserData();
+	else
+		showTeams();
 	
-	//var newTeamId = 5;
-	//changeTeam(newTeamId);
+
+	setTimeout(function() {
+		var newTeamId = 5;
+		changeTeam(newTeamId);
+	}, 3000);
 }
 
 function intializeTabs()
@@ -41,15 +49,30 @@ function transformTeamsColor()
 	}
 }
 
+function showTeams()
+{
+	console.log("Выбери команду, бомж");
+
+	//создание/показ списка команд
+
+	//по нажатию на команду changeTeam(id команды)
+	//при положительном callback'е, удаление/скрытие списка
+
+	//по нажатию все списка, он удаляется/скрывается, если игрок состояит в тиме (UserData.teamId)
+}
+
 function changeTeam(newTeamId)
 {
-	request("change_team", [newTeamId], function(data) {
-		//console.log(data);
+	if (newTeamId == UserData.teamId)
+		return true;
 
+	request("change_team", [newTeamId], function(data) {
 		if (data) {
 			UserData['teamId'] = newTeamId;
 			renderUserData();
 		}
+
+		return data;
 	});
 	
 }
@@ -57,7 +80,6 @@ function changeTeam(newTeamId)
 function renderUserData()
 {
 	var userTeam = TeamsData[UserData.teamId];
-	console.log(userTeam);
 
 	$(".ui").animate({opacity: "1"}, 500);
 
