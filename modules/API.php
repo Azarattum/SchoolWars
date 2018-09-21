@@ -25,11 +25,14 @@
 		return $result;
 	}
 
-	function get_map_data()
+	function get_cells_holders()
 	{
 		requestable;
+		load_all_components();
 		
-		$result = true;
-		return $result;
+		$map = new Map();
+		$result = $map->get_cells_holders();
+
+		return json_encode($result);
 	}
 ?>

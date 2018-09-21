@@ -4,8 +4,15 @@
 **
 */
 
+var hexagonSize = 64;
+var offsetX = 100;
+var offsetY = 160;
+
 var BackgroundCalibaration = {size: 0.7, x: 0, y: -50};
 var Cursor = {};
+
+var mousePressed = false;
+
 
 function initializeMap()
 {
@@ -13,25 +20,75 @@ function initializeMap()
 	let height = canvas.height = $("#map").height();
 	let width = canvas.width = $("#map").width();
 	let ctx = canvas.getContext("2d");
-	
-	$(".map-screen").mousemove(function(event) {
-		Cursor.X = event.pageX;
-		Cursor.Y = event.pageY;
-		console.log(Cursor);
-	});
-	
-	drawMap(ctx, MapData, 100, 160, 64);
-	
-	/*Temporary*/ /*RENDER TEST!!!*/
-	setInterval(function() {
+
+	//Draw on resize
+	$(window).resize(function() {
 		let canvas = document.getElementById("map");
 		let height = canvas.height = $("#map").height();
 		let width = canvas.width = $("#map").width();
 		let ctx = canvas.getContext("2d");
 
-		drawMap(ctx, MapData, 100, 160, 64);
-	}, 20);
-	/*Temporary*/
+		drawMap(ctx, map, offsetX, offsetY, hexagonSize);
+	});
+
+	$(window).mousedown(function() {
+		mousePressed = true;
+	}).mouseup(function() {
+		mousePressed = false;
+	});
+	
+	//Draw on mousemove/click
+	$(".map-screen").mousemove(function(event) {
+		Cursor.X = event.pageX;
+		Cursor.Y = event.pageY;
+		//console.log(Cursor);
+
+		if (!mousePressed) {
+			let canvas = document.getElementById("map");
+			let height = canvas.height = $("#map").height();
+			let width = canvas.width = $("#map").width();
+			let ctx = canvas.getContext("2d");
+
+			drawMap(ctx, map, offsetX, offsetY, hexagonSize);
+		}
+	});
+	
+	drawMap(ctx, MapData, offsetX, offsetY, hexagonSize);
+	updateMap();
+}
+
+function updateMap()
+{
+	request("get_cells_holders", function(data) {
+		if (data) {
+			let cellsHolders = JSON.parse(data);
+			let changed = false;
+
+			for (let cellId in cellsHolders) {
+				let cellHolder = +cellsHolders[cellId];
+
+				if (MapData[cellId].holder !== cellHolder) {
+					MapData[cellId].holder = cellHolder;
+					changed = true;
+				}
+			}
+
+			if (!changed) {
+				let canvas = document.getElementById("map");
+				let height = canvas.height = $("#map").height();
+				let width = canvas.width = $("#map").width();
+				let ctx = canvas.getContext("2d");
+
+				drawMap(ctx, MapData, offsetX, offsetY, hexagonSize);
+			}
+
+			console.log("Update map? "+changed);
+		}
+
+		setTimeout(function() {
+			updateMap();
+		}, 300);
+	});
 }
 
 function drawMap(ctx, map, offsetX, offsetY, hexagonSize)

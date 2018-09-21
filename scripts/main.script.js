@@ -43,8 +43,8 @@ function intializeTabs()
 
 function transformTeamsColor()
 {
-	for (var teamId in TeamsData) {
-		var team = TeamsData[teamId];
+	for (let teamId in TeamsData) {
+		let team = TeamsData[teamId];
 		team.color = new Color(team.color.r, team.color.g, team.color.b);
 	}
 }
@@ -74,12 +74,11 @@ function changeTeam(newTeamId)
 
 		return data;
 	});
-	
 }
 
 function renderUserData()
 {
-	var userTeam = TeamsData[UserData.teamId];
+	let userTeam = TeamsData[UserData.teamId];
 
 	$(".ui").animate({opacity: "1"}, 500);
 
