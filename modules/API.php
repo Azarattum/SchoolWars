@@ -25,6 +25,23 @@
 		return $result;
 	}
 
+	function count_users_in_team($team_id)
+	{
+		requestable;
+
+		//Checking the variable
+		if ((is_int($team_id) && $team_id > 0) || $team_id === "all") {
+			load_all_components();
+
+			$team = new Team();
+			$result = $team->count_users_in_team($team_id);
+
+			return json_encode($result);
+		}
+
+		return false;
+	}
+
 	function get_cells_holders()
 	{
 		requestable;

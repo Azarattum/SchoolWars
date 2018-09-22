@@ -13,6 +13,8 @@
 	margin: 16px;
 	
 	opacity: 0;
+
+	pointer-events: none;
 }
 
 .ui-text {

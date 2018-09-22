@@ -32,16 +32,13 @@
 		public function get_cells_holders()
 		{
 			//Getting cell's holders
-
-			//ПОЛУЧЕНИЕ ВЛАДЕЛЬЦЕВ КАРТЫ (x, y, holder); 0 игнорируется при селекте
-
 			$query = "SELECT id, holder FROM sw_map WHERE holder <> 0";
 			$result = $this->query($query);
 
 			foreach ($result as $key => $current_result) {
 				$cell_id = $current_result['id'];
 				$cell_holder = $current_result['holder'];
-				
+
 				$cells_holders[$cell_id] = $cell_holder;
 			}
 

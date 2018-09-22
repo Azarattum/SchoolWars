@@ -44,39 +44,6 @@
 			return $user_id;
 		}
 
-		public function get_team_data($team_id)
-		{
-			if ($team_id === 'all') {
-				$condition = "1 = 1";
-			} else if ( is_int($team_id) ) {
-				$condition = "id = '$team_id'";
-			}
-
-			$query = "SELECT id, name AS team_name, r, g, b, start_x, start_y FROM sw_teams WHERE $condition";
-			$result = $this->query($query);
-
-			if ($result) {
-				$team_data = array();
-
-				foreach ($result as $key => $team) {
-					$current_team_id = $team['id'];
-					$team_name = $team['team_name'];
-					$team_color = array('r' => $team['r'], 'g' => $team['g'], 'b' => $team['b']);
-					$team_start = array('x' => $team['start_x'], 'y' => $team['start_y']);
-
-					$current_team_data = array(
-						'name' => $team_name,
-						'color' => $team_color,
-						'start' => $team_start
-					);
-
-					$team_data[$current_team_id] = $current_team_data;
-				}
-
-				return $team_data;
-			}
-		}
-
 		public function change_user_team($new_team_id)
 		{
 			$user_id = $_SESSION['user_id'];

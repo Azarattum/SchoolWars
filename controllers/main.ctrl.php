@@ -15,22 +15,23 @@
 
 			//--------------------
 
-			$teams_data = $user->get_team_data('all'); //Getting all teams data
+			$team = new Team();
+			$teams_data = $team->get_team_data('all'); //Getting all teams data
 
 			if ($teams_data) {
 				$teams_data_script = "var TeamsData = {";
 
-				foreach ($teams_data as $team_id => $team) {
+				foreach ($teams_data as $team_id => $current_team) {
 					$team_data = $team_id.": {
-						name: \"".$team['name']."\",
+						name: \"".$current_team['name']."\",
 						color: {
-							r: ".$team['color']['r'].",
-							g: ".$team['color']['g'].",
-							b: ".$team['color']['b']."
+							r: ".$current_team['color']['r'].",
+							g: ".$current_team['color']['g'].",
+							b: ".$current_team['color']['b']."
 						},
 						start: {
-							x: ".$team['start']['x'].",
-							y: ".$team['start']['y']."
+							x: ".$current_team['start']['x'].",
+							y: ".$current_team['start']['y']."
 						}
 					}, ";
 
@@ -41,7 +42,19 @@
 				$teams_data_script .= "};";
 			}
 
-			//!!!НАДО ЕЩЁ ПЕРЕДАВАТЬ КОЛ-ВО ИГРОКОВ В КОМАНДЕ!!!
+			$count_users_in_teams = $team->count_users_in_team('all');
+
+			if ($count_users_in_teams) {
+				$teams_data_script .= " var UsersCountInTeams = {";
+
+				foreach ($count_users_in_teams as $team_id => $count_users) {
+					$count_users_data = $team_id.": ".$count_users.", ";
+					$teams_data_script .= $count_users_data;
+				}
+
+				$teams_data_script = rtrim($teams_data_script, ", ");
+				$teams_data_script .= "};";
+			}
 
 			//--------------------
 

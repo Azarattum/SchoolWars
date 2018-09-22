@@ -4,16 +4,23 @@
 **
 */
 
+//UserData - инфа о юзере (id, team_id)
+//TeamsData - инфа всех команд ([id1, id2...])
+//UsersCountInTeams - инфа о кол-ве игроков в командах ([teamId: count, ...])
+//MapData - инфа всех клеток карты ([id0, id1...])
+
+if (!UsersCountInTeams)
+		var UsersCountInTeams = {};
+
+
 /*On page loaded*/
 function main()
 {
 	setScript("/modules/API.php");
 
 	transformTeamsColor();
+	transformUsersCountInTeams();
 
-	//UserData - инфа о юзере (id, team_id)
-	//TeamsData - инфа всех команд ([id1, id2...])
-	//MapData - инфа всех клеток карты ([id0, id1...])
 	console.log(UserData);
 	console.log(TeamsData);
 	console.log(MapData);
@@ -21,16 +28,11 @@ function main()
 	intializeTabs();
 	initializeMap();
 
-	if (UserData.teamId)
+	if (UserData.teamId) {
 		renderUserData();
-	else
+		countUsersInUserTeam(UserData.teamId);
+	} else
 		showTeams();
-	
-
-	setTimeout(function() {
-		var newTeamId = 5;
-		changeTeam(newTeamId);
-	}, 3000);
 }
 
 function intializeTabs()
@@ -39,6 +41,14 @@ function intializeTabs()
 	$(".map-screen-item").bind("touchstart click", function() {swiper.slideTo(0)});
 	$(".profile-screen-item").bind("touchstart click", function() {swiper.slideTo(1)});
 	$(".swiper-container").css("opacity", "1");
+}
+
+function transformUsersCountInTeams()
+{
+	for (let teamId in TeamsData) {
+		if ( !UsersCountInTeams[teamId] )
+			UsersCountInTeams[teamId] = null;
+	}
 }
 
 function transformTeamsColor()
@@ -53,12 +63,64 @@ function showTeams()
 {
 	console.log("Выбери команду, бомж");
 
+	//открытие второй вкладки
 	//создание/показ списка команд
+
+	//запрос на получение кол-ва игроков в командах countUsersInTeam("all")
 
 	//по нажатию на команду changeTeam(id команды)
 	//при положительном callback'е, удаление/скрытие списка
 
 	//по нажатию все списка, он удаляется/скрывается, если игрок состояит в тиме (UserData.teamId)
+
+	setTimeout(function() {
+		let newTeamId = Math.floor(Math.random() * 9) + 1;
+		changeTeam(newTeamId);
+	}, 3000);
+}
+
+function countUsersInUserTeam()
+{
+	teamId = UserData.teamId;
+
+	if (!teamId)
+		return false;
+
+	request("count_users_in_team", [teamId], function(data) {
+		if (data && JSON.parse(data)) {
+			data = JSON.parse(data);
+			let userCount = +data[teamId];
+
+			if (userCount)
+				UsersCountInTeams[teamId] = userCount;
+		}
+
+		console.log(data);
+
+		setTimeout(function() {
+			countUsersInUserTeam();
+		}, 2000);
+	});
+}
+
+function countUsersInTeams()
+{
+	request("count_users_in_team", ["all"], function(data) {
+		if (data && JSON.parse(data)) {
+			data = JSON.parse(data);
+
+			for (let currentTeamId in UsersCountInTeams) {
+				let userCount = +data[currentTeamId];
+
+				if (userCount)
+					UsersCountInTeams[currentTeamId] = userCount;
+				else
+					UsersCountInTeams[currentTeamId] = null;
+			}
+		}
+
+		//console.log(UsersCountInTeams);
+	});
 }
 
 function changeTeam(newTeamId)
@@ -68,8 +130,16 @@ function changeTeam(newTeamId)
 
 	request("change_team", [newTeamId], function(data) {
 		if (data) {
+			let firstTeam = false;
+
+			if (!UserData.teamId)
+				firstTeam = true;
+
 			UserData['teamId'] = newTeamId;
 			renderUserData();
+
+			if (firstTeam)
+				countUsersInUserTeam(UserData.teamId);
 		}
 
 		return data;

@@ -30,27 +30,19 @@ function initializeMap()
 
 		drawMap(ctx, map, offsetX, offsetY, hexagonSize);
 	});
-
-	$(window).mousedown(function() {
-		mousePressed = true;
-	}).mouseup(function() {
-		mousePressed = false;
-	});
 	
-	//Draw on mousemove/click
-	$(".map-screen").mousemove(function(event) {
+	//Draw on click
+	$(".map-screen").click(function(event) {
 		Cursor.X = event.pageX;
 		Cursor.Y = event.pageY;
 		//console.log(Cursor);
 
-		if (!mousePressed) {
-			let canvas = document.getElementById("map");
-			let height = canvas.height = $("#map").height();
-			let width = canvas.width = $("#map").width();
-			let ctx = canvas.getContext("2d");
+		let canvas = document.getElementById("map");
+		let height = canvas.height = $("#map").height();
+		let width = canvas.width = $("#map").width();
+		let ctx = canvas.getContext("2d");
 
-			drawMap(ctx, map, offsetX, offsetY, hexagonSize);
-		}
+		drawMap(ctx, map, offsetX, offsetY, hexagonSize);
 	});
 	
 	drawMap(ctx, MapData, offsetX, offsetY, hexagonSize);
@@ -82,7 +74,7 @@ function updateMap()
 				drawMap(ctx, MapData, offsetX, offsetY, hexagonSize);
 			}
 
-			console.log("Update map? "+changed);
+			//console.log("Update map? "+changed);
 		}
 
 		setTimeout(function() {
