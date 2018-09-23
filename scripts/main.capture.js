@@ -118,8 +118,8 @@ function captureCell(id)
 	if (cellHolder < 0 || cellHolder == UserData.teamId)
 		return false;
 
-	//if ( !checkNeighborCells(id) )
-		//return false;
+	if ( !checkNeighborCells(id) )
+		return false;
 
 	if (Points - PointsToCapture < 0)
 		return false;
