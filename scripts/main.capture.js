@@ -68,12 +68,12 @@ function checkNeighborCells(cellId)
 			let holder = cell.holder;
 
 			if (
-				(cellX == x - 1) && (cellY == y - 1)
-				|| (cellX == x) && (cellY == y - 1)
-				|| (cellX == x - 1) && (cellY == y)
-				|| (cellX == x + 1) && (cellY == y)
-				|| (cellX == x - 1) && (cellY == y + 1)
-				|| (cellX == x) && (cellY == y + 1)
+				(x == cellX - 1) && (y == cellY - 1)
+				|| (x == cellX) && (y == cellY - 1)
+				|| (x == cellX - 1) && (y == cellY)
+				|| (x == cellX + 1) && (y == cellY)
+				|| (x == cellX - 1) && (y == cellY + 1)
+				|| (x == cellX) && (y == cellY + 1)
 			) {
 				if (team == Math.abs(holder)) {
 					return true;
@@ -88,16 +88,15 @@ function checkNeighborCells(cellId)
 			let holder = cell.holder;
 
 			if (
-				(cellX == x) && (cellY == y - 1)
-				|| (cellX == x + 1) && (cellY == y - 1)
-				|| (cellX == x - 1) && (cellY == y)
-				|| (cellX == x + 1) && (cellY == y)
-				|| (cellX == x) && (cellY == y + 1)
-				|| (cellX == x + 1) && (cellY == y + 1)
+				(x == cellX) && (y == cellY - 1)
+				|| (x == cellX + 1) && (y == cellY - 1)
+				|| (x == cellX - 1) && (y == cellY)
+				|| (x == cellX + 1) && (y == cellY)
+				|| (x == cellX) && (y == cellY + 1)
+				|| (x == cellX + 1) && (y == cellY + 1)
 			) {
-				if (team == Math.abs(holder)) {
+				if (team == Math.abs(holder))
 					return true;
-				}
 			}
 		}
 	}

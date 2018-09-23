@@ -27,6 +27,7 @@ function main()
 
 	console.log(UserData);
 	console.log(TeamsData);
+	console.log(UsersCountInTeams);
 	console.log(MapData);
 
 	intializeTabs();
