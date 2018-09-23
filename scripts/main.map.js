@@ -4,14 +4,16 @@
 **
 */
 
-var hexagonSize = 64;
-var offsetX = 100;
-var offsetY = 160;
+var HexagonSize = 64;
+var OffsetX = 100;
+var OffsetY = 160;
 
 var BackgroundCalibaration = {size: 0.7, x: 0, y: -50};
+
 var Cursor = {};
 
-var mousePressed = false;
+var HighlightedY = null;
+var HighlightedX = null;
 
 
 function initializeMap()
@@ -21,6 +23,14 @@ function initializeMap()
 	let width = canvas.width = $("#map").width();
 	let ctx = canvas.getContext("2d");
 
+	initializeEvents();
+	
+	drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+	updateMap();
+}
+
+function initializeEvents()
+{
 	//Draw on resize
 	$(window).resize(function() {
 		let canvas = document.getElementById("map");
@@ -28,25 +38,27 @@ function initializeMap()
 		let width = canvas.width = $("#map").width();
 		let ctx = canvas.getContext("2d");
 
-		drawMap(ctx, map, offsetX, offsetY, hexagonSize);
+		drawMap(ctx, map, OffsetX, OffsetY, HexagonSize);
 	});
-	
+
 	//Draw on click
 	$(".map-screen").click(function(event) {
 		Cursor.X = event.pageX;
 		Cursor.Y = event.pageY;
 		//console.log(Cursor);
 
+		let w = Math.sqrt(3) * (HexagonSize + 3);
+		let h = 2 * (HexagonSize + 3);
+		HighlightedY = Math.round((Cursor.Y - OffsetY) / h / 3 * 4);
+		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - OffsetX) / w);
+
 		let canvas = document.getElementById("map");
 		let height = canvas.height = $("#map").height();
 		let width = canvas.width = $("#map").width();
 		let ctx = canvas.getContext("2d");
 
-		drawMap(ctx, map, offsetX, offsetY, hexagonSize);
+		drawMap(ctx, map, OffsetX, OffsetY, HexagonSize);
 	});
-	
-	drawMap(ctx, MapData, offsetX, offsetY, hexagonSize);
-	updateMap();
 }
 
 function updateMap()
@@ -65,13 +77,13 @@ function updateMap()
 				}
 			}
 
-			if (!changed) {
+			if (changed) {
 				let canvas = document.getElementById("map");
 				let height = canvas.height = $("#map").height();
 				let width = canvas.width = $("#map").width();
 				let ctx = canvas.getContext("2d");
 
-				drawMap(ctx, MapData, offsetX, offsetY, hexagonSize);
+				drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
 			}
 
 			//console.log("Update map? "+changed);
@@ -85,8 +97,8 @@ function updateMap()
 
 function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
 {
-	offsetX = offsetX == undefined ? 0 : offsetX;
-	offsetY = offsetY == undefined ? 0 : offsetY;
+	offsetX = (offsetX == undefined) ? 0 : offsetX;
+	offsetY = (offsetY == undefined) ? 0 : offsetY;
 	
 	var image = document.getElementById("background");
 	var w = Math.sqrt(3) * (hexagonSize + 3);
@@ -95,6 +107,7 @@ function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
 	ctx.clearRect(0, 0, $(document).width(), $(document).height());
 
 	//Drawing background
+	/*
 	ctx.drawImage(
 		image, 
 		offsetX - w + BackgroundCalibaration.x, 
@@ -102,17 +115,13 @@ function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
 		image.width * hexagonSize / 16 * BackgroundCalibaration.size, 
 		image.height * hexagonSize / 16 * BackgroundCalibaration.size
 	);
+	*/
 	
-	var w = Math.sqrt(3) * (64 + 3);
-	var h = 2 * (64 + 3);
-	let highleghtedY = Math.round((Cursor.Y - offsetY) / h / 3 * 4);
-	let highleghtedX = Math.round(((Cursor.X - $("#map").position().left) - (highleghtedY % 2 == 1 ? w/2 : 0) - offsetX) / w);
-	
-	for (let cell_id in MapData) {
-		let cell = MapData[cell_id];
+	for (let cellId in MapData) {
+		let cell = MapData[cellId];
 		let x = cell.coords.x;
 		let y = cell.coords.y;
-		let selected = highleghtedY == y && highleghtedX == x;
+		let selected = HighlightedY === y && HighlightedX === x;
 		let holderId = cell.holder;
 		let isSpawn = false;
 
@@ -121,10 +130,13 @@ function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
 			isSpawn = true;
 		}
 
+		if (jQuery.inArray(+cellId, СapturedCells) !== -1)
+			holderId = UserData.teamId;
+
 		let color = TeamsData[holderId] ? TeamsData[holderId].color : new Color(255, 255, 255);
 		
 		let rx = x * w + (y % 2 == 1 ? w/2 : 0) + offsetX;
-		let ry = y * h * 3 / 4 + offsetY;
+		let ry = y * h * 3 / 4 + OffsetY;
 
 		//Drawing
 		drawHexagon(ctx, rx, ry, color, hexagonSize, isSpawn, selected);
@@ -150,8 +162,8 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn, selected)
 	}
 	ctx.closePath();
 
-	//как-то выделять isSpawn == true
-	
+	//КАК-ТО ВЫДЕЛЯТЬ isSpawn == true
+
 	color.A = selected ? 0.7 : 0.3;
 	ctx.shadowColor = "black";
 	ctx.shadowBlur = 25;
@@ -160,7 +172,7 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn, selected)
 	color.A = 1;
 		
 	ctx.shadowBlur = 0;
-	ctx.lineWidth = 3;
-	ctx.strokeStyle = color.toString();
+	ctx.lineWidth = isSpawn ? 6 : 3;
+	ctx.strokeStyle = isSpawn ? "rgb(255, 255, 255)" : color.toString();
 	ctx.stroke();
 }

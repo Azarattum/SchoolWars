@@ -9,7 +9,7 @@
 				$condition = "id = '$team_id'";
 			}
 
-			$query = "SELECT id, name AS team_name, r, g, b, start_x, start_y FROM sw_teams WHERE $condition";
+			$query = "SELECT id, name AS team_name, r, g, b, start_cell FROM sw_teams WHERE $condition";
 			$result = $this->query($query);
 
 			if ($result) {
@@ -19,12 +19,12 @@
 					$current_team_id = $team['id'];
 					$team_name = $team['team_name'];
 					$team_color = array('r' => $team['r'], 'g' => $team['g'], 'b' => $team['b']);
-					$team_start = array('x' => $team['start_x'], 'y' => $team['start_y']);
+					$start_cell = $team['start_cell'];
 
 					$current_team_data = array(
 						'name' => $team_name,
 						'color' => $team_color,
-						'start' => $team_start
+						'start_cell' => $start_cell
 					);
 
 					$team_data[$current_team_id] = $current_team_data;

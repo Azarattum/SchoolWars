@@ -33,8 +33,6 @@
 	font-size: 4.5vh;
 	
 	border-radius: 32px;
-	
-	transition: 0.2s;
 }
 
 .capture-button:active {
@@ -42,7 +40,7 @@
 	border: solid 8px rgba(0, 0, 0, 0.4);
 }
 
-.clicks-cost {
+.points-cost {
 	display: flex;
 	align-items: center;
 }

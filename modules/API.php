@@ -9,6 +9,7 @@
 		$application->load_components("models");
 	}
 
+
 	function change_team($new_team_id)
 	{
 		requestable;
@@ -40,6 +41,22 @@
 		}
 
 		return false;
+	}
+
+	function capture_cell($cell_id)
+	{
+		requestable;
+		
+		//Checking the variable
+		if (!is_int($cell_id) || $cell_id < 0)
+			return false;
+
+		load_all_components();
+
+		$map = new Map();
+		$result = $map->capture_cell($cell_id);
+
+		return $result;
 	}
 
 	function get_cells_holders()

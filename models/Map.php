@@ -44,5 +44,67 @@
 
 			return $cells_holders;
 		}
+
+		public function capture_cell($cell_id)
+		{
+			if (!is_int($cell_id) || $cell_id < 0)
+				return false;
+
+			if (isset($_SESSION['user_id']))
+				$user_id = $_SESSION['user_id'];
+			else
+				return false;
+
+			//Getting user's team
+			$query = "SELECT team AS team_id FROM sw_users WHERE id = '$user_id'";
+			$result = $this->query($query);
+			$team_id = +$result[0]['team_id'];
+
+			if (!$team_id)
+				return false;
+
+			//Getting current cell's holder
+			$query = "SELECT holder AS cell_holder, x, y FROM sw_map WHERE id = '$cell_id'";
+			$result = $this->query($query);
+			$cell_holder = +$result[0]['cell_holder'];
+			$x = +$result[0]['x'];
+			$y = +$result[0]['y'];
+
+			if ($cell_holder === null || $cell_holder < 0 || $cell_holder === $team_id)
+				return false;
+
+			//Checking already captured neighbor cells
+			if ($y % 2 == 0) {
+				$query = "SELECT count(id) AS count FROM sw_map
+				WHERE (x = '$x' - 1 AND y = '$y' - 1
+					OR x = '$x' AND y = '$y' - 1
+					OR x = '$x' - 1 AND y = '$y'
+					OR x = '$x' + 1 AND y = '$y'
+					OR x = '$x' - 1 AND y = '$y' + 1
+					OR x = '$x' AND y = '$y' + 1)
+					AND (holder = '$team_id' OR holder = '-$team_id')";
+			} else {
+				$query = "SELECT count(id) AS count FROM sw_map
+				WHERE (x = '$x' AND y = '$y' - 1
+					OR x = '$x' + 1 AND y = '$y' - 1
+					OR x = '$x' - 1 AND y = '$y'
+					OR x = '$x' + 1 AND y = '$y'
+					OR x = '$x' AND y = '$y' + 1
+					OR x = '$x' + 1 AND y = '$y' + 1)
+					AND (holder = '$team_id' OR holder = '-$team_id')";
+			}
+
+			$result = $this->query($query);
+			$alreadyCapturedNeighborCells = +$result[0]['count'];
+
+			if ($alreadyCapturedNeighborCells < 1)
+				return false;
+
+			//Capturing cell
+			$query = "UPDATE sw_map SET holder = '$team_id' WHERE id = '$cell_id'";
+			$result = $this->query($query);
+			
+			return $result;
+		}
 	}
 ?>

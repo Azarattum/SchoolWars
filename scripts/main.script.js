@@ -12,6 +12,10 @@
 if (!UsersCountInTeams)
 		var UsersCountInTeams = {};
 
+//Disabling excess functions
+//document.oncontextmenu = function() {return false};
+document.ondragstart = function() {return false};
+
 
 /*On page loaded*/
 function main()
@@ -27,6 +31,8 @@ function main()
 
 	intializeTabs();
 	initializeMap();
+	initializeCapture();
+	initializeFarm();
 
 	if (UserData.teamId) {
 		renderUserData();
@@ -93,9 +99,10 @@ function countUsersInUserTeam()
 
 			if (userCount)
 				UsersCountInTeams[teamId] = userCount;
-		}
 
-		console.log(data);
+			if (teamId === UserData.teamId)
+				calcPointsToCapture();
+		}
 
 		setTimeout(function() {
 			countUsersInUserTeam();

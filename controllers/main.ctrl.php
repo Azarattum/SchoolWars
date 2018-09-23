@@ -29,10 +29,7 @@
 							g: ".$current_team['color']['g'].",
 							b: ".$current_team['color']['b']."
 						},
-						start: {
-							x: ".$current_team['start']['x'].",
-							y: ".$current_team['start']['y']."
-						}
+						startCell: ".$current_team['start_cell']."
 					}, ";
 
 					$teams_data_script .= $team_data;

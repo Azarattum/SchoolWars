@@ -1,0 +1,22 @@
+.farm-screen {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.test-btn {
+	width: 80%;
+	height: 125px;
+	
+	background-color: rgba(140, 0, 10, 0.4);
+	border: solid 8px rgb(140, 0, 10);
+	
+	font-size: 4.5vh;
+	
+	border-radius: 32px;
+}
+
+.test-btn:active {
+	background-color: rgba(140, 0, 10, 0.7);
+	border: solid 8px rgb(140, 0, 10);
+}
