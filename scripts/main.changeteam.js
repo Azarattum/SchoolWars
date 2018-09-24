@@ -16,6 +16,7 @@ function initializeTeamchanger()
 	
 	$(".change-team").click(function()
 	{
+		$(".selected-team,.team-name").text("Меняем класс...");
 		changeTeam(parseInt($(this)[0].id));
 		hideAvailableTeams();
 	});
