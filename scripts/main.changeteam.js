@@ -26,7 +26,12 @@ function showAvailableTeams()
 	$(".change-team").css("height", "8vh");
 	$(".change-team").css("margin-top", "16px");
 	for (let i = 1; i < 9; i++)
-		$("#" + i).css("border", "solid 8px " + TeamsData[i].color.toString());
+	{
+		let buttonColor = TeamsData[i].color;
+		$("#" + i).css("border", "solid 8px " + buttonColor.toString());
+		buttonColor.A = 0.6;
+		$("#" + i).css("background-color", buttonColor.toString());
+	}
 	$(".task-holder").css("filter", "blur(48px)");
 }
 

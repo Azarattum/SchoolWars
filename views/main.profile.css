@@ -64,9 +64,7 @@
 	border-radius: 32px;
 	box-shadow: 0px 0px 16px black;
 	
-	transition: 0.5s;
-	-webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	transition: 0.35s;
 }
 
 .task-holder {
