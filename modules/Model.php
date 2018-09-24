@@ -6,10 +6,17 @@
 		public function __construct()
 		{
 			//Base model constuctor
+			/*Local database*/
 			define("HOST", "localhost");
 			define("DATABASE", "sw");
 			define("MYSQL_USER", "root");
 			define("MYSQL_PASS", "");
+			/*Interkot database
+			/*define("HOST", "localhost");
+			define("DATABASE", "www-eva-net_study");
+			define("MYSQL_USER", "046397785_kot");
+			define("MYSQL_PASS", "kotbanan");*/
+			/*------------------*/
 
 			$teams = array(
 				array('id' => 1, 'name' => "10А", 'r' => 255, 'g' => 64, 'b' => 64, 'start_cell' => 0),
@@ -24,7 +31,7 @@
 
 			//DB connection
 			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die( mysqli_error() );
-			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE);
+			//$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
 			$this->database->select_db(DATABASE);
 
 			//Tables creation
