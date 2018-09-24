@@ -28,6 +28,7 @@ function showAvailableTeams()
 	for (let i = 1; i < 9; i++)
 	{
 		let buttonColor = TeamsData[i].color;
+		$("#" + i).text(TeamsData[i].name);
 		$("#" + i).css("border", "solid 8px " + buttonColor.toString());
 		buttonColor.A = 0.6;
 		$("#" + i).css("background-color", buttonColor.toString());
