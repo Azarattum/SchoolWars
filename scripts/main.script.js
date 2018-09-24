@@ -8,6 +8,7 @@
 //TeamsData - инфа всех команд ([id1, id2...])
 //UsersCountInTeams - инфа о кол-ве игроков в командах ([teamId: count, ...])
 //MapData - инфа всех клеток карты ([id0, id1...])
+var Swiper;
 
 if (!UsersCountInTeams)
 		var UsersCountInTeams = {};
@@ -34,6 +35,7 @@ function main()
 	initializeMap();
 	initializeCapture();
 	initializeFarm();
+	initializeTeamchanger();
 
 	if (UserData.teamId) {
 		renderUserData();
@@ -44,9 +46,9 @@ function main()
 
 function intializeTabs()
 {
-	var swiper = new Swiper(".swiper-container");
-	$(".map-screen-item").bind("touchstart click", function() {swiper.slideTo(0)});
-	$(".profile-screen-item").bind("touchstart click", function() {swiper.slideTo(1)});
+	Swiper = new Swiper(".swiper-container");
+	$(".map-screen-item").bind("touchstart click", function() {Swiper.slideTo(0)});
+	$(".profile-screen-item").bind("touchstart click", function() {Swiper.slideTo(1)});
 	$(".swiper-container").css("opacity", "1");
 }
 
@@ -69,8 +71,13 @@ function transformTeamsColor()
 function showTeams()
 {
 	console.log("Выбери команду, бомж");
-
-	//открытие второй вкладки
+	
+	window.setTimeout(function(){
+		Swiper.slideTo(1);
+		window.setTimeout(function(){
+			showAvailableTeams()
+		}, 150);
+	}, 500);
 	//создание/показ списка команд
 
 	//запрос на получение кол-ва игроков в командах countUsersInTeam("all")
@@ -80,10 +87,10 @@ function showTeams()
 
 	//по нажатию все списка, он удаляется/скрывается, если игрок состояит в тиме (UserData.teamId)
 
-	setTimeout(function() {
+	/*setTimeout(function() {
 		let newTeamId = Math.floor(Math.random() * 9) + 1;
 		changeTeam(newTeamId);
-	}, 3000);
+	}, 3000);*/
 }
 
 function countUsersInUserTeam()
@@ -156,11 +163,22 @@ function changeTeam(newTeamId)
 
 function renderUserData()
 {
+	//Draw team colors
+	/*WARNING! HARDCODDED TEAMS NUMBER!*/
+	for (let i = 1; i < 9; i++)
+	{
+		let buttonColor = TeamsData[i].color;
+		$("#" + i).css("border-color", buttonColor.toString());
+		buttonColor.A = 0.6;
+		$("#" + i).css("background-color", buttonColor.toString());
+	}
+	
 	let userTeam = TeamsData[UserData.teamId];
 
 	$(".ui").animate({opacity: "1"}, 500);
 
 	$(".team-name").text("Класс: " + userTeam.name);
+	$(".selected-team").text(userTeam.name);
 	$(".user-id").text("#" + UserData.id);
 
 	let buttonColor = userTeam.color;

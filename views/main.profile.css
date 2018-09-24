@@ -1,0 +1,87 @@
+.profile-screen {
+	display: block;
+}
+
+.task {
+	line-height: 156px;
+	
+	font-family: ui-text;
+	font-size: 7vw;
+	color: rgb(13,13,13);
+}
+
+.answers {
+	position: relative;
+	top: 16px;
+	
+	display: grid;
+	
+	height: calc(100% - 156px - 32px);
+}
+
+.answer {
+	line-height: 156px;
+	
+	font-family: ui-text;
+	font-size: 4vh;
+	color: rgb(13,13,62);
+}
+
+.change-team-button {
+	width: calc(100vw - 128px - 16px);
+	height: 8vh;
+	
+	margin: 64px;
+	text-align: center;
+	
+	background-color: rgba(255, 255, 255, 0.4);
+	border: solid 8px rgb(255, 255, 255);
+	
+	font-size: 4.5vh;
+	line-height: 8vh;
+	border-radius: 32px;
+}
+
+.change-team {
+	position: relative;
+	top: 0px;
+	left: -8px;
+	z-index: 10;
+	
+	width: calc(100vw - 128px);
+	height: 0px;
+	
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+	
+	background-color: rgba(255, 255, 255, 0.4);
+	border:  none;
+	
+	overflow: hidden;
+	
+	font-size: 4.5vh;
+	border-radius: 32px;
+	box-shadow: 0px 0px 16px black;
+	
+	transition: 0.5s;
+	-webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.task-holder {
+	position: relative;
+	left: 0px;
+	width: calc(100vw - 128px);
+	height: 60vh;
+	
+	margin: 64px;
+	text-align: center;
+	
+	background-color: rgb(255, 255, 250);
+	border-radius: 64px;
+	
+	box-shadow: 0px 0px 64px black;
+	
+	transition: 0.8s;
+}
