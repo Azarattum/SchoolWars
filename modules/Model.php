@@ -31,7 +31,7 @@
 
 			//DB connection
 			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die( mysqli_error() );
-			//$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
+			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
 			$this->database->select_db(DATABASE);
 
 			//Tables creation

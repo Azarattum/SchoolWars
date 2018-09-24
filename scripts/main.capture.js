@@ -13,14 +13,11 @@ function initializeCapture()
 	calcPointsToCapture();
 
 	$(".capture-button").click(function(event) {
-		if (Points - PointsToCapture >= 0) {
-			//Cell id
-			let id = getCellId(HighlightedX, HighlightedY);
-
-			if (!id && id !== 0)
-				return false;
-
-			captureCell(id);
+		if (PointsToCapture) {
+			if (Points - PointsToCapture >= 0) {
+				if (HighlightedCell)
+					captureCell(HighlightedCell);
+			}
 		}
 
 		event.stopPropagation();
@@ -40,18 +37,70 @@ function calcPointsToCapture()
 	$(".cost").text(PointsToCapture);
 }
 
-function getCellId(cell_x, cell_y)
+function captureCell(id)
 {
-	for (let id in MapData) {
-		let coords = MapData[id].coords;
-		let x = coords.x;
-		let y = coords.y;
+	//Checking
+	if ( !checkСellForCapture(id) )
+		return false;
 
-		if (cell_x === x && cell_y === y)
-			return +id;
-	}
+	if (Points - PointsToCapture < 0)
+		return false;
 
-	return false;
+	HighlightedX = null;
+	HighlightedY = null;
+	HighlightedCell = null;
+
+	Points -= PointsToCapture;
+	$(".points").text(Points+"/"+PointsToCapture);
+
+	СapturedCells.push(id);
+
+	//Capturing
+	request("capture_cell", [id], function(data) {
+		СapturedCells.splice(СapturedCells.indexOf(id), 1);
+
+		if (!data) {
+			MapData[id]['holder'] = cellHolder;
+
+			let canvas = document.getElementById("map");
+			let height = canvas.height = $("#map").height();
+			let width = canvas.width = $("#map").width();
+			let ctx = canvas.getContext("2d");
+
+			drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+		}
+	});
+
+	let team = UserData.teamId;
+	MapData[id]['holder'] = team;
+
+	let canvas = document.getElementById("map");
+	let height = canvas.height = $("#map").height();
+	let width = canvas.width = $("#map").width();
+	let ctx = canvas.getContext("2d");
+
+	drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+}
+
+function checkСellForCapture(id)
+{
+	let cell = MapData[id];
+
+	if (!cell)
+		return false;
+
+	let cellHolder = cell.holder;
+
+	if (cellHolder < 0)
+		return false;
+
+	if (cellHolder == UserData.teamId)
+		return false;
+
+	if ( !checkNeighborCells(id) )
+		return false;
+
+	return true;
 }
 
 function checkNeighborCells(cellId)
@@ -66,6 +115,9 @@ function checkNeighborCells(cellId)
 			let x = cell.coords.x;
 			let y = cell.coords.y;
 			let holder = cell.holder;
+
+			if (jQuery.inArray(+id, СapturedCells) !== -1)
+				holder = UserData.teamId;
 
 			if (
 				(x == cellX - 1) && (y == cellY - 1)
@@ -102,58 +154,4 @@ function checkNeighborCells(cellId)
 	}
 
 	return false;
-}
-
-function captureCell(id)
-{
-	//Checking
-	let cell = MapData[id];
-
-	if (!cell)
-		return false;
-
-	let cellHolder = cell.holder;
-
-	if (cellHolder < 0 || cellHolder == UserData.teamId)
-		return false;
-
-	if ( !checkNeighborCells(id) )
-		return false;
-
-	if (Points - PointsToCapture < 0)
-		return false;
-
-	HighlightedX = null;
-	HighlightedY = null;
-
-	Points -= PointsToCapture;
-	$(".points").text(Points+"/"+PointsToCapture);
-
-	СapturedCells.push(id);
-
-	//Capturing
-	request("capture_cell", [id], function(data) {
-		СapturedCells.splice(СapturedCells.indexOf(id), 1);
-
-		if (!data) {
-			MapData[id]['holder'] = cellHolder;
-
-			let canvas = document.getElementById("map");
-			let height = canvas.height = $("#map").height();
-			let width = canvas.width = $("#map").width();
-			let ctx = canvas.getContext("2d");
-
-			drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
-		}
-	});
-
-	let team = UserData.teamId;
-	MapData[id]['holder'] = team;
-
-	let canvas = document.getElementById("map");
-	let height = canvas.height = $("#map").height();
-	let width = canvas.width = $("#map").width();
-	let ctx = canvas.getContext("2d");
-
-	drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
 }

@@ -14,6 +14,7 @@ var Cursor = {};
 
 var HighlightedY = null;
 var HighlightedX = null;
+var HighlightedCell = null;
 
 
 function initializeMap()
@@ -45,12 +46,18 @@ function initializeEvents()
 	$(".map-screen").click(function(event) {
 		Cursor.X = event.pageX;
 		Cursor.Y = event.pageY;
-		//console.log(Cursor);
 
 		let w = Math.sqrt(3) * (HexagonSize + 3);
 		let h = 2 * (HexagonSize + 3);
 		HighlightedY = Math.round((Cursor.Y - OffsetY) / h / 3 * 4);
 		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - OffsetX) / w);
+
+		HighlightedCell = getCellId(HighlightedX, HighlightedY);
+
+		if ((HighlightedCell || HighlightedCell == 0) && checkСellForCapture(HighlightedCell)) {
+			$(".capture-screen").css("transform", "translateY(-100%)");
+		} else
+			$(".capture-screen").css("transform", "translateY(0)");
 
 		let canvas = document.getElementById("map");
 		let height = canvas.height = $("#map").height();
@@ -175,4 +182,18 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn, selected)
 	ctx.lineWidth = isSpawn ? 6 : 3;
 	ctx.strokeStyle = isSpawn ? "rgb(255, 255, 255)" : color.toString();
 	ctx.stroke();
+}
+
+function getCellId(cell_x, cell_y)
+{
+	for (let id in MapData) {
+		let coords = MapData[id].coords;
+		let x = coords.x;
+		let y = coords.y;
+
+		if (cell_x === x && cell_y === y)
+			return +id;
+	}
+
+	return null;
 }

@@ -18,5 +18,4 @@
 
 .test-btn:active {
 	background-color: rgba(140, 0, 10, 0.7);
-	border: solid 8px rgb(140, 0, 10);
 }

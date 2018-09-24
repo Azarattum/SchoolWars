@@ -143,6 +143,8 @@ function changeTeam(newTeamId)
 	if (newTeamId == UserData.teamId)
 		return true;
 
+	$(".selected-team,.team-name").text("Меняем класс...");
+
 	request("change_team", [newTeamId], function(data) {
 		if (data) {
 			let firstTeam = false;
@@ -164,10 +166,9 @@ function changeTeam(newTeamId)
 function renderUserData()
 {
 	//Draw team colors
-	/*WARNING! HARDCODDED TEAMS NUMBER!*/
-	for (let i = 1; i < 9; i++)
-	{
+	for (let i in TeamsData) {
 		let buttonColor = TeamsData[i].color;
+		
 		$("#" + i).text(TeamsData[i].name);
 		$("#" + i).css("border-color", buttonColor.toString());
 		buttonColor.A = 0.6;
@@ -182,8 +183,9 @@ function renderUserData()
 	$(".selected-team").text(userTeam.name);
 	$(".user-id").text("#" + UserData.id);
 
-	let buttonColor = userTeam.color;
-	$(".capture-button").css("border-color", buttonColor.toString());
-	buttonColor.A = 0.6;
-	$(".capture-button").css("background-color", buttonColor.toString());
+	let color = userTeam.color;
+	$(".points").css("color", color.toString());
+	$(".capture-button").css("border-color", color.toString());
+	color.A = 0.6;
+	$(".capture-button").css("background-color", color.toString());
 }
