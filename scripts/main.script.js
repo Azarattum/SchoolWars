@@ -168,7 +168,7 @@ function renderUserData()
 	//Draw team colors
 	for (let i in TeamsData) {
 		let buttonColor = TeamsData[i].color;
-		
+
 		$("#" + i).text(TeamsData[i].name);
 		$("#" + i).css("border-color", buttonColor.toString());
 		buttonColor.A = 0.6;
@@ -188,4 +188,6 @@ function renderUserData()
 	$(".capture-button").css("border-color", color.toString());
 	color.A = 0.6;
 	$(".capture-button").css("background-color", color.toString());
+	color.A = 0.4;
+	$(".change-team-button").css("background-color", color.toString());
 }
