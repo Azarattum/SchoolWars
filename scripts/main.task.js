@@ -127,7 +127,16 @@ function checkAnswer(taskId, answer)
 	if (answer === Answers[taskId]) {
 		Points += 5;
 		$(".points").text(Points+"/"+PointsToCapture);
+	} else {
+		Points -= 2;
+
+		if (Points < 0)
+			Points = 0;
+
+		$(".points").text(Points+"/"+PointsToCapture);
 	}
+
+	showCapturePossibility();
 
 	//НАДО ПЕРЕМЕЩАТЬ ВПРАВО
 	$("#task-"+taskId).remove();
