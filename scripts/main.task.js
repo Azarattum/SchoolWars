@@ -20,8 +20,11 @@ function createTask()
 	let num2 = null;
 	let sign = "";
 
+	let rightAnswer = null;
 	let answers = [];
-	let rightAnswerPos = randomInt(0, 4);
+	//let rightAnswerPos = randomInt(0, 4);
+
+	/*TEMP!!!*/
 
 	//0 - sum; 1 - diff
 	if (rnd === 0) {
@@ -29,7 +32,11 @@ function createTask()
 		num1 = randomInt(0, 50);
 		num2 = randomInt(0, 49);
 
-		for (let i = 0; i < 5; i++) {
+		rightAnswer = num1 + num2;
+
+		answers[0] = rightAnswer;
+
+		/*for (let i = 0; i < 5; i++) {
 			if (i === rightAnswerPos) {
 				answers[i] = num1 + num2;
 				continue;
@@ -54,13 +61,17 @@ function createTask()
 			}
 
 			answers[i] = answer;
-		}
+		}*/
 	} else {
 		sign = "-";
 		num1 = randomInt(49, 99);
 		num2 = randomInt(0, 49);
 
-		for (let i = 0; i < 5; i++) {
+		rightAnswer = num1 - num2;
+
+		answers[0] = rightAnswer;
+
+		/*for (let i = 0; i < 5; i++) {
 			if (i === rightAnswerPos) {
 				answers[i] = num1 - num2;
 				continue;
@@ -85,8 +96,32 @@ function createTask()
 			}
 
 			answers[i] = answer;
-		}
+		}*/
 	}
+
+	if (rightAnswer + 10 < 100)
+		answers.push(rightAnswer + 10);
+	else if (rightAnswer + 5 < 100)
+		answers.push(rightAnswer + 5);
+
+	if (rightAnswer - 10 >= 0)
+		answers.push(rightAnswer - 10);
+	else if (rightAnswer - 5 >= 0)
+		answers.push(rightAnswer - 5);
+
+	if (rightAnswer + 2 < 100)
+		answers.push(rightAnswer + 2);
+	else if (rightAnswer + 4 < 100)
+		answers.push(rightAnswer + 4);
+
+	if (rightAnswer - 2 >= 0)
+		answers.push(rightAnswer - 2);
+	else if (rightAnswer - 4 >= 0)
+		answers.push(rightAnswer - 4);
+
+	answers = shuffle(answers);
+
+	/*TEMP!!!*/
 
 	let taskId = 1;
 	let zIndex = 3;
@@ -98,7 +133,7 @@ function createTask()
 		zIndex = +$("#task-"+lastTaskId).css("z-index") - 1;
 	}
 
-	Answers[taskId] = answers[rightAnswerPos];
+	Answers[taskId] = rightAnswer;
 
 	let script = "<div class=\"task\" id=\"task-"+taskId+"\">"
 	script += "<span class=\"task-title\">"+num1+" "+sign+" "+num2+" = ?</span>";
