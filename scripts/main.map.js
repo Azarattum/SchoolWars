@@ -92,8 +92,6 @@ function updateMap()
 
 				drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
 			}
-
-			//console.log("Update map? "+changed);
 		}
 
 		setTimeout(function() {
@@ -168,8 +166,6 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn, selected)
 		);
 	}
 	ctx.closePath();
-
-	//КАК-ТО ВЫДЕЛЯТЬ isSpawn == true
 
 	color.A = selected ? 0.7 : 0.3;
 	ctx.shadowColor = "black";

@@ -7,10 +7,17 @@
 var Points = 0;
 var Answers = [];
 
+var TaskCount = 2;
+
+var Cooldown = false;
+var CooldownTime = 500; //msec
+
 
 function initializeFarm()
 {
-	createTask();
+	for (let i = 1; i <= TaskCount; i++) {
+		createTask();
+	}
 }
 
 function createTask()
@@ -22,9 +29,8 @@ function createTask()
 
 	let rightAnswer = null;
 	let answers = [];
-	//let rightAnswerPos = randomInt(0, 4);
 
-	/*TEMP!!!*/
+	let errors = [2, 4, 10, 12, 14];
 
 	//0 - sum; 1 - diff
 	if (rnd === 0) {
@@ -33,109 +39,39 @@ function createTask()
 		num2 = randomInt(0, 49);
 
 		rightAnswer = num1 + num2;
-
-		answers[0] = rightAnswer;
-
-		/*for (let i = 0; i < 5; i++) {
-			if (i === rightAnswerPos) {
-				answers[i] = num1 + num2;
-				continue;
-			}
-
-			let error = randomInt(-10, 10);
-
-			while (error === 0)
-				error = randomInt(-10, 10);
-
-			let answer = num1 + num2 + error;
-
-			while (answer < 0 || answer > 99) {
-				while (jQuery.inArray(answer, answers) !== -1) {
-					error = randomInt(-10, 10);
-				
-					while (error === 0)
-						error = randomInt(-10, 10);
-
-					answer = num1 + num2 + error;
-				}
-			}
-
-			answers[i] = answer;
-		}*/
 	} else {
 		sign = "-";
 		num1 = randomInt(49, 99);
 		num2 = randomInt(0, 49);
 
 		rightAnswer = num1 - num2;
-
-		answers[0] = rightAnswer;
-
-		/*for (let i = 0; i < 5; i++) {
-			if (i === rightAnswerPos) {
-				answers[i] = num1 - num2;
-				continue;
-			}
-
-			let error = randomInt(-10, 10);
-
-			while (error === 0)
-				error = randomInt(-10, 10);
-
-			let answer = num1 - num2 + error;
-
-			while (answer < 0 || answer > 99) {
-				while (jQuery.inArray(answer, answers) !== -1) {
-					error = randomInt(-10, 10);
-				
-					while (error === 0)
-						error = randomInt(-10, 10);
-
-					answer = num1 - num2 + error;
-				}
-			}
-
-			answers[i] = answer;
-		}*/
 	}
 
-	if (rightAnswer + 10 < 100)
-		answers.push(rightAnswer + 10);
-	else if (rightAnswer + 5 < 100)
-		answers.push(rightAnswer + 5);
+	//Genereting incorrect answers
+	for (let key in errors) {
+		let error = errors[key];
 
-	if (rightAnswer - 10 >= 0)
-		answers.push(rightAnswer - 10);
-	else if (rightAnswer - 5 >= 0)
-		answers.push(rightAnswer - 5);
+		if (rightAnswer + error < 100)
+			answers.push(rightAnswer + error);
 
-	if (rightAnswer + 2 < 100)
-		answers.push(rightAnswer + 2);
-	else if (rightAnswer + 4 < 100)
-		answers.push(rightAnswer + 4);
-
-	if (rightAnswer - 2 >= 0)
-		answers.push(rightAnswer - 2);
-	else if (rightAnswer - 4 >= 0)
-		answers.push(rightAnswer - 4);
+		if (rightAnswer - error >= 0)
+			answers.push(rightAnswer - error);
+	}
 
 	answers = shuffle(answers);
 
-	/*TEMP!!!*/
+	let rightAnswerPos = randomInt(0, 4);
+	answers[rightAnswerPos] = rightAnswer;
 
-	let taskId = 1;
-	let zIndex = 3;
+	let zIndex = TaskCount; //analog id
 
 	if ( $(".task").last()[0] ) {
-		let lastTaskId = +$(".task").last()[0].id.replace("task-", "");
-
-		taskId = lastTaskId + 1;
-		zIndex = +$("#task-"+lastTaskId).css("z-index") - 1;
+		zIndex = +$(".task").last().css("z-index") - 1;
 	}
 
-	Answers[taskId] = rightAnswer;
+	Answers[zIndex] = rightAnswer;
 
-	let script = "<div class=\"task\" id=\"task-"+taskId+"\">"
+	let script = "<div class=\"task\" style=\"z-index: "+zIndex+"\">"
 	script += "<span class=\"task-title\">"+num1+" "+sign+" "+num2+" = ?</span>";
 	script += "<hr width=\"80%\" size=\"3\" color=\"rgb(13,13,13)\" noshade>";
 	script += "<div class=\"answers\">";
@@ -147,21 +83,38 @@ function createTask()
 	script += "</div></div>";
 
 	$(".task-holder").append(script);
-	$("#task-"+taskId).css("z-index", zIndex);
 
 	$(".answer").click(function() {
-		let taskId = +$(this).parent().parent()[0].id.replace("task-", "");
-		let answerText = +$(this).text();
+		if (Cooldown)
+			return false;
 
-		checkAnswer(taskId, answerText);
+		checkAnswer(this);
+
+		//Set cooldown
+		Cooldown = true;
+
+		window.setTimeout(function() {
+			Cooldown = false;
+		}, CooldownTime);
 	});
 }
 
-function checkAnswer(taskId, answer)
+function checkAnswer(answerElem)
 {
+	let taskElem = $(answerElem).parent().parent();
+
+	if ( $(taskElem).hasClass("answered") )
+		return false;
+
+	$(taskElem).addClass("answered");
+
+	let taskId = +$(taskElem).css("z-index").replace("px", "");
+	let answer = +$(answerElem).text();
+
 	if (answer === Answers[taskId]) {
 		Points += 5;
 		$(".points").text(Points+"/"+PointsToCapture);
+		$(answerElem).css("background-color", "rgb(100, 255, 100)");
 	} else {
 		Points -= 2;
 
@@ -169,14 +122,27 @@ function checkAnswer(taskId, answer)
 			Points = 0;
 
 		$(".points").text(Points+"/"+PointsToCapture);
+		$(answerElem).css("background-color", "rgb(255, 100, 100)");
 	}
 
 	showCapturePossibility();
 
-	//НАДО ПЕРЕМЕЩАТЬ ВПРАВО
-	$("#task-"+taskId).remove();
-
-	//всем другим .task z-index++
-
 	createTask();
+
+	window.setTimeout(function() {
+		$(answerElem).parent().parent().animate({
+			left: +$(".task-holder").css("width").replace("px", "") + 64,
+		}, CooldownTime, function() {
+			$(answerElem).parent().parent().remove();
+
+			let lastIndex = +$(".task").last().css("z-index");
+
+			$(".task").each(function() {
+				$(this).css("z-index", "+=1");
+			});
+
+			for (let i = TaskCount - 1; i >= lastIndex; i--)
+				Answers[i + 1] = Answers[i];
+		});
+	}, 100);
 }

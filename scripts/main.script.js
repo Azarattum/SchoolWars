@@ -78,19 +78,6 @@ function showTeams()
 			showAvailableTeams()
 		}, 150);
 	}, 500);
-	//создание/показ списка команд
-
-	//запрос на получение кол-ва игроков в командах countUsersInTeam("all")
-
-	//по нажатию на команду changeTeam(id команды)
-	//при положительном callback'е, удаление/скрытие списка
-
-	//по нажатию все списка, он удаляется/скрывается, если игрок состояит в тиме (UserData.teamId)
-
-	/*setTimeout(function() {
-		let newTeamId = Math.floor(Math.random() * 9) + 1;
-		changeTeam(newTeamId);
-	}, 3000);*/
 }
 
 function countUsersInUserTeam()
@@ -133,8 +120,6 @@ function countUsersInTeams()
 					UsersCountInTeams[currentTeamId] = null;
 			}
 		}
-
-		//console.log(UsersCountInTeams);
 	});
 }
 

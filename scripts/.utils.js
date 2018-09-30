@@ -29,15 +29,16 @@ function randomInt(min, max)
 }
 
 function shuffle(array) {
-    let j;
-    let x;
+	let j;
+	let x;
 
-    for (let i = array.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = array[i];
-        array[i] = array[j];
-        array[j] = x;
-    }
+	for (let i = array.length - 1; i > 0; i--) {
+		j = Math.floor(Math.random() * (i + 1));
+		x = array[i];
 
-    return array;
+		array[i] = array[j];
+		array[j] = x;
+	}
+
+	return array;
 }
