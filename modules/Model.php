@@ -19,14 +19,15 @@
 			/*------------------*/
 
 			$teams = array(
-				array('id' => 1, 'name' => "10А", 'r' => 255, 'g' => 64, 'b' => 64, 'start_cell' => 0),
-				array('id' => 2, 'name' => "10Б", 'r' => 255, 'g' => 173, 'b' => 64, 'start_cell' => 3),
-				array('id' => 3, 'name' => "10В", 'r' => 255, 'g' => 222, 'b' => 64, 'start_cell' => 6),
-				array('id' => 4, 'name' => "10Г", 'r' => 218, 'g' => 251, 'b' => 63, 'start_cell' => 19),
-				array('id' => 5, 'name' => "11А", 'r' => 57, 'g' => 229, 'b' => 57, 'start_cell' => 25),
-				array('id' => 6, 'name' => "11Б", 'r' => 63, 'g' => 146, 'b' => 209, 'start_cell' => 38),
-				array('id' => 7, 'name' => "11В", 'r' => 106, 'g' => 72, 'b' => 215, 'start_cell' => 41),
-				array('id' => 8, 'name' => "11Г", 'r' => 210, 'g' => 53, 'b' => 210, 'start_cell' => 44),
+				array('id' => 1, 'name' => "10А", 'r' => 255, 'g' => 64, 'b' => 64, 'start_cell' => 1),
+				array('id' => 2, 'name' => "10Б", 'r' => 255, 'g' => 166, 'b' => 64, 'start_cell' => 5),
+				array('id' => 3, 'name' => "10В", 'r' => 255, 'g' => 212, 'b' => 64, 'start_cell' => 21),
+				array('id' => 4, 'name' => "10Г", 'r' => 255, 'g' => 255, 'b' => 64, 'start_cell' => 26),
+				array('id' => 5, 'name' => "10Д", 'r' => 159, 'g' => 243, 'b' => 61, 'start_cell' => 36),
+				array('id' => 6, 'name' => "11А", 'r' => 53, 'g' => 212, 'b' => 164, 'start_cell' => 46),
+				array('id' => 7, 'name' => "11Б", 'r' => 70, 'g' => 113, 'b' => 213, 'start_cell' => 51),
+				array('id' => 8, 'name' => "11В", 'r' => 122, 'g' => 69, 'b' => 214, 'start_cell' => 67),
+				array('id' => 9, 'name' => "11Г", 'r' => 219, 'g' => 55, 'b' => 188, 'start_cell' => 71)
 			);
 
 			//DB connection
@@ -105,19 +106,19 @@
 			$cells = array();
 			//$cell = array('x' => x, 'y' => y, 'value' => value, 'holder' => holder)
 
-			for ($y = 0; $y < 7; $y++) {
+			for ($y = 0; $y < 11; $y++) {
 				for ($x = 0; $x < 7; $x++) {
 					if (
-						($x == 1 && $y == 2)
-						|| ($x == 2 && $y == 5)
-						|| ($x == 4 && $y == 1)
-						|| ($x == 5 && $y == 4)
+						($x == 2 && $y == 4)
+						|| ($x == 4 && $y == 3)
+						|| ($x == 2 && $y == 7)
+						|| ($x == 5 && $y == 6)
 					)
 						continue;
 
 					$cell = array('x' => $x, 'y' => $y);
 
-					$abs = abs($x - 3) + abs($y - 3);
+					$abs = abs($x - 3) + abs($y - 5);
 
 					if ($abs === 0)
 						$value = 7;

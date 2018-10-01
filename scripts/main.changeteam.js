@@ -38,7 +38,7 @@ function showTeams()
 
 function showAvailableTeams()
 {
-	$(".change-team").css("height", "8vh");
+	$(".change-team").css("height", "7.1vh"); //TEMP
 	$(".change-team").css("margin-top", "16px");
 
 	for (let i in TeamsData) {
