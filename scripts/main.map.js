@@ -53,11 +53,7 @@ function initializeEvents()
 		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - OffsetX) / w);
 
 		HighlightedCell = getCellId(HighlightedX, HighlightedY);
-
-		if ((HighlightedCell || HighlightedCell == 0) && checkСellForCapture(HighlightedCell)) {
-			$(".capture-screen").css("transform", "translateY(-100%)");
-		} else
-			$(".capture-screen").css("transform", "translateY(0)");
+		showCapturePossibility();
 
 		let canvas = document.getElementById("map");
 		let height = canvas.height = $("#map").height();

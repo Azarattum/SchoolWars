@@ -68,18 +68,6 @@ function transformTeamsColor()
 	}
 }
 
-function showTeams()
-{
-	console.log("Выбери команду, бомж");
-	
-	window.setTimeout(function(){
-		Swiper.slideTo(1);
-		window.setTimeout(function(){
-			showAvailableTeams()
-		}, 150);
-	}, 500);
-}
-
 function countUsersInUserTeam()
 {
 	teamId = UserData.teamId;
@@ -120,31 +108,6 @@ function countUsersInTeams()
 					UsersCountInTeams[currentTeamId] = null;
 			}
 		}
-	});
-}
-
-function changeTeam(newTeamId)
-{
-	if (newTeamId == UserData.teamId)
-		return true;
-
-	$(".selected-team,.team-name").text("Меняем класс...");
-
-	request("change_team", [newTeamId], function(data) {
-		if (data) {
-			let firstTeam = false;
-
-			if (!UserData.teamId)
-				firstTeam = true;
-
-			UserData['teamId'] = newTeamId;
-			renderUserData();
-
-			if (firstTeam)
-				countUsersInUserTeam(UserData.teamId);
-		}
-
-		return data;
 	});
 }
 

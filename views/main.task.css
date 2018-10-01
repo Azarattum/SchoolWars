@@ -11,6 +11,10 @@
 	border-radius: 64px;
 	
 	box-shadow: 0px 0px 64px black;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 	
 	transition: 0.8s;
 }
@@ -50,4 +54,14 @@
 	color: rgb(13,13,62);
 
 	border-radius: 64px;
+
+	cursor: pointer;
+}
+
+.answer:hover {
+	background-color: rgb(225, 225, 220);
+}
+
+.answered {
+	pointer-events: none;
 }

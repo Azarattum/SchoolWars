@@ -125,7 +125,7 @@ function checkAnswer(answerElem)
 		$(answerElem).css("background-color", "rgb(255, 100, 100)");
 	}
 
-	showCapturePossibility();
+	writeCapturePossibility();
 
 	createTask();
 

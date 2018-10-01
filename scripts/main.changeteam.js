@@ -26,6 +26,16 @@ function initializeTeamchanger()
 	});
 }
 
+function showTeams()
+{
+	window.setTimeout(function(){
+		Swiper.slideTo(1);
+		window.setTimeout(function(){
+			showAvailableTeams()
+		}, 150);
+	}, 500);
+}
+
 function showAvailableTeams()
 {
 	$(".change-team").css("height", "8vh");
@@ -48,4 +58,30 @@ function hideAvailableTeams()
 	$(".change-team").css("margin-top", "0px");
 	$(".change-team").css("border", "none");
 	$(".task-holder").css("filter", "none");
+}
+
+function changeTeam(newTeamId)
+{
+	if (newTeamId == UserData.teamId)
+		return true;
+
+	$(".selected-team,.team-name").text("Меняем класс...");
+
+	request("change_team", [newTeamId], function(data) {
+		if (data) {
+			let firstTeam = false;
+
+			if (!UserData.teamId)
+				firstTeam = true;
+
+			UserData['teamId'] = newTeamId;
+			renderUserData();
+			showCapturePossibility();
+
+			if (firstTeam)
+				countUsersInUserTeam(UserData.teamId);
+		}
+
+		return data;
+	});
 }
