@@ -15,8 +15,12 @@
 		<div class="swiper-wrapper">
 			<div class="swiper-slide map-screen">
 				<!--Map Screen Here-->
-				<canvas id="map"></canvas>
-				<img style="position:absolute;visibility:hidden;" id="background" src="assets/background.jpg" style="visibility:hidden">
+				<div class="map-wrapper">
+					<canvas id="map"></canvas>
+					<canvas id="map-background"></canvas>
+				</div>
+				<img style="position:absolute;visibility:hidden;" id="background" src="assets/background.jpg">
+
 				<div class="capture-screen">
 					<button class="capture-button ui-text">ЗАХВАТИТЬ</button>
 					<div class="points-cost">
@@ -30,7 +34,7 @@
 				<div class="change-team-button ui-text">
 					<span class="selected-team">Выбрать Класс</span>
 				</div>
-				
+
 				<div class="task-holder"></div>
 			</div>
 		</div>

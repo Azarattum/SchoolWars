@@ -92,24 +92,16 @@ function captureCell(id)
 			Points += PointsToCapture;
 			writeCapturePossibility();
 
-			let canvas = document.getElementById("map");
-			let height = canvas.height = $("#map").height();
-			let width = canvas.width = $("#map").width();
-			let ctx = canvas.getContext("2d");
-
-			drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+			initializeCanvas();
+			drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 		}
 	});
 
 	let team = UserData.teamId;
 	MapData[id]['holder'] = team;
 
-	let canvas = document.getElementById("map");
-	let height = canvas.height = $("#map").height();
-	let width = canvas.width = $("#map").width();
-	let ctx = canvas.getContext("2d");
-
-	drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+	initializeCanvas();
+	drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 }
 
 function checkСellForCapture(id)

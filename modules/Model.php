@@ -11,7 +11,7 @@
 			define("DATABASE", "sw");
 			define("MYSQL_USER", "root");
 			define("MYSQL_PASS", "");
-			/*Interkot database
+			/*Interkot database*/
 			/*define("HOST", "localhost");
 			define("DATABASE", "www-eva-net_study");
 			define("MYSQL_USER", "046397785_kot");
@@ -42,6 +42,9 @@
 
 			//!!!СНОС БАЗЫ
 			//$this->delete_db();
+
+			//!!!СНОС ТАБЛИЦ
+			//$this->delete_tables();
 		}
 
 		private function create_users_table()
@@ -198,6 +201,11 @@
 		public function delete_db()
 		{
 			return $this->query("DROP DATABASE sw");
+		}
+
+		public function delete_tables()
+		{
+			return $this->query("DROP TABLE sw_map, sw_teams, sw_users");
 		}
 	}
 ?>
