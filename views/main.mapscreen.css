@@ -37,8 +37,7 @@
 }
 
 .capture-button:active {
-	background-color: rgba(140, 0, 10, 0.8);
-	border: solid 8px rgba(0, 0, 0, 0.4);
+	filter: saturate(2);
 }
 
 .points-cost {

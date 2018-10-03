@@ -8,14 +8,14 @@ function initializeTeamchanger()
 {
 	for (let teamId in TeamsData) {
 		let teamName = TeamsData[teamId].name;
-		$(".change-team-button").append("<button id=\""+teamId+"\" class=\"change-team ui-text\">"+teamName+"</button>");
+		$(".teams-holder").append("<button id=\""+teamId+"\" class=\"change-team ui-text\">"+teamName+"</button>");
 	}
 
 	$(".change-team-button").click(function()
 	{
-		if ($(".change-team").height() > 0 && UserData.teamId != undefined)
+		if ($(".change-team").css("opacity") > 0 && UserData.teamId != undefined)
 			hideAvailableTeams();
-		else if ($(".change-team").height() == 0)
+		else if ($(".change-team").css("opacity") == 0)
 			showAvailableTeams();
 	});
 	
@@ -38,26 +38,28 @@ function showTeams()
 
 function showAvailableTeams()
 {
-	$(".change-team").css("height", "7.1vh"); //TEMP
-	$(".change-team").css("margin-top", "16px");
-
-	for (let i in TeamsData) {
-		let buttonColor = TeamsData[i].color;
-		$("#" + i).text(TeamsData[i].name);
-		$("#" + i).css("border", "solid 8px " + buttonColor.toString());
-		buttonColor.A = 0.6;
-		$("#" + i).css("background-color", buttonColor.toString());
-	}
-
-	$(".task-holder").css("filter", "blur(48px)");
+	colorButtons();
+	$(".teams-holder").css("height", "calc(100% - 160px * 2 - 8vh + 32px)");
+	$(".change-team").css({"flex-grow": "1", "opacity": "1", "height": "auto", "pointer-events": "auto"});
+	$("#" + UserData["teamId"]).css({"flex-grow": "0", "height": "0px"});
 }
 
 function hideAvailableTeams()
 {
-	$(".change-team").css("height", "0px");
-	$(".change-team").css("margin-top", "0px");
-	$(".change-team").css("border", "none");
-	$(".task-holder").css("filter", "none");
+	$(".change-team").css({"opacity": "0", "pointer-events": "none"});
+	$(".teams-holder").css("height", "16px");
+}
+
+function colorButtons()
+{
+	for (let i in TeamsData) {
+		let buttonColor = TeamsData[i].color;
+
+		$("#" + i).text(TeamsData[i].name);
+		$("#" + i).css("border-color", buttonColor.toString());
+		buttonColor.A = 0.6;
+		$("#" + i).css("background-color", buttonColor.toString());
+	}
 }
 
 function changeTeam(newTeamId)
@@ -66,7 +68,11 @@ function changeTeam(newTeamId)
 		return true;
 
 	$(".selected-team,.team-name").text("Меняем класс...");
-
+	$(".change-team-button").css("background-color", "rgb(255, 255, 250)");
+	$(".points").css("color", "rgb(255, 255, 250)");
+	$(".change-team").css({"flex-grow": "1", "height": "auto"});
+	$("#" + newTeamId).css({"flex-grow": "0", "height": "0px"});
+	
 	request("change_team", [newTeamId], function(data) {
 		if (data) {
 			let firstTeam = false;
@@ -81,6 +87,8 @@ function changeTeam(newTeamId)
 			if (firstTeam)
 				countUsersInUserTeam(UserData.teamId);
 		}
+		else
+			$("#" + newTeamId).css({"flex-grow": "1", "height": "auto"});
 
 		return data;
 	});

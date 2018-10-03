@@ -10,7 +10,7 @@
 			define("HOST", "localhost");
 			define("DATABASE", "sw");
 			define("MYSQL_USER", "root");
-			define("MYSQL_PASS", "");*/
+			define("MYSQL_PASS", "");
 			/*Interkot database*/
 			/*define("HOST", "localhost");
 			define("DATABASE", "www-eva-net_study");
