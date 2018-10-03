@@ -10,12 +10,12 @@
 			define("HOST", "localhost");
 			define("DATABASE", "sw");
 			define("MYSQL_USER", "root");
-			define("MYSQL_PASS", "");
-			/*Interkot database
+			define("MYSQL_PASS", "");*/
+			/*Interkot database*/
 			/*define("HOST", "localhost");
 			define("DATABASE", "www-eva-net_study");
 			define("MYSQL_USER", "046397785_kot");
-			define("MYSQL_PASS", "kotbanan");*/
+			define("MYSQL_PASS", "kotbanan");
 			/*------------------*/
 
 			$teams = array(
@@ -31,7 +31,7 @@
 
 			//DB connection
 			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die( mysqli_error() );
-			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
+			//$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
 			$this->database->select_db(DATABASE);
 
 			//Tables creation
