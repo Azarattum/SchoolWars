@@ -68,31 +68,6 @@ function transformTeamsColor()
 	}
 }
 
-function showTeams()
-{
-	console.log("Выбери команду, бомж");
-	
-	window.setTimeout(function(){
-		Swiper.slideTo(1);
-		window.setTimeout(function(){
-			showAvailableTeams()
-		}, 150);
-	}, 500);
-	//создание/показ списка команд
-
-	//запрос на получение кол-ва игроков в командах countUsersInTeam("all")
-
-	//по нажатию на команду changeTeam(id команды)
-	//при положительном callback'е, удаление/скрытие списка
-
-	//по нажатию все списка, он удаляется/скрывается, если игрок состояит в тиме (UserData.teamId)
-
-	/*setTimeout(function() {
-		let newTeamId = Math.floor(Math.random() * 9) + 1;
-		changeTeam(newTeamId);
-	}, 3000);*/
-}
-
 function countUsersInUserTeam()
 {
 	teamId = UserData.teamId;
@@ -133,33 +108,6 @@ function countUsersInTeams()
 					UsersCountInTeams[currentTeamId] = null;
 			}
 		}
-
-		//console.log(UsersCountInTeams);
-	});
-}
-
-function changeTeam(newTeamId)
-{
-	if (newTeamId == UserData.teamId)
-		return true;
-
-	$(".selected-team,.team-name").text("Меняем класс...");
-
-	request("change_team", [newTeamId], function(data) {
-		if (data) {
-			let firstTeam = false;
-
-			if (!UserData.teamId)
-				firstTeam = true;
-
-			UserData['teamId'] = newTeamId;
-			renderUserData();
-
-			if (firstTeam)
-				countUsersInUserTeam(UserData.teamId);
-		}
-
-		return data;
 	});
 }
 

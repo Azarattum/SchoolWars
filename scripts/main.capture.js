@@ -35,6 +35,27 @@ function calcPointsToCapture()
 
 	$(".points").text(Points+"/"+PointsToCapture);
 	$(".cost").text(PointsToCapture);
+
+	writeCapturePossibility();
+}
+
+function writeCapturePossibility()
+{
+	if (Points >= PointsToCapture) {
+		$(".capture-button").text("ЗАХВАТИТЬ");
+		$(".capture-screen").css("filter", "saturate(100%)");
+	} else {
+		$(".capture-button").text("НУЖНО:");
+		$(".capture-screen").css("filter", "saturate(10%)");
+	}
+}
+
+function showCapturePossibility()
+{
+	if ( checkСellForCapture(HighlightedCell) ) {
+		$(".capture-screen").css("transform", "translateY(-100%)");
+	} else
+		$(".capture-screen").css("transform", "translateY(0)");
 }
 
 function captureCell(id)
@@ -46,12 +67,18 @@ function captureCell(id)
 	if (Points - PointsToCapture < 0)
 		return false;
 
+	let cellHolder = MapData[id].holder;
+
 	HighlightedX = null;
 	HighlightedY = null;
 	HighlightedCell = null;
 
+	$(".capture-screen").css("transform", "translateY(0)");
+
 	Points -= PointsToCapture;
 	$(".points").text(Points+"/"+PointsToCapture);
+
+	writeCapturePossibility();
 
 	СapturedCells.push(id);
 
@@ -61,6 +88,9 @@ function captureCell(id)
 
 		if (!data) {
 			MapData[id]['holder'] = cellHolder;
+
+			Points += PointsToCapture;
+			writeCapturePossibility();
 
 			let canvas = document.getElementById("map");
 			let height = canvas.height = $("#map").height();
