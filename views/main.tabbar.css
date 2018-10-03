@@ -9,6 +9,8 @@ html, body
 	margin: 0px;
 	
 	-webkit-tap-highlight-color: transparent;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
 }
 
 body

@@ -16,34 +16,56 @@ var HighlightedY = null;
 var HighlightedX = null;
 var HighlightedCell = null;
 
+var Canvas;
+var Height;
+var Width;
+var Ctx;
+var BackCanvas;
+var BackCtx;
+
 
 function initializeMap()
 {
-	let canvas = document.getElementById("map");
-	let height = canvas.height = $("#map").height();
-	let width = canvas.width = $("#map").width();
-	let ctx = canvas.getContext("2d");
-
+	initializeCanvas();
+	initializeBackCanvas();
 	initializeEvents();
 	
-	drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+	drawBackground(BackCtx, OffsetX, OffsetY, HexagonSize);
+	drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 	updateMap();
+}
+
+function initializeCanvas()
+{
+	Canvas = document.getElementById("map");
+
+	Height = Canvas.height = $("#map").height();
+	Width = Canvas.width = $("#map").width();
+
+	Ctx = Canvas.getContext("2d");
+}
+
+function initializeBackCanvas()
+{
+	BackCanvas = document.getElementById("map-background");
+
+	BackCanvas.height = $("#map").height();
+	BackCanvas.width = $("#map").width();
+
+	BackCtx = BackCanvas.getContext("2d");
 }
 
 function initializeEvents()
 {
 	//Draw on resize
 	$(window).resize(function() {
-		let canvas = document.getElementById("map");
-		let height = canvas.height = $("#map").height();
-		let width = canvas.width = $("#map").width();
-		let ctx = canvas.getContext("2d");
-
-		drawMap(ctx, map, OffsetX, OffsetY, HexagonSize);
+		initializeCanvas();
+		drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 	});
 
 	//Draw on click
 	$(".map-screen").click(function(event) {
+		//ИСПОЛЬЗОВАТЬ touchstart?
 		Cursor.X = event.pageX;
 		Cursor.Y = event.pageY;
 
@@ -55,12 +77,7 @@ function initializeEvents()
 		HighlightedCell = getCellId(HighlightedX, HighlightedY);
 		showCapturePossibility();
 
-		let canvas = document.getElementById("map");
-		let height = canvas.height = $("#map").height();
-		let width = canvas.width = $("#map").width();
-		let ctx = canvas.getContext("2d");
-
-		drawMap(ctx, map, OffsetX, OffsetY, HexagonSize);
+		drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 	});
 }
 
@@ -81,12 +98,7 @@ function updateMap()
 			}
 
 			if (changed) {
-				let canvas = document.getElementById("map");
-				let height = canvas.height = $("#map").height();
-				let width = canvas.width = $("#map").width();
-				let ctx = canvas.getContext("2d");
-
-				drawMap(ctx, MapData, OffsetX, OffsetY, HexagonSize);
+				drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 			}
 		}
 
@@ -96,27 +108,15 @@ function updateMap()
 	});
 }
 
-function drawMap(ctx, map, offsetX, offsetY, hexagonSize)
+function drawMap(ctx, offsetX, offsetY, hexagonSize)
 {
 	offsetX = (offsetX == undefined) ? 0 : offsetX;
 	offsetY = (offsetY == undefined) ? 0 : offsetY;
 	
-	var image = document.getElementById("background");
 	var w = Math.sqrt(3) * (hexagonSize + 3);
 	var h = 2 * (hexagonSize + 3);
 	
 	ctx.clearRect(0, 0, $(document).width(), $(document).height());
-
-	//Drawing background
-	/*
-	ctx.drawImage(
-		image, 
-		offsetX - w + BackgroundCalibaration.x, 
-		offsetY - h + BackgroundCalibaration.y, 
-		image.width * hexagonSize / 16 * BackgroundCalibaration.size, 
-		image.height * hexagonSize / 16 * BackgroundCalibaration.size
-	);
-	*/
 	
 	for (let cellId in MapData) {
 		let cell = MapData[cellId];
@@ -174,6 +174,25 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn, selected)
 	ctx.lineWidth = isSpawn ? 6 : 3;
 	ctx.strokeStyle = isSpawn ? "rgb(255, 255, 255)" : color.toString();
 	ctx.stroke();
+}
+
+function drawBackground(ctx, offsetX, offsetY, hexagonSize)
+{
+	let image = document.getElementById("background");
+	let w = Math.sqrt(3) * (hexagonSize + 3);
+	let h = 2 * (hexagonSize + 3);
+	
+	ctx.clearRect(0, 0, $(document).width(), $(document).height());
+
+	ctx.globalAlpha = 0.42; //TEMP
+	//Drawing background
+	ctx.drawImage(
+		image,
+		offsetX - w + BackgroundCalibaration.x,
+		offsetY - h + BackgroundCalibaration.y,
+		image.width * hexagonSize / 16 * BackgroundCalibaration.size,
+		image.height * hexagonSize / 16 * BackgroundCalibaration.size
+	);
 }
 
 function getCellId(cell_x, cell_y)
