@@ -135,7 +135,7 @@ function drawMap(ctx, offsetX, offsetY, hexagonSize)
 			holderId = UserData.teamId;
 
 		let color = TeamsData[holderId] ? TeamsData[holderId].color : new Color(255, 255, 255);
-		
+
 		let rx = x * w + (y % 2 == 1 ? w/2 : 0) + offsetX;
 		let ry = y * h * 3 / 4 + OffsetY;
 

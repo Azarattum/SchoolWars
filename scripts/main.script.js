@@ -132,18 +132,6 @@ function renderUserData()
 	color.A = 0.6;
 	$(".capture-button").css("background-color", color.toString());
 	
-	$(".capture-button").on("touchstart", function() {
-		color.A = 0.8;
-		$(".capture-button").css("background-color", color.toString());
-		$(".capture-button").css("border", "solid 8px rgba(0, 0, 0, 0.4)");
-	});
-
-	$(".capture-button").on("touchend", function() {
-		color.A = 0.6;
-		$(".capture-button").css("background-color", color.toString());
-		$(".capture-button").css("border", "solid 8px "+color.toString());
-	});
-	
 	color.A = 1;
 	$(".change-team-button").css("background-color", color.toString());
 }

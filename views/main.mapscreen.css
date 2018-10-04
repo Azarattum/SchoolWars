@@ -59,6 +59,10 @@
 	border-radius: 32px;
 }
 
+.capture-button:active {
+	filter: saturate(2);
+}
+
 .points-cost {
 	display: flex;
 	align-items: center;
