@@ -50,12 +50,8 @@
 	border-bottom-left-radius: 32px;
 	border-bottom-right-radius: 32px;
 	
-	transition: 0.35s;
+	transition: 0.2s;
 	z-index: 2;
-}
-
-.change-team-button:active + .teams-holder {
-	height: 56px;
 }
 
 .change-team-button:active {
@@ -66,14 +62,14 @@
 	position: relative;
 	top: 0px;
 	left: -8px;
-	z-index: 10;
-	
 	width: calc(100vw - 128px);
 	height: auto;
-	flex-grow: 1;
 	
+	flex-grow: 1;
 	padding: 0px;
 	text-align: center;
+	
+	opacity: 0;
 	
 	-webkit-user-select: none;
     -moz-user-select: none;
@@ -84,6 +80,7 @@
 	
 	font-size: 4.5vh;
 	transition: 0.4s;
+	z-index: 10;
 }
 
 .change-team:active {

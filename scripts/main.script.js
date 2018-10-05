@@ -113,9 +113,7 @@ function countUsersInTeams()
 
 function renderUserData()
 {
-	//Draw team colors
-	colorButtons();
-	
+	//Draw team colors	
 	let userTeam = TeamsData[UserData.teamId];
 
 	$(".ui").animate({opacity: "1"}, 500);

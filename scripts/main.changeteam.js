@@ -10,6 +10,7 @@ function initializeTeamchanger()
 		let teamName = TeamsData[teamId].name;
 		$(".teams-holder").append("<button id=\""+teamId+"\" class=\"change-team ui-text\">"+teamName+"</button>");
 	}
+	colorButtons();
 
 	$(".change-team-button").click(function()
 	{
@@ -17,6 +18,15 @@ function initializeTeamchanger()
 			hideAvailableTeams();
 		else if ($(".change-team").css("opacity") == 0)
 			showAvailableTeams();
+	});
+	
+	$(".change-team-button").on("touchstart", function() {
+		if ($(".change-team").css("opacity") == 0)
+			$(".teams-holder").css("height", "32px");
+	});
+ 	$(".change-team-button").on("touchend", function() {
+		if ($(".change-team").css("opacity") == 0)
+			$(".teams-holder").css("height", "16px");
 	});
 	
 	$(".change-team").click(function()
@@ -38,7 +48,6 @@ function showTeams()
 
 function showAvailableTeams()
 {
-	colorButtons();
 	$(".teams-holder").css("height", "calc(100% - 160px * 2 - 8vh + 32px)");
 	$(".change-team").css({"flex-grow": "1", "opacity": "1", "height": "auto", "pointer-events": "auto"});
 	$("#" + UserData["teamId"]).css({"flex-grow": "0", "height": "0px"});

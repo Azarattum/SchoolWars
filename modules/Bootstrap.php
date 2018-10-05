@@ -1,6 +1,9 @@
 <?php
 	class Bootstrap
 	{
+		public $is_loaded = false;
+		public $url;
+		
 		public function __construct($start_path)
 		{
 			session_start();
@@ -32,6 +35,7 @@
 				require($file);
 
 			$this->url = $url;
+			$this->is_loaded = true;
 		}
 
 		public function initialize()
