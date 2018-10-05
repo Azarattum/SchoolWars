@@ -1,8 +1,8 @@
 .task-holder {
 	position: absolute;
-	bottom: 128px;
+	bottom: 64px;
 	width: calc(100vw - 128px);
-	height: 60vh;
+	height: calc(100% - (123px + 16px * 2) - (8vh + 16px) - 64px * 2);
 	
 	text-align: center;
 	
@@ -39,11 +39,11 @@
 
 .answers {
 	position: relative;
-	top: 16px;
 	
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	
-	height: calc(100% - 156px - 32px);
+	height: calc(100% - 156px - 16px);
 }
 
 .answer {
@@ -53,6 +53,11 @@
 	font-size: 4vh;
 	color: rgb(13,13,62);
 
+	display: flex;
+	flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+	
 	border-radius: 64px;
 
 	cursor: pointer;
