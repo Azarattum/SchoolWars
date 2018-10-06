@@ -63,6 +63,10 @@
 	filter: saturate(2);
 }
 
+.capture-button:hover {
+	filter: saturate(2);
+}
+
 .points-cost {
 	display: flex;
 	align-items: center;
@@ -71,13 +75,13 @@
 .cost-icon {
 	float: right;
 	
-	width: 7vh;
-	height: 7vh;
+	width: 6vh;
+	height: 6vh;
 }
 
 .cost {
 	float: right;
-	margin: 16px;
+	margin: 48px;
 	
-	font-size: 72px;
+	font-size: 96px;
 }

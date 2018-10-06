@@ -46,7 +46,7 @@ function writeCapturePossibility()
 		$(".capture-screen").css("filter", "saturate(100%)");
 	} else {
 		$(".capture-button").text("НУЖНО:");
-		$(".capture-screen").css("filter", "saturate(10%)");
+		$(".capture-screen").css("filter", "saturate(0%)");
 	}
 }
 
