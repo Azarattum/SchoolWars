@@ -37,19 +37,31 @@ function main()
 	initializeFarm();
 	initializeTeamchanger();
 
-	if (UserData.teamId) {
-		renderUserData();
-		countUsersInUserTeam(UserData.teamId);
-	} else
+	renderUserData();
+	countUsersInUserTeams(UserData.teamId);
+	if (!UserData.teamId)
 		showTeams();
+	
+	createInlineSVGs();
 }
 
 function intializeTabs()
 {
 	Swiper = new Swiper(".swiper-container");
+	Swiper.on("slideChange", function() {
+		$(".tab-icon").css("filter", "saturate(0)");
+		$(".tab-icon").css("opacity", "0.8");
+		$(".tab-label").css("color", "rgb(128, 128, 128)");
+		$($(".tab-icon")[Swiper.realIndex]).css("filter", "none");
+		$($(".tab-icon")[Swiper.realIndex]).css("opacity", "1");
+		$($(".tab-label")[Swiper.realIndex]).css("color", "rgb(255, 148, 6)");
+	});
 	$(".map-screen-item").bind("touchstart click", function() {Swiper.slideTo(0)});
 	$(".profile-screen-item").bind("touchstart click", function() {Swiper.slideTo(1)});
 	$(".swiper-container").css("opacity", "1");
+	$($(".tab-icon")[0]).css("filter", "none");
+	$($(".tab-icon")[0]).css("opacity", "1");
+	$($(".tab-label")[0]).css("color", "rgb(255, 148, 6)");
 }
 
 function transformUsersCountInTeams()
@@ -68,46 +80,71 @@ function transformTeamsColor()
 	}
 }
 
-function countUsersInUserTeam()
-{
-	teamId = UserData.teamId;
-
-	if (!teamId)
-		return false;
-
-	request("count_users_in_team", [teamId], function(data) {
-		if (data && JSON.parse(data)) {
-			data = JSON.parse(data);
-			let userCount = +data[teamId];
-
-			if (userCount)
-				UsersCountInTeams[teamId] = userCount;
-
-			if (teamId === UserData.teamId)
-				calcPointsToCapture();
-		}
-
-		setTimeout(function() {
-			countUsersInUserTeam();
-		}, 2000);
-	});
-}
-
-function countUsersInTeams()
+function countUsersInUserTeams(teamId)
 {
 	request("count_users_in_team", ["all"], function(data) {
 		if (data && JSON.parse(data)) {
 			data = JSON.parse(data);
-
 			for (let currentTeamId in UsersCountInTeams) {
 				let userCount = +data[currentTeamId];
 
 				if (userCount)
 					UsersCountInTeams[currentTeamId] = userCount;
 				else
-					UsersCountInTeams[currentTeamId] = null;
+					UsersCountInTeams[currentTeamId] = 0;
+				$("#" + currentTeamId +">.change-team-count").text(UsersCountInTeams[currentTeamId]);
 			}
+
+			if (UserData != undefined && UserData.teamId != undefined && teamId === UserData.teamId)
+				calcPointsToCapture();
 		}
+
+		setTimeout(function() {
+			countUsersInUserTeams();
+		}, 2000);
+	});
+}
+
+function createInlineSVGs()
+{
+	//Replace all SVG images with inline SVG
+	$("img.svg").each(function(){
+		var img = $(this);
+		var imgID = img.attr("id");
+		var imgClass = img.attr("class");
+		var imgStyle = img.attr("style");
+		var imgURL = img.css("background-image").split("\"")[1];
+
+		$.get(imgURL, function(data) {
+			// Get the SVG tag, ignore the rest
+			var svg = $(data).find("svg");
+
+			// Add replaced image's ID to the new SVG
+			if(typeof imgID !== "undefined") {
+				svg = svg.attr("id", imgID);
+			}
+			// Add replaced image's classes to the new SVG
+			if(typeof imgClass !== "undefined") {
+				svg = svg.attr("class", imgClass+" replaced-svg");
+			}
+			// Add styles to the new SVG
+			if(typeof imgStyle !== "undefined") {
+				svg = svg.attr("style", imgStyle);
+			}
+
+			// Remove any invalid XML tags as per http://validator.w3.org
+			svg = svg.removeAttr("xmlns:a");
+
+			// Check if the viewport is set, if the viewport is not set the SVG wont"t scale.
+			if(!svg.attr("viewBox") && svg.attr("height") && svg.attr("width")) {
+				svg.attr("viewBox", "0 0 " + svg.attr("height") + " " + svg.attr("width"))
+			}
+
+			// Replace image with new SVG
+			img.replaceWith(svg);
+			
+			renderUserData();
+		}, "xml");
 	});
 }
 
@@ -116,20 +153,26 @@ function renderUserData()
 	//Draw team colors	
 	let userTeam = TeamsData[UserData.teamId];
 
-	$(".ui").animate({opacity: "1"}, 500);
+	if (userTeam)
+	{
+		$(".ui").animate({opacity: "1"}, 500);
 
-	$(".team-name").text("Класс: " + userTeam.name);
-	$(".selected-team").text(userTeam.name);
-	$(".user-id").text("#" + UserData.id);
+		$(".team-name").text("Класс: " + userTeam.name);
+		$(".selected-team").text(userTeam.name);
+		$(".user-id").text("#" + UserData.id);
 
-	//User' team color
-	let color = userTeam.color;
-	$(".points").css("color", color.toString());
+		//User' team color
+		let color = userTeam.color;
+		$(".points").css("color", color.toString());
 
-	$(".capture-button").css("border-color", color.toString());
-	color.A = 0.6;
-	$(".capture-button").css("background-color", color.toString());
+		$(".capture-button").css("border-color", color.toString());
+		color.A = 0.6;
+		$(".capture-button").css("background-color", color.toString());
+		
+		color.A = 1;
+		$(".change-team-button").css("background-color", color.toString());
+		$(".point-mark").css("fill", color.toString());
+	}
 	
-	color.A = 1;
-	$(".change-team-button").css("background-color", color.toString());
+	colorButtons();
 }

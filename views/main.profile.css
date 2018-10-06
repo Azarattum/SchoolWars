@@ -65,10 +65,13 @@
 	width: calc(100vw - 128px);
 	height: auto;
 	
+	display: flex;
 	flex-grow: 1;
 	padding: 0px;
+	align-items: center;
 	text-align: center;
 	
+	background-color: transparent;
 	opacity: 0;
 	
 	-webkit-user-select: none;
@@ -79,10 +82,43 @@
 	overflow: hidden;
 	
 	font-size: 4.5vh;
-	transition: 0.4s;
+	transition: 0.2s;
 	z-index: 10;
 }
 
 .change-team:active {
-	filter: saturate(2);
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.change-team:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.change-team-icon {
+	width: 4vh;
+	height: 4vh;
+	
+	position: absolute;
+	right: 0px;
+    margin-right: 64px;
+	
+	filter: drop-shadow( 0px 8px 16px rgba(0,0,0,0.2) );
+}
+
+.change-team-count {
+	position: absolute;
+	right: 0px;
+    margin-right: calc(64px + 4vh + 16px);
+	line-height: 100%;
+	
+	text-shadow: 0px 8px 16px rgba(0,0,0,0.15);
+}
+
+.change-team-name {
+	float: left;
+	margin-left: 64px;
+
+	color: rgb(49, 49, 49);
+	font-size: 4.5vh;
+	font-family: ui-text;
 }

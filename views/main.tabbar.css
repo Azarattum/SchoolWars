@@ -32,7 +32,8 @@
 	width: 96px;
 	height: 96px;
 	
-	background-color: rgb(128, 128, 128);
+	opacity: 0.8;
+	filter: saturate(0);
 }
 
 .tab-label {

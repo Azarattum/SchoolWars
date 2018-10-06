@@ -3,20 +3,27 @@
 **  Team changing script file.
 **
 */
+var IsChanging = false;
 
 function initializeTeamchanger()
 {
 	for (let teamId in TeamsData) {
 		let teamName = TeamsData[teamId].name;
-		$(".teams-holder").append("<button id=\""+teamId+"\" class=\"change-team ui-text\">"+teamName+"</button>");
+		
+		let teamButton = "<button id=\""+teamId+"\" class=\"change-team\">";
+		teamButton += "<span class=\"change-team-name\">"+teamName+"</span>";
+		teamButton += "<span class=\"change-team-count\">...</span>";
+		teamButton += "<img class=\"svg change-team-icon image-avatar\"></img>";
+		teamButton += "</button>";
+		
+		$(".teams-holder").append(teamButton);
 	}
-	colorButtons();
-
+	
 	$(".change-team-button").click(function()
 	{
 		if ($(".change-team").css("opacity") > 0 && UserData.teamId != undefined)
 			hideAvailableTeams();
-		else if ($(".change-team").css("opacity") == 0)
+		else if ($(".change-team").css("opacity") == 0 && !IsChanging)
 			showAvailableTeams();
 	});
 	
@@ -42,8 +49,8 @@ function showTeams()
 		Swiper.slideTo(1);
 		window.setTimeout(function(){
 			showAvailableTeams()
-		}, 150);
-	}, 500);
+		}, 300);
+	}, 600);
 }
 
 function showAvailableTeams()
@@ -63,11 +70,8 @@ function colorButtons()
 {
 	for (let i in TeamsData) {
 		let buttonColor = TeamsData[i].color;
-
-		$("#" + i).text(TeamsData[i].name);
-		$("#" + i).css("border-color", buttonColor.toString());
-		buttonColor.A = 0.6;
-		$("#" + i).css("background-color", buttonColor.toString());
+		$("#" + i+">svg>path").css("fill", buttonColor.toString());
+		$("#" + i+">.change-team-count").css("color", buttonColor.toString());
 	}
 }
 
@@ -77,7 +81,9 @@ function changeTeam(newTeamId)
 		return true;
 
 	$(".selected-team,.team-name").text("Меняем класс...");
+	IsChanging = true;
 	$(".change-team-button").css("background-color", "rgb(255, 255, 250)");
+	$(".point-mark").css("fill", "rgb(255, 255, 250)");
 	$(".points").css("color", "rgb(255, 255, 250)");
 	$(".change-team").css({"flex-grow": "1", "height": "auto"});
 	$("#" + newTeamId).css({"flex-grow": "0", "height": "0px"});
@@ -94,11 +100,15 @@ function changeTeam(newTeamId)
 			showCapturePossibility();
 
 			if (firstTeam)
-				countUsersInUserTeam(UserData.teamId);
+				countUsersInUserTeams(UserData.teamId);
 		}
 		else
+		{
 			$("#" + newTeamId).css({"flex-grow": "1", "height": "auto"});
-
+			renderUserData();
+		}
+		IsChanging = false;
+		
 		return data;
 	});
 }

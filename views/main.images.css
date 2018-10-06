@@ -1,4 +1,20 @@
-.image-click {
-	/*background-image: url("assets/click.svg");*/
+img.image-click {
+	/*background-image: url("../assets/click.svg");*/
 	background-color: rgb(23,23,23);
+}
+
+img.image-avatar {
+	background-image: url("../assets/avatar.svg");
+}
+
+img.image-point {
+	background-image: url("../assets/point.svg");
+}
+
+img.image-task {
+	background-image: url("../assets/task.svg");
+}
+
+img.image-cells {
+	background-image: url("../assets/cells.svg");
 }
