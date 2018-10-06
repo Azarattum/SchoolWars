@@ -9,23 +9,7 @@
 		$application->load_components("models");
 	}
 
-
-	function change_team($new_team_id)
-	{
-		requestable;
-
-		//Checking the variable
-		if (!is_int($new_team_id) || $new_team_id < 1)
-			return false;
-
-		load_all_components();
-
-		$user = new User();
-		$result = $user->change_user_team($new_team_id);
-
-		return $result;
-	}
-
+	//-------------------- functions for all pages
 	function count_users_in_team($team_id)
 	{
 		requestable;
@@ -43,6 +27,34 @@
 		return false;
 	}
 
+	function get_cells_holders()
+	{
+		requestable;
+		load_all_components();
+		
+		$map = new Map();
+		$result = $map->get_cells_holders();
+
+		return json_encode($result);
+	}
+
+	//-------------------- functions only for main page
+	function change_team($new_team_id)
+	{
+		requestable;
+
+		//Checking the variable
+		if (!is_int($new_team_id) || $new_team_id < 1)
+			return false;
+
+		load_all_components();
+
+		$user = new User();
+		$result = $user->change_user_team($new_team_id);
+
+		return $result;
+	}
+
 	function capture_cell($cell_id)
 	{
 		requestable;
@@ -57,16 +69,5 @@
 		$result = $map->capture_cell($cell_id);
 
 		return $result;
-	}
-
-	function get_cells_holders()
-	{
-		requestable;
-		load_all_components();
-		
-		$map = new Map();
-		$result = $map->get_cells_holders();
-
-		return json_encode($result);
 	}
 ?>

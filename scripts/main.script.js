@@ -21,7 +21,7 @@ document.ondragstart = function() {return false};
 /*On page loaded*/
 function main()
 {
-	setScript("/modules/API.php");
+	setScript("modules/API.php");
 
 	transformTeamsColor();
 	transformUsersCountInTeams();
