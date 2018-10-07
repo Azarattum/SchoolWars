@@ -28,7 +28,7 @@ function initializeMap()
 {
 	initializeCanvas();
 	initializeBackCanvas();
-	initializeEvents();
+	initializeMapEvents();
 	
 	drawBackground(BackCtx, OffsetX, OffsetY, HexagonSize);
 	drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
@@ -55,7 +55,7 @@ function initializeBackCanvas()
 	BackCtx = BackCanvas.getContext("2d");
 }
 
-function initializeEvents()
+function initializeMapEvents()
 {
 	//Draw on resize
 	$(window).resize(function() {

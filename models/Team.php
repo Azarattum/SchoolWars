@@ -34,25 +34,19 @@
 			}
 		}
 
-		public function count_users_in_team($team_id)
+		public function count_users_in_teams()
 		{
-			if ($team_id === 'all') {
-				$query = "SELECT max(id) AS max_id FROM sw_teams";
-				$result = $this->query($query);
-				$max_id = $result[0]['max_id'];
+			$query = "SELECT max(id) AS max_id FROM sw_teams";
+			$result = $this->query($query);
+			$max_id = $result[0]['max_id'];
 
-				$query = "";
+			$query = "";
 
-				for ($current_id = 1; $current_id < $max_id; $current_id++) {
-					$query .= "SELECT team, count(id) AS count_users FROM sw_users WHERE team = '$current_id' UNION ALL ";
-				}
+			for ($current_id = 1; $current_id <= $max_id; $current_id++) {
+				$query .= "SELECT team, count(id) AS count_users FROM sw_users WHERE team = '$current_id' UNION ALL ";
+			}
 
-				$query = rtrim($query, " UNION ALL ");
-			} else if ( is_int($team_id) ) {
-				$query = "SELECT team, count(id) AS count_users FROM sw_users WHERE team = '$team_id'";
-			} else
-				return false;
-			
+			$query = rtrim($query, " UNION ALL ");
 			$sql_result = $this->query($query);
 
 			if ($sql_result) {

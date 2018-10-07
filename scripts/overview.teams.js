@@ -49,7 +49,7 @@ function transformTeamsColor()
 
 function countUsersInTeams()
 {
-	request("count_users_in_team", ["all"], function(data) {
+	request("count_users_in_teams", function(data) {
 		if (data && JSON.parse(data)) {
 			data = JSON.parse(data);
 

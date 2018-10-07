@@ -38,7 +38,7 @@ function main()
 	initializeTeamchanger();
 
 	renderUserData();
-	countUsersInUserTeams(UserData.teamId);
+
 	if (!UserData.teamId)
 		showTeams();
 	
@@ -78,33 +78,6 @@ function transformTeamsColor()
 		let team = TeamsData[teamId];
 		team.color = new Color(team.color.r, team.color.g, team.color.b);
 	}
-}
-
-function countUsersInUserTeams(teamId)
-{
-	request("count_users_in_team", ["all"], function(data) {
-		if (data && JSON.parse(data)) {
-			data = JSON.parse(data);
-
-			for (let currentTeamId in UsersCountInTeams) {
-				let userCount = +data[currentTeamId];
-
-				if (userCount)
-					UsersCountInTeams[currentTeamId] = userCount;
-				else
-					UsersCountInTeams[currentTeamId] = 0;
-				
-				$("#" + currentTeamId +">.change-team-count").text(UsersCountInTeams[currentTeamId]);
-			}
-
-			if (UserData != undefined && UserData.teamId != undefined && teamId === UserData.teamId)
-				calcPointsToCapture();
-		}
-
-		setTimeout(function() {
-			countUsersInUserTeams();
-		}, 2000);
-	});
 }
 
 function createInlineSVGs()

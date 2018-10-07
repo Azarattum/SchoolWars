@@ -39,7 +39,7 @@
 				$teams_data_script .= "};";
 			}
 
-			$count_users_in_teams = $team->count_users_in_team('all');
+			$count_users_in_teams = $team->count_users_in_teams();
 
 			if ($count_users_in_teams) {
 				$teams_data_script .= " var UsersCountInTeams = {";

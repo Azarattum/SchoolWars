@@ -10,21 +10,15 @@
 	}
 
 	//-------------------- functions for all pages
-	function count_users_in_team($team_id)
+	function count_users_in_teams()
 	{
 		requestable;
+		load_all_components();
 
-		//Checking the variable
-		if ((is_int($team_id) && $team_id > 0) || $team_id === "all") {
-			load_all_components();
+		$team = new Team();
+		$result = $team->count_users_in_teams();
 
-			$team = new Team();
-			$result = $team->count_users_in_team($team_id);
-
-			return json_encode($result);
-		}
-
-		return false;
+		return json_encode($result);
 	}
 
 	function get_cells_holders()
