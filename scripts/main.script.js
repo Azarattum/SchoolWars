@@ -83,27 +83,27 @@ function transformTeamsColor()
 function createInlineSVGs()
 {
 	//Replace all SVG images with inline SVG
-	$("img.svg").each(function(){
-		var img = $(this);
-		var imgID = img.attr("id");
-		var imgClass = img.attr("class");
-		var imgStyle = img.attr("style");
-		var imgURL = img.css("background-image").split("\"")[1];
+	$("img.svg").each(function() {
+		let img = $(this);
+		let imgID = img.attr("id");
+		let imgClass = img.attr("class");
+		let imgStyle = img.attr("style");
+		let imgURL = img.css("background-image").split("\"")[1];
 
 		$.get(imgURL, function(data) {
 			// Get the SVG tag, ignore the rest
-			var svg = $(data).find("svg");
+			let svg = $(data).find("svg");
 
 			// Add replaced image's ID to the new SVG
-			if(typeof imgID !== "undefined") {
+			if (typeof imgID !== "undefined") {
 				svg = svg.attr("id", imgID);
 			}
 			// Add replaced image's classes to the new SVG
-			if(typeof imgClass !== "undefined") {
+			if (typeof imgClass !== "undefined") {
 				svg = svg.attr("class", imgClass+" replaced-svg");
 			}
 			// Add styles to the new SVG
-			if(typeof imgStyle !== "undefined") {
+			if (typeof imgStyle !== "undefined") {
 				svg = svg.attr("style", imgStyle);
 			}
 
@@ -111,7 +111,7 @@ function createInlineSVGs()
 			svg = svg.removeAttr("xmlns:a");
 
 			// Check if the viewport is set, if the viewport is not set the SVG wont"t scale.
-			if(!svg.attr("viewBox") && svg.attr("height") && svg.attr("width")) {
+			if (!svg.attr("viewBox") && svg.attr("height") && svg.attr("width")) {
 				svg.attr("viewBox", "0 0 " + svg.attr("height") + " " + svg.attr("width"))
 			}
 
@@ -128,8 +128,7 @@ function renderUserData()
 	//Draw team colors	
 	let userTeam = TeamsData[UserData.teamId];
 
-	if (userTeam)
-	{
+	if (userTeam) {
 		$(".ui").animate({opacity: "1"}, 500);
 
 		$(".team-name").text("Класс: " + userTeam.name);
@@ -147,6 +146,7 @@ function renderUserData()
 		color.A = 1;
 		$(".change-team-button").css("background-color", color.toString());
 		$(".point-mark").css("fill", color.toString());
+		$(".cells-mark").css("fill", color.toString());
 	}
 	
 	colorButtons();

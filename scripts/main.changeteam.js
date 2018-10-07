@@ -79,8 +79,8 @@ function colorButtons()
 {
 	for (let i in TeamsData) {
 		let buttonColor = TeamsData[i].color;
-		$("#" + i+">svg>path").css("fill", buttonColor.toString());
-		$("#" + i+">.change-team-count").css("color", buttonColor.toString());
+		$("#"+i+">svg>path").css("fill", buttonColor.toString());
+		$("#"+i+">.change-team-count").css("color", buttonColor.toString());
 	}
 }
 
@@ -129,7 +129,9 @@ function changeTeam(newTeamId)
 
 	$(".change-team-button").css("background-color", "rgb(255, 255, 250)");
 	$(".point-mark").css("fill", "rgb(255, 255, 250)");
+	$(".cells-mark").css("fill", "rgb(255, 255, 250)");
 	$(".points").css("color", "rgb(255, 255, 250)");
+
 	$(".change-team").css({"flex-grow": "1", "height": "auto"});
 	$("#" + newTeamId).css({"flex-grow": "0", "height": "0px"});
 	
