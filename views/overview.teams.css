@@ -1,0 +1,38 @@
+.teams-data {
+	position: absolute;
+
+	top: 0;
+	left: calc(100vw - 200px);
+	width: 200px;
+
+	display: flex;
+	flex-direction: column;
+
+	background-color: grey;
+
+	z-index: 3;
+}
+
+.teams-data-header {
+	position: relative;
+
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.team-data {
+	position: absolute;
+
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+
+	background-color: white;
+
+	transition: 0.3s;
+}

@@ -28,7 +28,7 @@ function randomInt(min, max)
 	return Math.round(rnd);
 }
 
-function shuffle(array) {
+function shuffleArray(array) {
 	let j;
 	let x;
 

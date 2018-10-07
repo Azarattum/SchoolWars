@@ -59,6 +59,9 @@ function initializeEvents()
 {
 	//Draw on resize
 	$(window).resize(function() {
+		initializeBackCanvas();
+		drawBackground(BackCtx, OffsetX, OffsetY, HexagonSize);
+		
 		initializeCanvas();
 		drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 	});

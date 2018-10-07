@@ -1,6 +1,6 @@
 /*
 **
-**  Main page initialize script file.
+**  General page initialize script file.
 **
 */
 
@@ -10,6 +10,8 @@
 
 if (!UsersCountInTeams)
 	var UsersCountInTeams = {};
+
+var TeamsTerritoryCount = {};
 
 //Disabling excess functions
 document.ondragstart = function() {return false};

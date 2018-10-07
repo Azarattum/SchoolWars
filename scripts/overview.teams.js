@@ -9,11 +9,23 @@ function initializeTeams()
 	transformTeamsColor();
 	transformUsersCountInTeams();
 
-	//ДОБАВЛЕНИЕ ЭЛЕМЕНТОВ
-	/*for (let teamId in TeamsData) {
-		let teamName = TeamsData[teamId].name;
-		$(".teams-holder").append("<button id=\""+teamId+"\" class=\"change-team ui-text\">"+teamName+"</button>");
-	}*/
+	for (let teamId in TeamsData) {
+		let place = teamId; //может, сразу расчитывать место перед этим?
+
+		let team = TeamsData[teamId];
+		let teamName = team.name;
+		let userCount = UsersCountInTeams[teamId];
+		let teamTerritory = 0; //может, сразу расчитывать кол-во территории перед этим?
+
+		$(".teams-data").append(`
+			<div class="team-data" id="team-`+teamId+`">
+				<div class="team-place">#`+teamId+`</div>
+				<div class="team-name">`+teamName+`</div>
+				<div class="team-users">`+userCount+`</div>
+				<div class="team-territory">`+teamTerritory+`</div>
+			</div>
+		`);
+	}
 
 	countUsersInTeams(); //auto-update users count
 	calcTeamsTerritory(); //update teams territory count (next requests from general.map.js)
@@ -23,7 +35,7 @@ function transformUsersCountInTeams()
 {
 	for (let teamId in TeamsData) {
 		if ( !UsersCountInTeams[teamId] )
-			UsersCountInTeams[teamId] = null;
+			UsersCountInTeams[teamId] = 0;
 	}
 }
 
@@ -47,10 +59,11 @@ function countUsersInTeams()
 				if (userCount)
 					UsersCountInTeams[currentTeamId] = userCount;
 				else
-					UsersCountInTeams[currentTeamId] = null;
+					UsersCountInTeams[currentTeamId] = 0;
 			}
 
-			//ОТОБРАЖЕНИЕ КОЛ-ВА ИГРОКОВ (циклом по командам -> .text() у элементов)
+			for (let teamId in TeamsData)
+				$("#team-"+teamId+">.team-users").text( UsersCountInTeams[teamId] );
 		}
 
 		window.setTimeout(function() {
@@ -63,12 +76,41 @@ function calcTeamsTerritory()
 {
 	for (let teamId in TeamsData)
 		calcTeamTerritory(teamId);
+
+	sortTeamsByTerritoryCount();
 }
 
 function calcTeamTerritory(teamId)
 {
-	console.log(TeamsData[teamId]);
+	let territoryCount = 0;
 
-	//РАСЧЁТ КОЛ-ВА ТЕРРИТОРИИ
-	//ОТОБРАЖЕНИЕ (.text() у элемента)
+	for (let cellId in MapData) {
+		let cellHolder = Math.abs( +MapData[cellId].holder );
+
+		if (cellHolder === +teamId)
+			territoryCount += MapData[cellId].value;
+	}
+
+	TeamsTerritoryCount[teamId] = territoryCount;
+	$("#team-"+teamId+">.team-territory").text(territoryCount);
+}
+
+function sortTeamsByTerritoryCount()
+{
+	let teamsPlace = [];
+
+	for (let teamId in TeamsTerritoryCount) {
+		let territoryCount = TeamsTerritoryCount[teamId];
+		teamsPlace.push( {'id': teamId, 'territoryCount': territoryCount} );
+	}
+
+	teamsPlace.sort(function(a, b) {return b.territoryCount - a.territoryCount});
+
+	for (let i = 0; i < teamsPlace.length; i++) {
+		let place = i + 1;
+		let teamId = teamsPlace[i].id;
+
+		$("#team-"+teamId+">.team-place").text("#"+place);
+		$("#team-"+teamId).css("top", place * 100+"%");
+	}
 }

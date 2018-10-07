@@ -68,7 +68,7 @@ function transformUsersCountInTeams()
 {
 	for (let teamId in TeamsData) {
 		if ( !UsersCountInTeams[teamId] )
-			UsersCountInTeams[teamId] = null;
+			UsersCountInTeams[teamId] = 0;
 	}
 }
 
@@ -85,6 +85,7 @@ function countUsersInUserTeams(teamId)
 	request("count_users_in_team", ["all"], function(data) {
 		if (data && JSON.parse(data)) {
 			data = JSON.parse(data);
+
 			for (let currentTeamId in UsersCountInTeams) {
 				let userCount = +data[currentTeamId];
 
@@ -92,6 +93,7 @@ function countUsersInUserTeams(teamId)
 					UsersCountInTeams[currentTeamId] = userCount;
 				else
 					UsersCountInTeams[currentTeamId] = 0;
+				
 				$("#" + currentTeamId +">.change-team-count").text(UsersCountInTeams[currentTeamId]);
 			}
 
