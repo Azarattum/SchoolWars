@@ -58,7 +58,7 @@ function createTask()
 			answers.push(rightAnswer - error);
 	}
 
-	answers = shuffle(answers);
+	answers = shuffleArray(answers);
 
 	let rightAnswerPos = randomInt(0, 4);
 	answers[rightAnswerPos] = rightAnswer;

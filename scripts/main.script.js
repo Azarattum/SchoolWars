@@ -21,7 +21,7 @@ document.ondragstart = function() {return false};
 /*On page loaded*/
 function main()
 {
-	setScript("/modules/API.php");
+	setScript("modules/API.php");
 
 	transformTeamsColor();
 	transformUsersCountInTeams();
@@ -38,7 +38,7 @@ function main()
 	initializeTeamchanger();
 
 	renderUserData();
-	countUsersInUserTeams(UserData.teamId);
+
 	if (!UserData.teamId)
 		showTeams();
 	
@@ -68,7 +68,7 @@ function transformUsersCountInTeams()
 {
 	for (let teamId in TeamsData) {
 		if ( !UsersCountInTeams[teamId] )
-			UsersCountInTeams[teamId] = null;
+			UsersCountInTeams[teamId] = 0;
 	}
 }
 
@@ -78,31 +78,6 @@ function transformTeamsColor()
 		let team = TeamsData[teamId];
 		team.color = new Color(team.color.r, team.color.g, team.color.b);
 	}
-}
-
-function countUsersInUserTeams(teamId)
-{
-	request("count_users_in_team", ["all"], function(data) {
-		if (data && JSON.parse(data)) {
-			data = JSON.parse(data);
-			for (let currentTeamId in UsersCountInTeams) {
-				let userCount = +data[currentTeamId];
-
-				if (userCount)
-					UsersCountInTeams[currentTeamId] = userCount;
-				else
-					UsersCountInTeams[currentTeamId] = 0;
-				$("#" + currentTeamId +">.change-team-count").text(UsersCountInTeams[currentTeamId]);
-			}
-
-			if (UserData != undefined && UserData.teamId != undefined && teamId === UserData.teamId)
-				calcPointsToCapture();
-		}
-
-		setTimeout(function() {
-			countUsersInUserTeams();
-		}, 2000);
-	});
 }
 
 function createInlineSVGs()
@@ -117,18 +92,18 @@ function createInlineSVGs()
 
 		$.get(imgURL, function(data) {
 			// Get the SVG tag, ignore the rest
-			var svg = $(data).find("svg");
+			let svg = $(data).find("svg");
 
 			// Add replaced image's ID to the new SVG
-			if(typeof imgID !== "undefined") {
+			if (typeof imgID !== "undefined") {
 				svg = svg.attr("id", imgID);
 			}
 			// Add replaced image's classes to the new SVG
-			if(typeof imgClass !== "undefined") {
+			if (typeof imgClass !== "undefined") {
 				svg = svg.attr("class", imgClass+" replaced-svg");
 			}
 			// Add styles to the new SVG
-			if(typeof imgStyle !== "undefined") {
+			if (typeof imgStyle !== "undefined") {
 				svg = svg.attr("style", imgStyle);
 			}
 
@@ -136,7 +111,7 @@ function createInlineSVGs()
 			svg = svg.removeAttr("xmlns:a");
 
 			// Check if the viewport is set, if the viewport is not set the SVG wont"t scale.
-			if(!svg.attr("viewBox") && svg.attr("height") && svg.attr("width")) {
+			if (!svg.attr("viewBox") && svg.attr("height") && svg.attr("width")) {
 				svg.attr("viewBox", "0 0 " + svg.attr("height") + " " + svg.attr("width"))
 			}
 
@@ -153,8 +128,7 @@ function renderUserData()
 	//Draw team colors	
 	let userTeam = TeamsData[UserData.teamId];
 
-	if (userTeam)
-	{
+	if (userTeam) {
 		$(".ui").animate({opacity: "1"}, 500);
 
 		$(".team-name").text("Класс: " + userTeam.name);
@@ -172,6 +146,7 @@ function renderUserData()
 		color.A = 1;
 		$(".change-team-button").css("background-color", color.toString());
 		$(".point-mark").css("fill", color.toString());
+		$(".cells-mark").css("fill", color.toString());
 	}
 	
 	colorButtons();

@@ -1,0 +1,26 @@
+.map-wrapper {
+	width: 100%;
+	height: 100%;
+}
+
+#map {
+	position: relative;
+
+	width: 100%;
+	height: 100%;
+
+	background: transparent;
+
+	z-index: 2;
+}
+
+#map-background {
+	position: relative;
+	/*КОСТЫЛЬ*/
+	top: -100%;
+
+	width: 100%;
+	height: 100%;
+
+	z-index: 1;
+}

@@ -9,7 +9,30 @@
 		$application->load_components("models");
 	}
 
+	//-------------------- functions for all pages
+	function count_users_in_teams()
+	{
+		requestable;
+		load_all_components();
 
+		$team = new Team();
+		$result = $team->count_users_in_teams();
+
+		return json_encode($result);
+	}
+
+	function get_cells_holders()
+	{
+		requestable;
+		load_all_components();
+		
+		$map = new Map();
+		$result = $map->get_cells_holders();
+
+		return json_encode($result);
+	}
+
+	//-------------------- functions only for main page
 	function change_team($new_team_id)
 	{
 		requestable;
@@ -26,23 +49,6 @@
 		return $result;
 	}
 
-	function count_users_in_team($team_id)
-	{
-		requestable;
-
-		//Checking the variable
-		if ((is_int($team_id) && $team_id > 0) || $team_id === "all") {
-			load_all_components();
-
-			$team = new Team();
-			$result = $team->count_users_in_team($team_id);
-
-			return json_encode($result);
-		}
-
-		return false;
-	}
-
 	function capture_cell($cell_id)
 	{
 		requestable;
@@ -57,16 +63,5 @@
 		$result = $map->capture_cell($cell_id);
 
 		return $result;
-	}
-
-	function get_cells_holders()
-	{
-		requestable;
-		load_all_components();
-		
-		$map = new Map();
-		$result = $map->get_cells_holders();
-
-		return json_encode($result);
 	}
 ?>

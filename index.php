@@ -5,6 +5,7 @@
 	
 	//Init application
 	$application = new Bootstrap("");
+	
 	if ($application->is_loaded) {
 		$application->load_components("modules");
 		$application->load_components("models");

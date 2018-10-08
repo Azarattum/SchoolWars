@@ -1,19 +1,9 @@
 <?php
-	class Main extends Controller
+	class Overview extends Controller
 	{
 		public function __construct()
 		{
 			$this->load_page();
-
-			$user = new User();
-			$user_data = $user->login(); //Getting user data
-
-			if ( isset($user_data['team']) )
-				$user_team_data = ", teamId: ".$user_data['team'];
-
-			$user_data_script = "var UserData = {id: ".$user_data['id'].$user_team_data."};";
-
-			//--------------------
 
 			$team = new Team();
 			$teams_data = $team->get_team_data('all'); //Getting all teams data
@@ -80,7 +70,7 @@
 
 
 			//Building js script
-			$js_script = "<script>".$user_data_script." ".$teams_data_script." ".$map_data_script."</script>";
+			$js_script = "<script>".$teams_data_script." ".$map_data_script."</script>";
 			echo $js_script;
 		}
 	}

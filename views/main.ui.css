@@ -12,8 +12,8 @@
     height: 123px;
 	
 	padding: 16px;
-	
-	background-color: rgba(0, 0, 0, 0.2);
+
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0) 100%);
 	opacity: 0;
 
 	-webkit-user-select: none;
