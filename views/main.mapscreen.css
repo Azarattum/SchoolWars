@@ -63,10 +63,6 @@
 	filter: saturate(2);
 }
 
-.capture-button:hover {
-	filter: saturate(2);
-}
-
 .points-cost {
 	display: flex;
 	align-items: center;

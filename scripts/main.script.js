@@ -113,7 +113,7 @@ function createInlineSVGs()
 		var imgID = img.attr("id");
 		var imgClass = img.attr("class");
 		var imgStyle = img.attr("style");
-		var imgURL = img.css("background-image").split("\"")[1];
+		var imgURL = img.css("background-image").replace("url(", "").replace(")", "").replace(new RegExp("\"", "g"), "");
 
 		$.get(imgURL, function(data) {
 			// Get the SVG tag, ignore the rest
