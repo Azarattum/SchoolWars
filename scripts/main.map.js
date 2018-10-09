@@ -7,10 +7,12 @@
 var HexagonSize = 64;
 var OffsetX = 100;
 var OffsetY = 160;
+var EaseAmount = 0.4;
 
 var BackgroundCalibaration = {size: 0.7, x: 0, y: -50};
 
 var Cursor = {};
+var DraggingTimer;
 
 var HighlightedY = null;
 var HighlightedX = null;
@@ -74,13 +76,69 @@ function initializeMapEvents()
 
 		let w = Math.sqrt(3) * (HexagonSize + 3);
 		let h = 2 * (HexagonSize + 3);
-		HighlightedY = Math.round((Cursor.Y - OffsetY) / h / 3 * 4);
-		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - OffsetX) / w);
+		HighlightedY = Math.round((Cursor.Y - (OffsetY + $("canvas").offset().top)) / h / 3 * 4);
+		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - (OffsetX + $("canvas").offset().left)) / w);
 
 		HighlightedCell = getCellId(HighlightedX, HighlightedY);
 		showCapturePossibility();
 
 		drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
+	});
+	
+	var targetX, targetY, previousX, previousY, startOffsetX, startOffsetY;
+	var isDragging;
+	$(".map-wrapper").on("touchstart", function (e) {
+		if (e.touches.length > 1) {
+			isDragging = true;
+			startOffsetX = $("canvas").offset().left;
+			startOffsetY = $("canvas").offset().top;
+				
+			previousX = e.touches[0].clientX;
+			previousY = e.touches[0].clientY;
+			if (e.touches.length > 1) {
+				previousX = (previousX + e.touches[1].clientX) / 2;
+				previousY = (previousY + e.touches[1].clientY) / 2;
+			}
+			
+			clearInterval(DraggingTimer);
+			DraggingTimer = setInterval(function() {
+				if (targetX && targetY) {
+					$("canvas").offset({ 
+						left: $("canvas").offset().left + EaseAmount * (targetX - $("canvas").offset().left), 
+						top: $("canvas").offset().top + EaseAmount * (targetY - $("canvas").offset().top)
+					});
+				}
+				//Stop dragging
+				if (((!isDragging)
+					&&(Math.abs($("canvas").offset().left - targetX) < 1)
+					&&(Math.abs($("canvas").offset().top - targetY) < 1)) || Swiper.realIndex != 0) {
+						$("canvas").offset({left: targetX, top: targetY});
+						clearInterval(DraggingTimer);
+						startOffsetX = startOffsetY = previousX = previousY = targetX = targetY = undefined;
+				}
+			}, 1000/30);
+		}
+	});
+	
+	$(".map-wrapper").on("touchend", function (e) {
+		isDragging = false;
+	});
+	
+	$(".map-wrapper").on("touchmove", function (e) {
+		//Checking 2 fingers
+		if (isDragging) {
+			e.preventDefault();
+			
+			let x = e.touches[0].clientX;
+			let y = e.touches[0].clientY;
+			if (e.touches.length > 1) {
+				x = (x + e.touches[1].clientX) / 2;
+				y = (y + e.touches[1].clientY) / 2;
+			}	
+					
+			targetX = startOffsetX + x - previousX;
+			targetY = startOffsetY + y - previousY;	
+		}
 	});
 }
 
