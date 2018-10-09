@@ -63,7 +63,7 @@
 	cursor: pointer;
 }
 
-.answer:hover {
+.answer:active {
 	background-color: rgb(225, 225, 220);
 }
 

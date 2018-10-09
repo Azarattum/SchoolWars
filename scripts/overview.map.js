@@ -4,12 +4,10 @@
 **
 */
 
-//temp
-var HexagonSize = 48;
-var OffsetX = 72;
-var OffsetY = 72;
+var DrawingSettings = {'hexagonSize': 48, 'offsetX': 0, 'offsetY': 0, 'margin': 32};
+var BackgroundCalibaration = {'size': 1, 'x': -500, 'y': -300};
 
-var BackgroundCalibaration = {size: 0.7, x: 0, y: -50};
+var MapEdges = {'minX': 0, 'minY': 0, 'maxX': 0, 'maxY': 0};
 
 var Canvas;
 var Height;
@@ -24,11 +22,12 @@ function initializeMap()
 	initializeCanvas();
 	initializeBackCanvas();
 	initializeEvents();
-	//расчёт HexagonSize и OffsetX/Y (что-то похожее на авто-фокус у клиента)
-	//чтобы на экране была отрисована вся карта
+
+	initializeMapEdges();
+	calcDrawingSettings();
 	
-	drawBackground(BackCtx, OffsetX, OffsetY, HexagonSize);
-	drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
+	drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
+	//drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
 	updateMap();
 }
 
@@ -56,12 +55,59 @@ function initializeEvents()
 {
 	//Draw on resize
 	$(window).resize(function() {
-		initializeBackCanvas();
-		drawBackground(BackCtx, OffsetX, OffsetY, HexagonSize);
-
 		initializeCanvas();
-		drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
+		initializeBackCanvas();
+
+		calcDrawingSettings();
+
+		drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
+		//drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
 	});
+}
+
+function initializeMapEdges()
+{
+	let minX = MapEdges.minX;
+	let minY = MapEdges.minY;
+	let maxX = MapEdges.maxX;
+	let maxY = MapEdges.maxY;
+
+	for (let cellId in MapData) {
+		let cell = MapData[cellId];
+		let x = +cell.coords.x;
+		let y = +cell.coords.y;
+
+		if (x < minX) minX = x;
+		if (y < minY) minY = y;
+		if (x > maxX) maxX = x;
+		if (y > maxY) maxY = y;
+	}
+
+	MapEdges.minX = minX;
+	MapEdges.minY = minY;
+	MapEdges.maxX = maxX;
+	MapEdges.maxY = maxY;
+}
+
+function calcDrawingSettings()
+{
+	let fieldWidth = Canvas.width - DrawingSettings.margin*2;
+	let mapWidth = MapEdges.maxX - MapEdges.minX;
+	// рабочая область / (кол-во клеток, учитывая сдвиги при отрисовке) / корень из 3 - контур
+	let sizeX = fieldWidth / (mapWidth + 1 + 1/2) / Math.sqrt(3) - 3;
+
+	let fieldHeight = Canvas.height - DrawingSettings.margin*2;
+	let mapHeight = (MapEdges.maxY - MapEdges.minY) ;
+	// рабочая область / (кол-во клеток, учитывая сдвиги при отрисовке) / 2 - контур
+	let sizeY = fieldHeight / (mapHeight*3/4 + 1/2 + 1/2) / 2 - 3;
+
+	let hexagonSize = (sizeX < sizeY) ? sizeX : sizeY;
+	DrawingSettings.hexagonSize = hexagonSize;
+
+	// половина разности ширины холста и ширины всех клеток
+	DrawingSettings.offsetX = ( Canvas.width - (mapWidth + 1 + 1/2)*Math.sqrt(3)*(hexagonSize + 3) ) / 2;
+	// половина разности высоты холста и высоты всех клеток
+	DrawingSettings.offsetY = ( Canvas.height - (mapHeight*3/4 + 1/2 + 1/2)*2*(hexagonSize + 3) ) / 2;
 }
 
 function updateMap()
@@ -82,7 +128,7 @@ function updateMap()
 
 			if (changed) {
 				calcTeamsTerritory(); //update teams territory count
-				drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
+				drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
 			}
 		}
 
@@ -97,8 +143,8 @@ function drawMap(ctx, offsetX, offsetY, hexagonSize)
 	offsetX = (offsetX == undefined) ? 0 : offsetX;
 	offsetY = (offsetY == undefined) ? 0 : offsetY;
 	
-	var w = Math.sqrt(3) * (hexagonSize + 3);
-	var h = 2 * (hexagonSize + 3);
+	let w = Math.sqrt(3) * (hexagonSize + 3);
+	let h = 2 * (hexagonSize + 3);
 	
 	ctx.clearRect(0, 0, $(document).width(), $(document).height());
 	
@@ -117,7 +163,10 @@ function drawMap(ctx, offsetX, offsetY, hexagonSize)
 		let color = TeamsData[holderId] ? TeamsData[holderId].color : new Color(255, 255, 255);
 
 		let rx = x * w + (y % 2 == 1 ? w/2 : 0) + offsetX;
-		let ry = y * h * 3 / 4 + OffsetY;
+		let ry = y * h * 3 / 4 + offsetY;
+		// чтобы при 0 оффсетах, всё отрисовывалось с координат 0;0
+		rx += hexagonSize
+		ry += hexagonSize;
 
 		//Drawing
 		drawHexagon(ctx, rx, ry, color, hexagonSize, isSpawn);
