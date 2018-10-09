@@ -7,7 +7,7 @@
 var HexagonSize = 64;
 var OffsetX = 100;
 var OffsetY = 160;
-var EaseAmount = 0.4;
+var EaseAmount = 0.5;
 
 var BackgroundCalibaration = {size: 0.7, x: 0, y: -50};
 
@@ -77,7 +77,7 @@ function initializeMapEvents()
 		let w = Math.sqrt(3) * (HexagonSize + 3);
 		let h = 2 * (HexagonSize + 3);
 		HighlightedY = Math.round((Cursor.Y - (OffsetY + $("canvas").offset().top)) / h / 3 * 4);
-		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - (OffsetX + $("canvas").offset().left)) / w);
+		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - OffsetX) / w);
 
 		HighlightedCell = getCellId(HighlightedX, HighlightedY);
 		showCapturePossibility();
