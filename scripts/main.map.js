@@ -5,7 +5,7 @@
 */
 
 var HexagonSize = 64;
-var OffsetX = 100;
+var OffsetX = 32;
 var OffsetY = 160;
 var EaseAmount = 0.5;
 
@@ -32,6 +32,7 @@ function initializeMap()
 	initializeBackCanvas();
 	initializeMapEvents();
 	
+	HexagonSize = Math.sqrt(Width * Width + Height * Height) * 0.042;
 	drawBackground(BackCtx, OffsetX, OffsetY, HexagonSize);
 	drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 	updateMap();
@@ -76,8 +77,8 @@ function initializeMapEvents()
 
 		let w = Math.sqrt(3) * (HexagonSize + 3);
 		let h = 2 * (HexagonSize + 3);
-		HighlightedY = Math.round((Cursor.Y - (OffsetY + $("canvas").offset().top)) / h / 3 * 4);
-		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - OffsetX) / w);
+		HighlightedY = Math.round((Cursor.Y - (OffsetY + HexagonSize + $("canvas").offset().top)) / h / 3 * 4);
+		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - (OffsetX + HexagonSize)) / w);
 
 		HighlightedCell = getCellId(HighlightedX, HighlightedY);
 		showCapturePossibility();
@@ -197,8 +198,8 @@ function drawMap(ctx, offsetX, offsetY, hexagonSize)
 
 		let color = TeamsData[holderId] ? TeamsData[holderId].color : new Color(255, 255, 255);
 
-		let rx = x * w + (y % 2 == 1 ? w/2 : 0) + offsetX;
-		let ry = y * h * 3 / 4 + offsetY;
+		let rx = x * w + (y % 2 == 1 ? w/2 : 0) + offsetX + hexagonSize;
+		let ry = y * h * 3 / 4 + offsetY + hexagonSize;
 
 		//Drawing
 		drawHexagon(ctx, rx, ry, color, hexagonSize, isSpawn, selected);
