@@ -84,11 +84,11 @@ function createInlineSVGs()
 {
 	//Replace all SVG images with inline SVG
 	$("img.svg").each(function(){
-		var img = $(this);
-		var imgID = img.attr("id");
-		var imgClass = img.attr("class");
-		var imgStyle = img.attr("style");
-		var imgURL = img.css("background-image").replace("url(", "").replace(")", "").replace(new RegExp("\"", "g"), "");
+		let img = $(this);
+		let imgID = img.attr("id");
+		let imgClass = img.attr("class");
+		let imgStyle = img.attr("style");
+		let imgURL = img.css("background-image").replace("url(", "").replace(")", "").replace(new RegExp("\"", "g"), "");
 
 		$.get(imgURL, function(data) {
 			// Get the SVG tag, ignore the rest

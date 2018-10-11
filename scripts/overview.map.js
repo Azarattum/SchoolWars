@@ -200,7 +200,7 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn)
 	color.A = 1;
 		
 	ctx.shadowBlur = 0;
-	ctx.lineWidth = isSpawn ? 6 : 3;
+	ctx.lineWidth = isSpawn ? 4 : 2;
 	ctx.strokeStyle = isSpawn ? "rgb(255, 255, 255)" : color.toString();
 	ctx.stroke();
 }

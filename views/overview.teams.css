@@ -1,9 +1,169 @@
+@font-face {
+    font-family: "ui-text";
+    src: url("../fonts/ui-text.ttf") format("truetype");
+}
+
+.ui-text {
+	font-family: ui-text;
+}
+
+/*Teams Top*/
+.top-icon {
+	position: absolute;
+	top: 8px;
+	right: -96px;
+	
+	width: 64px;
+	
+	background-image: url("../assets/crown.svg");
+	
+	transition: 0.4s;
+	z-index: 99;
+}
+
+.teams-top {
+	position: absolute;
+	top: 64px;
+	right: -128px;
+	
+	width: 128px;
+	height: calc(100vh - 96px);
+	border-top-left-radius: 32px;
+	border-bottom-left-radius: 32px;
+	
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	
+	background-color: transparent;
+	transition: 0.4s;
+	
+	z-index: 100;
+}
+
+.team-place {
+	position: absolute;
+	
+	flex-grow: 1;
+	height: calc(100% / 9 + 1px);
+	width: 100%;
+	
+	display: inline-flex;
+	text-align: center;
+	
+	background-color: rgb(53,212,124);
+	
+	transition: 0.3s;
+}
+
+.team-place > .team-name {
+	width: 50%;
+	height: 100%;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	font-size: 32px;
+	color: rgb(255,255,250);
+}
+
+.team-score {
+	position: relative;
+	right: 0px;
+	float: right;
+	
+	height: 100%;
+	width: 50%;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	font-size: 32px;
+	line-height: 100%;
+	
+	border-top-left-radius: 24px;
+	border-bottom-left-radius: 24px;
+	
+	background-color: rgb(255,255,250);
+	color: rgb(49,49,49);
+}
+
+/*Teams Population*/
+.teams-population {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	
+	width: calc(100vw - 128px - 32px);
+	height: 64px;
+	
+	display: flex;
+	align-items: center;
+	
+	border-bottom-right-radius: 32px;
+	
+	background-color: rgb(0,0,0,0.2);
+	
+	z-index: 100;
+}
+
+.teams-population-data {
+	border-left: medium dashed rgba(255,255,250,0.6);
+	
+	height: 100%;
+	width: calc(100% - 64px);
+	
+	display: flex;
+	justify-content: space-around;
+}
+
+.teams-population-data > .team-name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	float: left;
+	flex-grow: 1;
+	
+	text-shadow: 0px 0px 8px black;
+	font-size: 2.5vw;
+}
+
+.team-population {
+	text-indent: 8px;
+	color: rgb(255,255,250);
+}
+
+.avatar-icon {
+	margin: 8px;
+	
+	height: 48px;
+	
+	background-image: url("../assets/avatar.svg");
+}
+
+.avatar-icon > path {
+	fill: rgb(255,255,250);
+}
+/*.teams-holder {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100vh;
+	width: 100vw;
+	
+	display: flex;
+	align-items: center;
+}
+
 .teams-data {
 	position: absolute;
 
-	top: 0;
+	transform: translate(0, -50%);
 	left: calc(100vw - 200px);
 	width: 200px;
+	height: auto;
 
 	display: flex;
 	flex-direction: column;
@@ -24,8 +184,6 @@
 }
 
 .team-data {
-	position: absolute;
-
 	width: 100%;
 
 	display: flex;
@@ -35,4 +193,4 @@
 	background-color: white;
 
 	transition: 0.3s;
-}
+}*/
