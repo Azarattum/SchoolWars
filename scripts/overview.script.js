@@ -21,7 +21,7 @@ document.ondragstart = function() {return false};
 function main()
 {
 	//КАСТЫЛЬ, КОТОРЫЙ ИСПРАВЛЮ ПОСЛЕ ФИКСА ЛИБЫ requestIt
-	setScript("../modules/API.php");
+	setScript("modules/API.php");
 
 	initializeTeams();
 	initializeMap();

@@ -4,6 +4,8 @@
 	if (isset($headers["script"]) or die("<!--error-->Warning: Wrong request!")) {
 		$script = $_SERVER["DOCUMENT_ROOT"];
 		$script .= preg_replace("/\\\\/", "", preg_replace("/\\w*[.]\\w+$/u", "", parse_url($headers["referer"], PHP_URL_PATH)));
+		while (!file_exists($script."/index.html") && !file_exists($script."/index.php"))
+			$script = dirname($script);
 		$script .= '/'.urldecode($headers["script"]);
 	}
 
