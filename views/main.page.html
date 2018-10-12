@@ -1,4 +1,23 @@
 <div class="page">
+	<!--Loader-->
+	<style>
+		@keyframes beatBeat{
+            0% {
+                transform: scale(1.3);
+            }
+            80% {
+                transfom: scale(1.4);
+            }
+            100% {
+                transform: scale(1.6);
+                transition-property: transform;
+                transition-duration: 3s;
+            }
+        }
+	</style>
+	<div class="loader" style="position:absolute;left:0px;top:0px;width:100vw;height:100vh;background-color:rgb(255,255,250);display:flex;justify-content:center;align-items:center;z-index:300;">
+		<img src="assets/logo.svg" style="height:80vmin;animation:beatBeat 600ms ease alternate infinite;transform-origin: center center;">
+	</div>
 	<!--Tab Bar-->
 	<div class="tab-bar">
 		<button class="tab-item map-screen-item">
