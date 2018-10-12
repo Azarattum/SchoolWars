@@ -46,6 +46,12 @@ function main()
 		showTeams();
 	
 	createInlineSVGs();
+	
+	//Disable zooming
+	$(window).on("touchmove", function (e) {
+		if (e.touches.length > 1) 
+			e.preventDefault();
+	});
 }
 
 function intializeTabs()

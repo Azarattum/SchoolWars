@@ -22,6 +22,10 @@ function initializeCapture()
 
 		event.stopPropagation();
 	});
+	
+	$(".capture-screen").on("touchstart", function (e) {
+		event.stopPropagation();
+	});
 }
 
 /*TEMP*/

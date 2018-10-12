@@ -28,21 +28,21 @@ function initializeTeamchanger()
 
 function initializeTeamChangeEvents()
 {
-	$(".change-team-button").click(function()
-	{
-		if ($(".change-team").css("opacity") > 0 && UserData.teamId != undefined)
-			hideAvailableTeams();
-		else if ($(".change-team").css("opacity") == 0 && !IsChanging)
-			showAvailableTeams();
+	$(".change-team-button").on("touchleave", function() {
+		if ($(".teams-holder").height() <= 32)
+			$(".teams-holder").animate({height: "16px"}, 200);
 	});
 	
-	$(".change-team-button").on("touchstart", function() {
-		if ($(".change-team").css("opacity") == 0)
-			$(".teams-holder").css("height", "32px");
+	$(".change-team-button").on("touchenter", function() {
+		if ($(".teams-holder").height() <= 32)
+			$(".teams-holder").animate({height: "32px"}, 200);
 	});
- 	$(".change-team-button").on("touchend", function() {
-		if ($(".change-team").css("opacity") == 0)
-			$(".teams-holder").css("height", "16px");
+	
+ 	$(".change-team-button").on("touchstart", function() {
+		if ($(".teams-holder").height() > 36 && UserData.teamId != undefined)
+			hideAvailableTeams();
+		else if ($(".teams-holder").height() <= 36 && !IsChanging)
+			showAvailableTeams();
 	});
 	
 	$(".change-team").click(function()
@@ -58,21 +58,34 @@ function showTeams()
 		Swiper.slideTo(1);
 		window.setTimeout(function(){
 			showAvailableTeams()
-		}, 300);
+		}, 500);
 	}, 600);
 }
 
 function showAvailableTeams()
 {
-	$(".teams-holder").css("height", "calc(100% - 160px * 2 - 8vh + 32px)");
-	$(".change-team").css({"flex-grow": "1", "opacity": "1", "height": "auto", "pointer-events": "auto"});
-	$("#" + UserData["teamId"]).css({"flex-grow": "0", "height": "0px"});
+	let p = $(".profile-screen").height();
+	let h = $(window).height();
+	let teams = $(".change-team").length - 1;
+	if (UserData.teamId == undefined)
+		teams++;
+	
+	$(".teams-holder").stop(true);
+	$(".teams-holder").animate({height: (p - (160 * 2) - (0.08 * h) + 32) + "px"}, 200, function() {
+		$(".change-team").animate({opacity: 1}, 200);
+		$(".change-team").css("pointer-events", "auto");
+	});
+	$(".change-team").css({height: ((p - (160 * 2) - (0.08 * h) + 32) / teams) + "px"});
+	$("#" + UserData["teamId"]).css("height", "0px");
 }
 
 function hideAvailableTeams()
 {
-	$(".change-team").css({"opacity": "0", "pointer-events": "none"});
-	$(".teams-holder").css("height", "16px");
+	$(".change-team").css("pointer-events", "none");
+	$(".change-team").animate({opacity: 0}, 200, function() {
+		$(".teams-holder").stop(true);
+		$(".teams-holder").animate({height: "16px"}, 200);
+	});
 }
 
 function colorButtons()
@@ -132,15 +145,15 @@ function changeTeam(newTeamId)
 	$(".cells-mark").css("fill", "rgb(255, 255, 250)");
 	$(".points").css("color", "rgb(255, 255, 250)");
 
-	$(".change-team").css({"flex-grow": "1", "height": "auto"});
-	$("#" + newTeamId).css({"flex-grow": "0", "height": "0px"});
+	//$(".change-team").css({"flex-grow": "1", "height": "auto"});
+	//$("#" + newTeamId).css({"flex-grow": "0", "height": "0px"});
 	
 	request("change_team", [newTeamId], function(data) {
 		if (data) {
 			UserData.teamId = newTeamId;
 			showCapturePossibility();
 		} else {
-			$("#"+newTeamId).css({"flex-grow": "1", "height": "auto"});
+			//$("#"+newTeamId).css({"flex-grow": "1", "height": "auto"});
 		}
 
 		renderUserData();
