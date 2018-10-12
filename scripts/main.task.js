@@ -124,6 +124,7 @@ function checkAnswer(answerElem)
 		$(".points").text(Points+"/"+PointsToCapture);
 		$(answerElem).css("background-color", "rgb(255, 100, 100)");
 	}
+	$.cookie("points", Points);
 
 	writeCapturePossibility();
 

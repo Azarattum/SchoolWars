@@ -77,6 +77,7 @@ function captureCell(id)
 
 	Points -= PointsToCapture;
 	$(".points").text(Points+"/"+PointsToCapture);
+	$.cookie("points", Points);
 
 	writeCapturePossibility();
 
@@ -90,6 +91,7 @@ function captureCell(id)
 			MapData[id]['holder'] = cellHolder;
 
 			Points += PointsToCapture;
+			$.cookie("points", Points);
 			writeCapturePossibility();
 
 			initializeCanvas();
