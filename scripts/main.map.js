@@ -69,46 +69,18 @@ function initializeMapEvents()
 	});
 
 	//Draw on click
-	var previousX, previousY, previousTime;
-	$("#map").on("touchstart", function (e) {
-		if (e.touches.length > 1)
-			return;
-		
-		previousX = HighlightedX;
-		previousY = HighlightedY;
-		previousTime = e.timeStamp;
-		Cursor.X = e.touches[0].clientX;
-		Cursor.Y = e.touches[0].clientY;
+	$("#map").click(function (e) {
+		Cursor.X = e.pageX;
+		Cursor.Y = e.pageY;
 		let w = Math.sqrt(3) * (HexagonSize + 3);
 		let h = 2 * (HexagonSize + 3);
 		HighlightedY = Math.round((Cursor.Y - (OffsetY + HexagonSize + $("canvas").offset().top)) / h / 3 * 4);
 		HighlightedX = Math.round(((Cursor.X - $("#map").position().left) - (HighlightedY % 2 == 1 ? w/2 : 0) - (OffsetX + HexagonSize)) / w);
-
-		setTimeout(function() {
-			if (previousTime != undefined)
-			{
-				HighlightedCell = getCellId(HighlightedX, HighlightedY);
-				showCapturePossibility();
-
-				drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
-			}
-		}, 50);
-	});
-	
-	$("#map").on("touchmove", function (e) {
-		if (e.timeStamp - previousTime > 600)
-			previousX = previousY = previousTime = undefined;
 		
-		if (Math.abs(Cursor.X - e.touches[0].clientX) > (Math.sqrt(3) * (HexagonSize + 3) / 2) && previousX != undefined && previousY != undefined) {
-			HighlightedX = previousX;
-			HighlightedY = previousY;
-			
-			HighlightedCell = getCellId(HighlightedX, HighlightedY);
-			showCapturePossibility();
+		HighlightedCell = getCellId(HighlightedX, HighlightedY);
+		showCapturePossibility();
 
-			drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
-			previousX = previousY = previousTime = undefined;
-		}
+		drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
 	});
 	
 	var targetX, targetY, previousX, previousY, startOffsetX, startOffsetY;
@@ -167,7 +139,6 @@ function initializeMapEvents()
 		}
 	});
 }
-
 
 function updateMap()
 {

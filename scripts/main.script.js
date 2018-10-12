@@ -24,7 +24,7 @@ function main()
 	setScript("modules/API.php");
 
 	if ($.cookie("points"))
-		Points = $.cookie("points");
+		Points = +$.cookie("points");
 	
 	transformTeamsColor();
 	transformUsersCountInTeams();
