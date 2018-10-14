@@ -16,6 +16,7 @@ var DraggingTimer;
 
 var HighlightedY = null;
 var HighlightedX = null;
+var HighlightedCell;
 
 var Canvas;
 var Height;
