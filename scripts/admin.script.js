@@ -21,6 +21,8 @@ function main()
 		return false;
 	}
 
+	$("body").css("background-color", "white");
+
 	Promter = new AdminPromter();
 	console.log(Promter);
 
