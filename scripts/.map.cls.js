@@ -95,15 +95,16 @@ class GameField
 				cells[cell].coords.x,
 				cells[cell].coords.y,
 				Math.abs(cells[cell].holder),
-				cells[cell].value
+				cells[cell].value,
+				(cells[cell].holder < 0)
 			));
 		}
 		
 		//Parse spawn cells
-		for (let spawn in spawns)
+		/*for (let spawn in spawns)
 		{
 			objectCells[spawns[spawn].startCell].IsSpawn = true;
-		}
+		}*/
 		
 		//Save to map
 		this._Map.CellsCache = this._Map.Cells;
