@@ -1,0 +1,103 @@
+@font-face {
+	font-family: "ui-text";
+	src: url("../fonts/ui-text.ttf") format("truetype");
+}
+
+body {
+	background-color: white;
+}
+
+.wrapper {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	font-size: 56px;
+	font-family: ui-text;
+	color: rgb(5, 5, 0);
+	text-align: center;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.phrases {
+	position: relative;
+
+	width: 80%;
+	height: 80%;
+
+	border-bottom: 2px black solid;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.pharse {
+	position: relative;
+
+	width: 100%;
+
+	padding: 16px;
+
+	border-radius: 16px;
+
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.switch-panel {
+	position: relative;
+
+	width: 100%;
+	height: 10%;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.switch {
+	position: relative;
+
+	width: 128px;
+	height: 128px;
+
+	border-radius: 16px;
+
+	line-height: 128px;
+
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.switch:active {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.end-button {
+	position: relative;
+
+	width: 100%;
+	height: 250px;
+
+	border-radius: 24px;
+
+	font-size: 56px;
+	font-family: ui-text;
+	color: rgb(5, 5, 0);
+
+	line-height: 250px;
+
+	background-color: rgba(255, 50, 50, 0.2);
+}
+
+.end-button:active {
+	background-color: rgba(255, 50, 50, 0.5);
+}
