@@ -19,20 +19,20 @@
 			/*------------------*/
 
 			$teams = array(
-				array('id' => 1, 'name' => "10А", 'r' => 255, 'g' => 64, 'b' => 64, 'start_cell' => 1),
-				array('id' => 2, 'name' => "10Б", 'r' => 255, 'g' => 166, 'b' => 64, 'start_cell' => 5),
-				array('id' => 3, 'name' => "10В", 'r' => 255, 'g' => 212, 'b' => 64, 'start_cell' => 21),
-				array('id' => 4, 'name' => "10Г", 'r' => 255, 'g' => 255, 'b' => 64, 'start_cell' => 26),
-				array('id' => 5, 'name' => "10Д", 'r' => 159, 'g' => 243, 'b' => 61, 'start_cell' => 36),
-				array('id' => 6, 'name' => "11А", 'r' => 53, 'g' => 212, 'b' => 164, 'start_cell' => 46),
-				array('id' => 7, 'name' => "11Б", 'r' => 70, 'g' => 113, 'b' => 213, 'start_cell' => 51),
-				array('id' => 8, 'name' => "11В", 'r' => 122, 'g' => 69, 'b' => 214, 'start_cell' => 67),
-				array('id' => 9, 'name' => "11Г", 'r' => 219, 'g' => 55, 'b' => 188, 'start_cell' => 71)
+				array('id' => 1, 'name' => "10А", 'r' => 255, 'g' => 64, 'b' => 64),
+				array('id' => 2, 'name' => "10Б", 'r' => 255, 'g' => 166, 'b' => 64),
+				array('id' => 3, 'name' => "10В", 'r' => 255, 'g' => 212, 'b' => 64),
+				array('id' => 4, 'name' => "10Г", 'r' => 255, 'g' => 255, 'b' => 64),
+				array('id' => 5, 'name' => "10Д", 'r' => 159, 'g' => 243, 'b' => 61),
+				array('id' => 6, 'name' => "11А", 'r' => 53, 'g' => 212, 'b' => 164),
+				array('id' => 7, 'name' => "11Б", 'r' => 70, 'g' => 113, 'b' => 213),
+				array('id' => 8, 'name' => "11В", 'r' => 122, 'g' => 69, 'b' => 214),
+				array('id' => 9, 'name' => "11Г", 'r' => 219, 'g' => 55, 'b' => 188)
 			);
 
 			//DB connection
 			$this->database = new mysqli(HOST, MYSQL_USER, MYSQL_PASS) or die( mysqli_error() );
-			//$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
+			$this->query("CREATE DATABASE IF NOT EXISTS ".DATABASE); //For local usage
 			$this->database->select_db(DATABASE);
 
 			//Tables creation
@@ -65,8 +65,7 @@
 				name VARCHAR(16),
 				r TINYINT UNSIGNED,
 				g TINYINT UNSIGNED,
-				b TINYINT UNSIGNED,
-				start_cell INT
+				b TINYINT UNSIGNED
 			)";
 
 			$this->query($query);
@@ -106,34 +105,190 @@
 			$this->query($query);
 
 			//Building map
-			$cells = array();
-			//$cell = array('x' => x, 'y' => y, 'value' => value, 'holder' => holder)
+			$cells = array(
+				array('x' => 0, 'y' => 0, 'value' => 2, 'holder' => 0),
+				array('x' => 4, 'y' => 0, 'value' => 0, 'holder' => -1),
+				array('x' => 5, 'y' => 0, 'value' => 3, 'holder' => 0),
+				array('x' => 6, 'y' => 0, 'value' => 3, 'holder' => 0),
+				array('x' => 7, 'y' => 0, 'value' => 2, 'holder' => 0),
+				array('x' => 8, 'y' => 0, 'value' => 3, 'holder' => 0),
+				array('x' => 9, 'y' => 0, 'value' => 3, 'holder' => 0),
+				array('x' => 10, 'y' => 0, 'value' => 2, 'holder' => 0),
+				array('x' => 11, 'y' => 0, 'value' => 4, 'holder' => 0),
+				array('x' => 12, 'y' => 0, 'value' => 2, 'holder' => 0),
+				array('x' => 13, 'y' => 0, 'value' => 0, 'holder' => -2),
 
-			for ($y = 0; $y < 11; $y++) {
-				for ($x = 0; $x < 7; $x++) {
-					if (
-						($x == 2 && $y == 4)
-						|| ($x == 4 && $y == 3)
-						|| ($x == 2 && $y == 7)
-						|| ($x == 5 && $y == 6)
-					)
-						continue;
+				array('x' => 0, 'y' => 1, 'value' => 0, 'holder' => -3),
+				array('x' => 1, 'y' => 1, 'value' => 1, 'holder' => 0),
+				array('x' => 2, 'y' => 1, 'value' => 1, 'holder' => 0),
+				array('x' => 3, 'y' => 1, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 1, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 1, 'value' => 1, 'holder' => 0),
+				array('x' => 6, 'y' => 1, 'value' => 3, 'holder' => 0),
+				array('x' => 7, 'y' => 1, 'value' => 2, 'holder' => 0),
+				array('x' => 8, 'y' => 1, 'value' => 3, 'holder' => 0),
+				array('x' => 9, 'y' => 1, 'value' => 1, 'holder' => 0),
+				array('x' => 10, 'y' => 1, 'value' => 4, 'holder' => 0),
+				array('x' => 11, 'y' => 1, 'value' => 4, 'holder' => 0),
+				array('x' => 12, 'y' => 1, 'value' => 2, 'holder' => 0),
+				array('x' => 13, 'y' => 1, 'value' => 2, 'holder' => 0),
 
-					$cell = array('x' => $x, 'y' => $y);
+				array('x' => 0, 'y' => 2, 'value' => 3, 'holder' => 0),
+				array('x' => 1, 'y' => 2, 'value' => 3, 'holder' => 0),
+				array('x' => 6, 'y' => 2, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 2, 'value' => 1, 'holder' => 0),
+				array('x' => 8, 'y' => 2, 'value' => 2, 'holder' => 0),
+				array('x' => 9, 'y' => 2, 'value' => 2, 'holder' => 0),
+				array('x' => 10, 'y' => 2, 'value' => 2, 'holder' => 0),
+				array('x' => 11, 'y' => 2, 'value' => 4, 'holder' => 0),
+				array('x' => 12, 'y' => 2, 'value' => 1, 'holder' => 0),
+				array('x' => 13, 'y' => 2, 'value' => 0, 'holder' => -4),
 
-					$abs = abs($x - 3) + abs($y - 5);
+				array('x' => 0, 'y' => 3, 'value' => 2, 'holder' => 0),
+				array('x' => 1, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 2, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 3, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 6, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 8, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 9, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 10, 'y' => 3, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 3, 'value' => 2, 'holder' => 0),
+				array('x' => 12, 'y' => 3, 'value' => 2, 'holder' => 0),
+				array('x' => 13, 'y' => 3, 'value' => 2, 'holder' => 0),
 
-					if ($abs === 0)
-						$value = 7;
-					else {
-						$value = floor(7 / $abs);
-					}
+				array('x' => 0, 'y' => 4, 'value' => 2, 'holder' => 0),
+				array('x' => 2, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 3, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 4, 'value' => 7, 'holder' => 0),
+				array('x' => 6, 'y' => 4, 'value' => 9, 'holder' => 0),
+				array('x' => 7, 'y' => 4, 'value' => 2, 'holder' => 0),
+				array('x' => 8, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 9, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 10, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 4, 'value' => 1, 'holder' => 0),
+				array('x' => 12, 'y' => 4, 'value' => 3, 'holder' => 0),
+				array('x' => 13, 'y' => 4, 'value' => 2, 'holder' => 0),
 
-					$cell['value'] = $value;
+				array('x' => 0, 'y' => 5, 'value' => 0, 'holder' => -5),
+				array('x' => 2, 'y' => 5, 'value' => 2, 'holder' => 0),
+				array('x' => 3, 'y' => 5, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 5, 'value' => 9, 'holder' => 0),
+				array('x' => 5, 'y' => 5, 'value' => 10, 'holder' => 0),
+				array('x' => 6, 'y' => 5, 'value' => 7, 'holder' => 0),
+				array('x' => 7, 'y' => 5, 'value' => 2, 'holder' => 0),
+				array('x' => 9, 'y' => 5, 'value' => 4, 'holder' => 0),
+				array('x' => 10, 'y' => 5, 'value' => 4, 'holder' => 0),
+				array('x' => 12, 'y' => 5, 'value' => 3, 'holder' => 0),
+				array('x' => 13, 'y' => 5, 'value' => 0, 'holder' => -6),
 
-					array_push($cells, $cell);
-				}
-			}
+				array('x' => 0, 'y' => 6, 'value' => 2, 'holder' => 0),
+				array('x' => 1, 'y' => 6, 'value' => 2, 'holder' => 0),
+				array('x' => 2, 'y' => 6, 'value' => 2, 'holder' => 0),
+				array('x' => 4, 'y' => 6, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 6, 'value' => 7, 'holder' => 0),
+				array('x' => 6, 'y' => 6, 'value' => 9, 'holder' => 0),
+				array('x' => 7, 'y' => 6, 'value' => 2, 'holder' => 0),
+				array('x' => 9, 'y' => 6, 'value' => 4, 'holder' => 0),
+				array('x' => 10, 'y' => 6, 'value' => 4, 'holder' => 0),
+				array('x' => 12, 'y' => 6, 'value' => 3, 'holder' => 0),
+				array('x' => 13, 'y' => 6, 'value' => 2, 'holder' => 0),
+
+				array('x' => 0, 'y' => 7, 'value' => 3, 'holder' => 0),
+				array('x' => 1, 'y' => 7, 'value' => 2, 'holder' => 0),
+				array('x' => 2, 'y' => 7, 'value' => 2, 'holder' => 0),
+				array('x' => 3, 'y' => 7, 'value' => 2, 'holder' => 0),
+				array('x' => 4, 'y' => 7, 'value' => 2, 'holder' => 0),
+				array('x' => 5, 'y' => 7, 'value' => 1, 'holder' => 0),
+				array('x' => 6, 'y' => 7, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 7, 'value' => 1, 'holder' => 0),
+				array('x' => 9, 'y' => 7, 'value' => 1, 'holder' => 0),
+				array('x' => 10, 'y' => 7, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 7, 'value' => 1, 'holder' => 0),
+				array('x' => 12, 'y' => 7, 'value' => 2, 'holder' => 0),
+				array('x' => 13, 'y' => 7, 'value' => 1, 'holder' => 0),
+
+				array('x' => 0, 'y' => 8, 'value' => 1, 'holder' => 0),
+				array('x' => 1, 'y' => 8, 'value' => 3, 'holder' => 0),
+				array('x' => 2, 'y' => 8, 'value' => 2, 'holder' => 0),
+				array('x' => 3, 'y' => 8, 'value' => 3, 'holder' => 0),
+				array('x' => 4, 'y' => 8, 'value' => 3, 'holder' => 0),
+				array('x' => 5, 'y' => 8, 'value' => 1, 'holder' => 0),
+				array('x' => 6, 'y' => 8, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 8, 'value' => 2, 'holder' => 0),
+				array('x' => 8, 'y' => 8, 'value' => 5, 'holder' => 0),
+				array('x' => 9, 'y' => 8, 'value' => 5, 'holder' => 0),
+				array('x' => 10, 'y' => 8, 'value' => 2, 'holder' => 0),
+				array('x' => 11, 'y' => 8, 'value' => 1, 'holder' => 0),
+
+				array('x' => 0, 'y' => 9, 'value' => 3, 'holder' => 0),
+				array('x' => 1, 'y' => 9, 'value' => 2, 'holder' => 0),
+				array('x' => 2, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 3, 'y' => 9, 'value' => 3, 'holder' => 0),
+				array('x' => 4, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 6, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 8, 'y' => 9, 'value' => 5, 'holder' => 0),
+				array('x' => 10, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 12, 'y' => 9, 'value' => 1, 'holder' => 0),
+				array('x' => 13, 'y' => 9, 'value' => 1, 'holder' => 0),
+
+				array('x' => 0, 'y' => 10, 'value' => 0, 'holder' => -7),
+				array('x' => 1, 'y' => 10, 'value' => 2, 'holder' => 0),
+				array('x' => 6, 'y' => 10, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 10, 'value' => 2, 'holder' => 0),
+				array('x' => 8, 'y' => 10, 'value' => 5, 'holder' => 0),
+				array('x' => 9, 'y' => 10, 'value' => 5, 'holder' => 0),
+				array('x' => 10, 'y' => 10, 'value' => 2, 'holder' => 0),
+				array('x' => 11, 'y' => 10, 'value' => 1, 'holder' => 0),
+				array('x' => 12, 'y' => 10, 'value' => 6, 'holder' => 0),
+				array('x' => 13, 'y' => 10, 'value' => 8, 'holder' => 0),
+
+				array('x' => 0, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 1, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 2, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 3, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 11, 'value' => 2, 'holder' => 0),
+				array('x' => 6, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 9, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 10, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 11, 'value' => 1, 'holder' => 0),
+				array('x' => 13, 'y' => 11, 'value' => 1, 'holder' => 0),
+
+				array('x' => 0, 'y' => 12, 'value' => 3, 'holder' => 0),
+				array('x' => 1, 'y' => 12, 'value' => 3, 'holder' => 0),
+				array('x' => 2, 'y' => 12, 'value' => 3, 'holder' => 0),
+				array('x' => 3, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 5, 'y' => 12, 'value' => 3, 'holder' => 0),
+				array('x' => 6, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 7, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 8, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 9, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 12, 'value' => 1, 'holder' => 0),
+				array('x' => 12, 'y' => 12, 'value' => 8, 'holder' => 0),
+				array('x' => 13, 'y' => 12, 'value' => 6, 'holder' => 0),
+
+				array('x' => 0, 'y' => 13, 'value' => 1, 'holder' => 0),
+				array('x' => 1, 'y' => 13, 'value' => 1, 'holder' => 0),
+				array('x' => 2, 'y' => 13, 'value' => 0, 'holder' => -8),
+				array('x' => 3, 'y' => 13, 'value' => 1, 'holder' => 0),
+				array('x' => 4, 'y' => 13, 'value' => 3, 'holder' => 0),
+				array('x' => 5, 'y' => 13, 'value' => 3, 'holder' => 0),
+				array('x' => 6, 'y' => 13, 'value' => 2, 'holder' => 0),
+				array('x' => 7, 'y' => 13, 'value' => 2, 'holder' => 0),
+				array('x' => 8, 'y' => 13, 'value' => 0, 'holder' => -9),
+				array('x' => 9, 'y' => 13, 'value' => 1, 'holder' => 0),
+				array('x' => 11, 'y' => 13, 'value' => 1, 'holder' => 0),
+				array('x' => 12, 'y' => 13, 'value' => 1, 'holder' => 0),
+				array('x' => 13, 'y' => 13, 'value' => 1, 'holder' => 0)
+			);
 
 			//Building query
 			$cell_count = count($cells);
@@ -148,22 +303,12 @@
 				$value = $cell['value'];
 
 				if (!$holder) $holder = 0;
-				if (!$value) $value = 1;
+				if (!$value && $value !== 0) $value = 1;
 
 				$query .= " SELECT '$id' AS id, '$holder' AS holder, '$x' AS x, '$y' AS y, '$value' AS value UNION ALL";
 			}
 
 			$query = rtrim($query, " UNION ALL");
-
-			$teams_count = count($teams);
-
-			for ($i = 0; $i < $teams_count; $i++) {
-				$team_id = $teams[$i]['id'];
-				$start_cell = $teams[$i]['start_cell'];
-
-				$query = str_replace("'".$start_cell."' AS id, '0' AS holder",
-					"'".$start_cell."' AS id, '".-$team_id."' AS holder", $query);
-			}
 
 			$this->query($query);
 		}
