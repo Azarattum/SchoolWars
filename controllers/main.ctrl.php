@@ -28,8 +28,7 @@
 							r: ".$current_team['color']['r'].",
 							g: ".$current_team['color']['g'].",
 							b: ".$current_team['color']['b']."
-						},
-						startCell: ".$current_team['start_cell']."
+						}
 					}, ";
 
 					$teams_data_script .= $team_data;

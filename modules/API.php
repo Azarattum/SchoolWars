@@ -64,4 +64,14 @@
 
 		return $result;
 	}
+
+	//-------------------- functions only for overview page
+	function get_start_time()
+	{
+		requestable;
+
+		//чтение времени старта с 1 строки файла status.txt
+		
+		return true;
+	}
 ?>
