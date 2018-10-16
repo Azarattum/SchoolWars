@@ -119,7 +119,8 @@ function countUsersInTeams()
 		}
 
 		setTimeout(function() {
-			countUsersInTeams();
+			if (!IsEnding)
+				countUsersInTeams();
 		}, 2000);
 	});
 }

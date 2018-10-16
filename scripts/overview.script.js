@@ -20,7 +20,6 @@ document.ondragstart = function() {return false};
 /*On page loaded*/
 function main()
 {
-	//КАСТЫЛЬ, КОТОРЫЙ ИСПРАВЛЮ ПОСЛЕ ФИКСА ЛИБЫ requestIt
 	setScript("modules/API.php");
 
 	initializeTeams();

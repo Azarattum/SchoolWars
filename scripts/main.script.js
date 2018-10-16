@@ -16,7 +16,7 @@ if (!UsersCountInTeams)
 //Disabling excess functions
 //document.oncontextmenu = function() {return false};
 document.ondragstart = function() {return false};
-
+var ColorMap = [];
 
 /*On page loaded*/
 function main()
@@ -35,7 +35,6 @@ function main()
 	console.log(MapData);
 
 	intializeTabs();
-	initializeMap();
 	initializeCapture();
 	initializeFarm();
 	initializeTeamchanger();
@@ -52,6 +51,9 @@ function main()
 		if (e.touches.length > 1) 
 			e.preventDefault();
 	});
+	
+	
+	initializeMap();
 }
 
 function intializeTabs()
@@ -83,9 +85,11 @@ function transformUsersCountInTeams()
 
 function transformTeamsColor()
 {
+	ColorMap[0] = new Color(255, 255, 255);
 	for (let teamId in TeamsData) {
 		let team = TeamsData[teamId];
 		team.color = new Color(team.color.r, team.color.g, team.color.b);
+		ColorMap[teamId] = team.color;
 	}
 }
 

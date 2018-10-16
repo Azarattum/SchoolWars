@@ -13,5 +13,6 @@ html, body {
 }
 
 body {
-	position: relative
+	position: relative;
+	background-color: rgb(13,13,13);
 }

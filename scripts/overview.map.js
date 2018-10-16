@@ -27,7 +27,7 @@ function initializeMap()
 	calcDrawingSettings();
 	
 	drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
-	//drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
+	drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
 	updateMap();
 }
 
@@ -133,7 +133,8 @@ function updateMap()
 		}
 
 		setTimeout(function() {
-			updateMap();
+			if (!IsEnding)
+				updateMap();
 		}, 300);
 	});
 }

@@ -15,8 +15,8 @@ function initializeCapture()
 	$(".capture-button").click(function(event) {
 		if (PointsToCapture) {
 			if (Points - PointsToCapture >= 0) {
-				if (HighlightedCell)
-					captureCell(HighlightedCell);
+				if (Field.SelectedCell)
+					captureCell(+Field.SelectedCell);
 			}
 		}
 
@@ -56,7 +56,7 @@ function writeCapturePossibility()
 
 function showCapturePossibility()
 {
-	if ( checkСellForCapture(HighlightedCell) ) {
+	if ( checkСellForCapture(Field.SelectedCell) ) {
 		$(".capture-screen").css("transform", "translateY(-100%)");
 	} else
 		$(".capture-screen").css("transform", "translateY(0)");
@@ -65,7 +65,7 @@ function showCapturePossibility()
 function captureCell(id)
 {
 	//Checking
-	if ( !checkСellForCapture(id) )
+	if (!checkСellForCapture(id) )
 		return false;
 
 	if (Points - PointsToCapture < 0)
@@ -73,9 +73,7 @@ function captureCell(id)
 
 	let cellHolder = MapData[id].holder;
 
-	HighlightedX = null;
-	HighlightedY = null;
-	HighlightedCell = null;
+	Field.Select();
 
 	$(".capture-screen").css("transform", "translateY(0)");
 
@@ -98,16 +96,16 @@ function captureCell(id)
 			$.cookie("points", Points);
 			writeCapturePossibility();
 
-			initializeCanvas();
-			drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
+			Field.ParseCells(MapData, TeamsData);
+			Field.Render();
 		}
 	});
 
 	let team = UserData.teamId;
-	MapData[id]['holder'] = team;
+	MapData[id]["holder"] = team;
 
-	initializeCanvas();
-	drawMap(Ctx, OffsetX, OffsetY, HexagonSize);
+	Field.ParseCells(MapData, TeamsData);
+	Field.Render();
 }
 
 function checkСellForCapture(id)

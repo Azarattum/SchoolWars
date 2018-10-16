@@ -8,12 +8,34 @@ class Color
     	this.A = a;
   	}
 	
+	saturate(value)
+	{
+		let r,g,b;
+		var gray = 0.2989*this.R + 0.5870*this.G + 0.1140*this.B; //Weights from CCIR 601 spec
+		r = -gray * value + this.R * (1+value);
+		g = -gray * value + this.G * (1+value);
+		b = -gray * value + this.B * (1+value);
+		if(r > 255) r = 255;
+		if(g > 255) g = 255;
+		if(b > 255) b = 255;
+		if(r < 0) r = 0;
+		if(g < 0) g = 0;
+		if(b < 0) b = 0;
+		
+		return new Color(r, g, b);
+	}
+	
+	alpha(value)
+	{
+		return new Color(this.R, this.G, this.B, value);
+	}
+	
 	toString()
 	{
 		if (this.A == undefined)
-			return "rgb("+this.R+","+this.G+","+this.B+")";
+			return "rgb("+Math.round(this.R)+","+Math.round(this.G)+","+Math.round(this.B)+")";
 		else
-			return "rgba("+this.R+","+this.G+","+this.B+","+this.A+")";
+			return "rgba("+Math.round(this.R)+","+Math.round(this.G)+","+Math.round(this.B)+","+this.A+")";
 	}
 	
 	static isColor(object)

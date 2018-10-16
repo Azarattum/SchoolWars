@@ -5,25 +5,29 @@
 }
 
 #map {
-	position: relative;
+	position: absolute;
+	left: 0px;
+	top: 0px;
 
-	width: 100%;
+	width: 100vw;
 	height: 100%;
 
-	background: transparent;
+	background-color: rgb(0,0,0);
 
 	z-index: 2;
 }
 
-#map-background {
-	position: relative;
-	/*КОСТЫЛЬ*/
-	top: -100%;
+#map-text {
+	position: absolute;
+	left: 0px;
+	top: 0px;
 
-	width: 100%;
+	width: 100vw;
 	height: 100%;
 
-	z-index: 1;
+	background-color: rgba(0,0,0,0);
+
+	z-index: 3;
 }
 
 .capture-screen {
