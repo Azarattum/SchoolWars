@@ -21,6 +21,7 @@ class GameField
 	
 	constructor(canvas, textCanvas, background, colorMap)
 	{
+		this._Loaded = false;
 		this.SelectedCell = null;
 		this.DraggingEase = 0.6;
 		this._Canvas = canvas;
@@ -41,11 +42,10 @@ class GameField
 		this._Map = new Map(colorMap);
 		//Register onload event
 		let gameField = this;
-		this._Loaded = false;
 		this._Map.onload = function() {
 			gameField._Loaded = true;
 			if (gameField.onload)
-				gameField.onload();
+				setTimeout(function(){gameField.onload();}, 10);
 		}
 	}
 	
@@ -63,26 +63,6 @@ class GameField
 		this.X += targetX;
 		this.Y += targetY;
 		this.Render();
-		/*clearInterval(this._DraggingTimer);
-		
-		var field = this;
-		this._DraggingTimer = setInterval(function() 
-		{
-			if (targetX && targetY) 
-			{
-				field.X = field.X + field.DraggingEase * (targetX - field.X);
-				field.Y = field.Y + field.DraggingEase * (targetY - field.Y);
-				field.Render();
-			}
-			//Stop dragging
-			if ((field.X - targetX) < 1 && (field.Y - targetY) < 1)
-			{
-				field.X = targetX;
-				field.Y = targetY;
-				clearInterval(field._DraggingTimer);
-				console.log("END!");
-			}
-		}, 1000/30);*/
 	}
 	
 	ParseCells(cells, spawns)
@@ -249,7 +229,7 @@ class Cell
 		this.X = x;
 		this.Y = y;
 		this.Holder = holder? holder: 0;
-		this.Value = value? value: 1;
+		this.Value = value || value === 0? value: 1;
 		this.IsSpawn = isSpawn? isSpawn: false;
 		this.IsSelected = isSelected? isSelected: false;
 	}
@@ -284,10 +264,13 @@ class Cell
 			return;
 		
 		//Draw shape
+		let image = imageMap.images[this.Holder][this.IsSpawn][this.IsSelected];
+		if (!image || image.height <= 1 || image.width <= 1)
+			return;
 		ctx.drawImage(
 			imageMap.images[this.Holder][this.IsSpawn][this.IsSelected],
 			x - w/2, y - h/2, w, h);
-		
+
 		//Draw text
 		tctx.fillStyle = this.IsSelected ? 
 			(this.Holder == 0?new Color(13,13,13): new Color(255,255,250))

@@ -25,6 +25,7 @@ function main()
 
 	initializeTeams();
 	initializeMap();
+	initializeTimer();
 
 	console.log(TeamsData);
 	console.log(UsersCountInTeams);

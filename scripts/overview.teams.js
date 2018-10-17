@@ -138,6 +138,8 @@ function createInlineSVGs()
 				svg.attr("viewBox", "0 0 " + svg.attr("height") + " " + svg.attr("width"))
 			}
 
+			svg[0].style.backgroundImage = "none";
+			
 			// Replace image with new SVG
 			img.replaceWith(svg);
 			

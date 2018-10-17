@@ -278,7 +278,7 @@
         if ((gl2d.options.force || context === "webgl-2d") && !(canvas.width === 0 || canvas.height === 0)) {
           if (gl2d.gl) { return gl2d.gl; }
 
-          var gl = gl2d.gl = gl2d.canvas.$getContext("experimental-webgl");
+          var gl = gl2d.gl = gl2d.canvas.$getContext("webgl") || gl2d.canvas.$getContext("experimental-webgl");
 
           gl2d.initShaders();
           gl2d.initBuffers();
@@ -1075,7 +1075,10 @@
       transform.popMatrix();
     };
 
-    gl.clearRect = function clearRect(x, y, width, height) {};
+    gl.clearRect = function clearRect() {
+		gl.clearColor(0, 0, 0, 0);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+	};
 
     var subPaths = [];
 
