@@ -52,7 +52,6 @@ function main()
 			e.preventDefault();
 	});
 	
-	
 	initializeMap();
 }
 
@@ -166,5 +165,5 @@ function renderUserData()
 	
 	$(".loader").animate({opacity: 0}, 1200, function(){
 		$(".loader").remove();
-	})
+	});
 }

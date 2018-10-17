@@ -1075,7 +1075,10 @@
       transform.popMatrix();
     };
 
-    gl.clearRect = function clearRect(x, y, width, height) {};
+    gl.clearRect = function clearRect() {
+		gl.clearColor(0, 0, 0, 0);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+	};
 
     var subPaths = [];
 
