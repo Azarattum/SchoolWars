@@ -51,8 +51,7 @@
 		{
 			$query = "CREATE TABLE IF NOT EXISTS sw_users(
 				id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				team TINYINT,
-				clicks_count INT DEFAULT 0
+				team TINYINT
 			)";
 
 			$this->query($query);
