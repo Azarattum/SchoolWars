@@ -249,7 +249,7 @@ class Cell
 		this.X = x;
 		this.Y = y;
 		this.Holder = holder? holder: 0;
-		this.Value = value? value: 1;
+		this.Value = value || value === 0? value: 1;
 		this.IsSpawn = isSpawn? isSpawn: false;
 		this.IsSelected = isSelected? isSelected: false;
 	}

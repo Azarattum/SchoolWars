@@ -1,8 +1,38 @@
+.timer-icon {
+	position: absolute;
+	left: 8px;
+	
+	height: 48px !important;
+	width: 48px !important;
+	
+	background-image: url("../assets/timer.svg");
+}
+
 .timer-holder {
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	left: 0px;
+	top: 64px;
 	
+	height: 64px;
+	width: 160px;
 	
+	display: flex;
+	align-items: center;
 	
+	border-bottom-right-radius: 32px;
+	background-color: rgb(0,0,0,0.2);
+	
+	z-index: 100;
+}
+
+.timer {
+	position: relative;
+	left: 64px;
+	text-indent: 8px;
+	color: rgb(255,255,250);
+	
+	font-size: 32px;
+	line-height: 100%;
+	
+	text-shadow: 0px 0px 8px black;
 }
