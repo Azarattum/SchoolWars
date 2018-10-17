@@ -14,7 +14,13 @@ function initializeTimer()
 		if (seconds.length <= 1)
 			seconds = "0" + seconds;
 		
-		$(".timer").text(minutes + ":" + seconds);		
+		if (TimeLeft >= 0)
+			$(".timer").text(minutes + ":" + seconds);	
+		else
+		{
+			$(".timer").text("0:00");	
+			$(".timer").css("color","rgb(240,30,20)");	
+		}	
 		TimeLeft--;
 	}, 1000);
 }
