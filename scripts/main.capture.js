@@ -15,7 +15,7 @@ function initializeCapture()
 	$(".capture-button").click(function(event) {
 		if (PointsToCapture) {
 			if (Points - PointsToCapture >= 0) {
-				if (Field.SelectedCell)
+				if (Field.SelectedCell || Field.SelectedCell === 0)
 					captureCell(+Field.SelectedCell);
 			}
 		}

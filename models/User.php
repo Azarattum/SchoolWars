@@ -31,7 +31,7 @@
 		private function register()
 		{
 			//New player
-			$query = "INSERT INTO sw_users (id, team, clicks_count) VALUES (NULL, NULL, DEFAULT)";
+			$query = "INSERT INTO sw_users (id, team) VALUES (NULL, NULL)";
 			$this->query($query);
 
 			//Last id
