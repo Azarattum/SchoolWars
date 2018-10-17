@@ -9,6 +9,7 @@
 //UsersCountInTeams - инфа о кол-ве игроков в командах ([teamId: count, ...])
 //MapData - инфа всех клеток карты ([id0, id1...])
 var Swiper;
+var GameStatus = true;
 
 if (!UsersCountInTeams)
 	var UsersCountInTeams = {};
@@ -38,6 +39,7 @@ function main()
 	initializeCapture();
 	initializeFarm();
 	initializeTeamchanger();
+	getGameStatus();
 
 	renderUserData();
 
@@ -133,6 +135,21 @@ function createInlineSVGs()
 			
 			renderUserData();
 		}, "xml");
+	});
+}
+
+function getGameStatus()
+{
+	request("get_game_status", function(data) {
+		if (!data) {
+			GameStatus = false;
+			startEnd();
+		}
+
+		setTimeout(function() {
+			if (GameStatus)
+				getGameStatus();
+		}, 1000);
 	});
 }
 

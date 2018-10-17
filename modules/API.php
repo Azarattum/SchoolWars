@@ -10,6 +10,14 @@
 	}
 
 	//-------------------- functions for all pages
+	function get_game_status()
+	{
+		requestable;
+
+		$status = file_get_contents("../status.txt");
+		return $status === "true";
+	}
+
 	function count_users_in_teams()
 	{
 		requestable;
@@ -63,5 +71,17 @@
 		$result = $map->capture_cell($cell_id);
 
 		return $result;
+	}
+
+	//-------------------- functions only for main page
+	function start_end($pass)
+	{
+		requestable;
+
+		if ($pass !== "lalka")
+			return false;
+
+		$status = file_put_contents("../status.txt", "false");
+		return true;
 	}
 ?>

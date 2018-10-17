@@ -35,7 +35,7 @@ function calcPointsToCapture()
 		return false;
 
 	let userCount = UsersCountInTeams[UserData.teamId];
-	PointsToCapture = 5 + userCount*2;
+	PointsToCapture = 4 + userCount;
 
 	$(".points").text(Points+"/"+PointsToCapture);
 	$(".cost").text(PointsToCapture);

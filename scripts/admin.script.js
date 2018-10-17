@@ -23,6 +23,8 @@ function main()
 
 	$("body").css("background-color", "white");
 
+	setScript("modules/API.php");
+
 	Promter = new AdminPromter();
 	console.log(Promter);
 

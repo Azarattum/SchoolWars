@@ -15,7 +15,7 @@ function startEnd()
 		clearMap(function() {
 			setTimeout(function() {
 				$("body").css("background-color", "rgb(13,13,13)");
-				$("body").html("");
+				$("body").html("<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/VpZM5EKanio?rel=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>");
 			}, 2600);
 		});
 	}, 2500);
@@ -26,20 +26,29 @@ function clearMap(callback)
 	var Lenght;
 	for (let i in MapData)
 		Lenght = i;
+
 	setTimeout( function() {
 		var cell = 0;
 		var clearingTimer = setInterval(function() {
-			if (cell > Lenght)
-			{
+			if (cell > Lenght) {
 				clearInterval(clearingTimer);
+
 				if (callback)
 					callback();
+
 				return;
 			}
 				
 			MapData[cell].holder = 0;
-			Field.ParseCells(MapData, TeamsData);
-			Field.Render();
+
+			if (window.Field == undefined) {
+				initializeCanvas();
+				drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
+			} else {
+				Field.ParseCells(MapData, TeamsData);
+				Field.Render();
+			}
+
 			cell++;
 		}, 100);
 	}, 2000);

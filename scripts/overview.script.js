@@ -12,6 +12,7 @@ if (!UsersCountInTeams)
 	var UsersCountInTeams = {};
 
 var TeamsTerritoryCount = {};
+var GameStatus = true;
 
 //Disabling excess functions
 document.ondragstart = function() {return false};
@@ -29,4 +30,20 @@ function main()
 	console.log(UsersCountInTeams);
 	console.log(MapData);
 
+	getGameStatus();
+}
+
+function getGameStatus()
+{
+	request("get_game_status", function(data) {
+		if (!data) {
+			GameStatus = false;
+			startEnd();
+		}
+
+		setTimeout(function() {
+			if (GameStatus)
+				getGameStatus();
+		}, 1000);
+	});
 }

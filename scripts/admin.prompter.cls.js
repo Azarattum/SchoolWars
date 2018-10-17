@@ -67,7 +67,12 @@ class AdminPromter
 			if (!check)
 				return false;
 
-			alert("starting the end...");
+			request("start_end", ["lalka"], function(data) {
+				if (data)
+					alert("End starting...");
+				else
+					alert("Fail");
+			});
 		});
 	}
 }
