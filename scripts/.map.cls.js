@@ -62,6 +62,7 @@ class GameField
 	{
 		this.X += targetX;
 		this.Y += targetY;
+		
 		this.Render();
 	}
 	
@@ -124,8 +125,8 @@ class Map
 	{
 		//Define sizes
 		let size = camera.Zoom * 64;
-		let w = Math.sqrt(3) * (size + 3);
-		let h = 2 * (size + 3);
+		let w = Math.sqrt(3) * (size + (size / 5.5));
+		let h = 2 * (size + (size / 5.5));
 		
 		//Find cell
 		let cellY = Math.round((y - camera.Y) / (h * (3 / 4) + 3));
@@ -250,8 +251,8 @@ class Cell
 	Render(ctx, tctx, camera, imageMap)
 	{
 		let size = camera.Zoom * 64;
-		var w = Math.sqrt(3) * (size + 3);
-		var h = 2 * (size + 3);
+		var w = Math.sqrt(3) * (size + (size / 5.5));
+		var h = 2 * (size + (size / 5.5));
 		
 		let x = (this.X * (w + 3)) + (this.Y % 2 == 1 ? w/2 : 0) + camera.X;
 		let y = this.Y * (h * (3 / 4) + 3) + camera.Y;
@@ -285,9 +286,9 @@ class Camera
 	{
 		this.Width = width;
 		this.Height = height;
-		this.X = 0;
-		this.Y = 0;
-		this.Zoom = 1;
+		this.X = 50;
+		this.Y = 50;
+		this.Zoom = 0.5;
 	}
 }
 
@@ -300,10 +301,12 @@ class Background
 	{
 		this.Image = image;
 		this._Calibration = {
-			X: 0,
-			Y: 0,
-			Zoom: 2
+			X: -245,
+			Y: -242,
+			Zoom: 1.695999999999998
 		}
+		this.Width = this._Calibration.Zoom * this.Image.Width;
+		this.Height = this._Calibration.Zoom * this.Image.Height;
 	}
 	
 	Render(ctx, camera)
@@ -322,8 +325,8 @@ class Background
 		let zoom = this._Calibration.Zoom * camera.Zoom;
 		sx = Math.max(sx / zoom, 0);
 		sy = Math.max(sy / zoom, 0);
-		let width = Math.min(camera.Width, this.Image.width - sx);
-		let height = Math.min(camera.Height, this.Image.height - sy);
+		let width = Math.min(camera.Width, (this.Image.width - sx));
+		let height = Math.min(camera.Height, (this.Image.height - sy));
 		
 		ctx.drawImage(
 			this.Image, //Image

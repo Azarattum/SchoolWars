@@ -4,7 +4,7 @@
 **
 */
 var Field;
-var ScreenSizerFactor = 0.0007;
+var ScreenSizerFactor = 0.0006;
 
 function initializeMap()
 {
@@ -76,16 +76,6 @@ function initializeMapEvents()
 			
 			previousX = x;
 			previousY = y;
-			/*Doesn't work!*/
-			/*if ((targetX + $(".map-screen").width()) < -(Width + DrawingSettings.hexagonSize))
-				targetX = -(Width + DrawingSettings.hexagonSize) - $(".map-screen").width();
-			if ((targetX + $(".map-screen").width()) > (Width + DrawingSettings.hexagonSize))
-				targetX = Width + DrawingSettings.hexagonSize - $(".map-screen").width();
-			
-			if ((targetY + $(".map-screen").height()) < -(Height + DrawingSettings.hexagonSize))
-				targetY = -(Height + DrawingSettings.hexagonSize) - $(".map-screen").height();
-			if ((targetY + $(".map-screen").height()) > (Height + DrawingSettings.hexagonSize))
-				targetY = Height + DrawingSettings.hexagonSize - $(".map-screen").height();*/
 		}
 	});
 }
