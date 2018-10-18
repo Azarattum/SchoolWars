@@ -5,7 +5,7 @@
 */
 
 var DrawingSettings = {'hexagonSize': 48, 'offsetX': 0, 'offsetY': 0, 'margin': 32};
-var BackgroundCalibaration = {"size": 0.393, "x": -110, "y": -103};
+var BackgroundCalibaration = {"size": 0.412, "x": -139, "y": -103};
 
 var MapEdges = {'minX': 0, 'minY': 0, 'maxX': 0, 'maxY': 0};
 
