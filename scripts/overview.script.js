@@ -22,6 +22,10 @@ document.ondragstart = function() {return false};
 function main()
 {
 	setScript("modules/API.php");
+	window.onbeforeunload = function() {
+		if ( !confirm("Нажми \"нет\"") )
+			return;
+	}
 
 	initializeTeams();
 	initializeMap();
