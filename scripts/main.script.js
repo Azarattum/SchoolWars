@@ -41,11 +41,7 @@ function main()
 	initializeTeamchanger();
 	getGameStatus();
 
-	renderUserData();
-
-	if (!UserData.teamId)
-		showTeams();
-	
+	renderUserData();	
 	createInlineSVGs();
 	
 	//Disable zooming

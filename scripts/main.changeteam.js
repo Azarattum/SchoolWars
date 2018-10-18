@@ -59,7 +59,7 @@ function showTeams()
 		window.setTimeout(function(){
 			showAvailableTeams()
 		}, 500);
-	}, 600);
+	}, 400);
 }
 
 function showAvailableTeams()

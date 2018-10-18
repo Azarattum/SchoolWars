@@ -22,6 +22,8 @@ function initializeMap()
 			//End loading
 			$(".loader").animate({opacity: 0}, 1200, function(){
 				$(".loader").remove();
+				if (!UserData.teamId)
+					showTeams();
 			});
 		}, 300);
 	};
