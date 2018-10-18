@@ -330,7 +330,8 @@
 
 
   // Fragment shader source
-  WebGL2D.prototype.getFragmentShaderSource = function getFragmentShaderSource(sMask) {
+  WebGL2D.prototype.getFragmentShaderSource = function getFragmentShaderSource(sMask, setColor) {
+	setColor = setColor?setColor:false;
     var fsSource = [
       "#ifdef GL_ES",
         "precision highp float;",
@@ -338,6 +339,7 @@
 
       "#define hasTexture " + ((sMask&shaderMask.texture) ? "1" : "0"),
       "#define hasCrop " + ((sMask&shaderMask.crop) ? "1" : "0"),
+      "#define setColor " + (setColor ? "1" : "0"),
 
       "varying vec4 vColor;",
 
@@ -354,7 +356,11 @@
           "#if hasCrop",
             "gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.x * uCropSource.z, vTextureCoord.y * uCropSource.w) + uCropSource.xy);",
           "#else",
-            "gl_FragColor = texture2D(uSampler, vTextureCoord);",
+		    "#if setColor",
+              "gl_FragColor = vec4(vColor.r,vColor.g,vColor.b,texture2D(uSampler, vTextureCoord).a);",
+			"#else",
+			  "gl_FragColor = texture2D(uSampler, vTextureCoord);",
+			"#endif",
           "#endif",
         "#else",
           "gl_FragColor = vColor;",
@@ -407,7 +413,7 @@
 
 
   // Initialize fragment and vertex shaders
-  WebGL2D.prototype.initShaders = function initShaders(transformStackDepth,sMask) {
+  WebGL2D.prototype.initShaders = function initShaders(transformStackDepth,sMask,setColor) {
     var gl = this.gl;
 
     transformStackDepth = transformStackDepth || 1;
@@ -423,7 +429,7 @@
       return storedShader;
     } else {
       var fs = this.fs = gl.createShader(gl.FRAGMENT_SHADER);
-      gl.shaderSource(this.fs, this.getFragmentShaderSource(sMask));
+      gl.shaderSource(this.fs, this.getFragmentShaderSource(sMask,setColor));
       gl.compileShader(this.fs);
 
       if (!gl.getShaderParameter(this.fs, gl.COMPILE_STATUS)) {
@@ -1255,6 +1261,9 @@
       var sMask = shaderMask.texture;
       var doCrop = false;
 
+	  if (image.color)
+		var setColor = true;
+	  
       //drawImage(image, dx, dy)
       if (arguments.length === 3) {
         transform.translate(a, b);
@@ -1275,7 +1284,7 @@
         doCrop = true;
       }
 
-      var shaderProgram = gl2d.initShaders(transform.c_stack, sMask);
+      var shaderProgram = gl2d.initShaders(transform.c_stack, sMask, setColor);
 
       var texture, cacheIndex = imageCache.indexOf(image);
 
@@ -1296,6 +1305,9 @@
       gl.activeTexture(gl.TEXTURE0);
 
       gl.uniform1i(shaderProgram.uSampler, 0);
+	  
+	  if (image.color)
+		gl.uniform4f(shaderProgram.uColor, image.color.R / 255,  image.color.G / 255,  image.color.B / 255, 1.);
 
       sendTransformStack(shaderProgram);
       gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);

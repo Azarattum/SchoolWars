@@ -162,38 +162,27 @@ class Map
 		if (!colorMap)
 			return;
 		
-		let imagesCount = colorMap.length * 4;
+		let imagesCount = 4;
 		let loadedImages = 0;
 		let map = this;
 		
 		setTimeout(function() 
 		{
 			let svg = $($.parseXML(HEXAGON)).find("svg");
-			
 			map._ImageMap = {color:[], images:[[]]};
+			
 			for (let holder in colorMap)
-			{
-				let color = colorMap[holder];
-				map._ImageMap.color[holder] = color;
-				map._ImageMap.images[holder] = {false: [], true: []};
-				//Normal
-				map._ImageMap.images[holder][false][false] = createImage(
-					svg, color.alpha(0.3), 5);
-				//Spawn
-				map._ImageMap.images[holder][true][false] = createImage(
-					svg, color.alpha(0.3), 15, new Color(255,255,250));
-				//Selected normal
-				map._ImageMap.images[holder][false][true] = createImage(
-					svg, color.alpha(0.9), 5);
-				//Selected spawn
-				map._ImageMap.images[holder][true][true] = createImage(
-					svg, color.alpha(0.9), 15, new Color(255,255,250));
-			}
+				map._ImageMap.color[holder] = colorMap[holder];
+			
+			let color = new Color(0,0,0);
+			map._ImageMap.images[0] = createImage(svg, color.alpha(0.3), 5);
+			map._ImageMap.images[1] = createImage(svg, color.alpha(0.3), 15);
+			map._ImageMap.images[2] = createImage(svg, color.alpha(0.9), 5);
+			map._ImageMap.images[3] = createImage(svg, color.alpha(0.9), 15);
 		}, 0);
 		
 		function createImage(svg, color, strokeWidth, strokeColor)
 		{
-			strokeColor = strokeColor? strokeColor : color.alpha(1);
 			let customSvg = svg.clone();
 			customSvg.attr("width", 
 				(+(customSvg.attr("width").replace("px", "")) + strokeWidth) + "px");
@@ -203,7 +192,7 @@ class Map
 				"translate("+(strokeWidth/2)+","+(strokeWidth/2)+")");
 			
 			customSvg.find("#hexagon-path").attr("fill", color.toString());
-			customSvg.find("#hexagon-path").attr("stroke", strokeColor.toString());
+			customSvg.find("#hexagon-path").attr("stroke", color.alpha(1).toString());
 			customSvg.find("#hexagon-path").attr("stroke-width", strokeWidth);
 			
 			let image = new Image();
@@ -261,12 +250,11 @@ class Cell
 			return;
 		
 		//Draw shape
-		let image = imageMap.images[this.Holder][this.IsSpawn][this.IsSelected];
+		let image = !this.IsSelected?(!this.IsSpawn?imageMap.images[0] : imageMap.images[1]) : (!this.IsSpawn?imageMap.images[2] : imageMap.images[3]);
 		if (!image || image.height <= 1 || image.width <= 1)
 			return;
-		ctx.drawImage(
-			imageMap.images[this.Holder][this.IsSpawn][this.IsSelected],
-			x - w/2, y - h/2, w, h);
+		image.color = imageMap.color[this.Holder];
+		ctx.drawImage(image, x - w/2, y - h/2, w, h);
 
 		//Draw text
 		tctx.fillStyle = this.IsSelected ? 
