@@ -19,7 +19,7 @@ class GameField
 		public SelectedCell - Represents selected cell's id
 	*/
 	
-	constructor(canvas, textCanvas, background, colorMap)
+	constructor(canvas, textCanvas, background, map)
 	{
 		this._Loaded = false;
 		this.SelectedCell = null;
@@ -39,11 +39,12 @@ class GameField
 		this._Context = this._Canvas.getContext("webgl-2d");
 		this._TextContext = this._TextCanvas.getContext("2d");
 		this._Backgorund = new Background(background);
-		this._Map = new Map(colorMap);
+		this._Map = map;//new Map(colorMap);
+		this._Loaded = true;
 		//Register onload event
 		let gameField = this;
 		this._Map.onload = function() {
-			gameField._Loaded = true;
+			gameField
 			if (gameField.onload)
 				setTimeout(function(){gameField.onload();}, 10);
 		}

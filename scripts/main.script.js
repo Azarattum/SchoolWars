@@ -179,8 +179,4 @@ function renderUserData()
 	}
 	
 	colorButtons();
-	
-	$(".loader").animate({opacity: 0}, 1200, function(){
-		$(".loader").remove();
-	});
 }
