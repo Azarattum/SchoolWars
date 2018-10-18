@@ -23,7 +23,8 @@ var ColorMap = [];
 function main()
 {
 	function reorient(e) {
-		if (!IsEnding)
+		let portrait = (window.orientation % 180 == 0);
+		if (!IsEnding && !portrait)
 			alert("Переверни телефон, балбес!");
 	}
 	window.onorientationchange = reorient;

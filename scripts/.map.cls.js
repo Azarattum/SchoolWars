@@ -48,6 +48,7 @@ class GameField
 	{
 		if (this._Loaded)
 		{
+			this._Context.flush();
 			this._Backgorund.Render(this._Context, this._Camera);
 			this._Map.Render(this._Context, this._TextContext, this._Camera);
 		}
