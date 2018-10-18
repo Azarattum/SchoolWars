@@ -15,7 +15,7 @@ function startEnd()
 		clearMap(function() {
 			setTimeout(function() {
 				$("body").css("background-color", "rgb(13,13,13)");
-				$("body").html("<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/VpZM5EKanio?autoplay=1&amp;rel=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>");
+				$("body").html("<iframe width=\"100%\" height=\"100%\" style=\"position: absolute;left:0px;top:0px;width:100vw;height:100vh;\" src=\"https://www.youtube.com/embed/VpZM5EKanio?autoplay=1&amp;rel=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>");
 			}, 2600);
 		});
 	}, 2500);
