@@ -3,7 +3,7 @@
 **  Fake timer script.
 **
 */
-var TimeLeft = 300;
+var TimeLeft = 420;
 
 /*On page loaded*/
 function initializeTimer()
