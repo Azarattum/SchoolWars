@@ -285,9 +285,9 @@ class Background
 	{
 		this.Image = image;
 		this._Calibration = {
-			X: -245,
-			Y: -242,
-			Zoom: 1.695999999999998
+			X: -298,
+			Y: -225,
+			Zoom: 1.787
 		}
 		this.Width = this._Calibration.Zoom * this.Image.Width;
 		this.Height = this._Calibration.Zoom * this.Image.Height;
