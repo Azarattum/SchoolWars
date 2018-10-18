@@ -1,10 +1,4 @@
-const HEXAGON = `<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Frame_0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256px" height="294px">
-<g id="hexagon">
-<path id="hexagon-path" stroke="#f00fffa" stroke-width="0" fill="#00fffa4c" d="M 128.000 0.000 C 85.370 24.501 42.741 49.001 0.110 73.500 C 0.111 122.500 0.111 171.500 0.110 220.500 C 42.741 244.999 85.370 269.499 128.000 294.000 C 170.630 269.499 213.259 244.999 255.890 220.500 C 255.889 171.500 255.889 122.500 255.890 73.500 C 213.259 49.001 170.630 24.501 128.000 0.000 Z"/>
-</g>
-</svg>`;
+const HEXAGON = `<?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="frame" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256px" height="294px"><g id="hexagon"><path id="hexagon-path" stroke="#f00fffa" stroke-width="0" fill="#00fffa4c" d="M 128.000 0.000 C 85.370 24.501 42.741 49.001 0.110 73.500 C 0.111 122.500 0.111 171.500 0.110 220.500 C 42.741 244.999 85.370 269.499 128.000 294.000 C 170.630 269.499 213.259 244.999 255.890 220.500 C 255.889 171.500 255.889 122.500 255.890 73.500 C 213.259 49.001 170.630 24.501 128.000 0.000 Z"/></g></svg>`;
 
 class GameField
 {
@@ -212,11 +206,11 @@ class Map
 			customSvg.find("#hexagon-path").attr("stroke-width", strokeWidth);
 			
 			let image = new Image();
-			image.src = "data:image/svg+xml," + escape(customSvg[0].outerHTML);
+			image.src = "data:image/svg+xml;base64," + btoa(customSvg[0].outerHTML);
 			image.onload = function() {
 				loadedImages++
 				if (loadedImages >= imagesCount && map.onload)
-					map.onload();
+					setTimeout(function(){map.onload();}, 200);
 			};
 			return image;
 		}

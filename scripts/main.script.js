@@ -22,6 +22,13 @@ var ColorMap = [];
 /*On page loaded*/
 function main()
 {
+	function reorient(e) {
+		if (!IsEnding)
+			alert("Переверни телефон, балбес!");
+	}
+	window.onorientationchange = reorient;
+	window.setTimeout(reorient, 0);
+	
 	setScript("modules/API.php");
 
 	if ($.cookie("points"))
