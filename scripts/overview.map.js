@@ -5,7 +5,7 @@
 */
 
 var DrawingSettings = {'hexagonSize': 48, 'offsetX': 0, 'offsetY': 0, 'margin': 32};
-var BackgroundCalibaration = {'size': 1, 'x': -500, 'y': -300};
+var BackgroundCalibaration = {"size": 0.393, "x": -110, "y": -103};
 
 var MapEdges = {'minX': 0, 'minY': 0, 'maxX': 0, 'maxY': 0};
 
@@ -15,6 +15,7 @@ var Width;
 var Ctx;
 var BackCanvas;
 var BackCtx;
+var CellMarginFactor = 9;
 
 
 function initializeMap()
@@ -59,9 +60,9 @@ function initializeEvents()
 		initializeBackCanvas();
 
 		calcDrawingSettings();
-
+	
 		drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
-		//drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
+		drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
 	});
 }
 
@@ -105,9 +106,9 @@ function calcDrawingSettings()
 	DrawingSettings.hexagonSize = hexagonSize;
 
 	// половина разности ширины холста и ширины всех клеток
-	DrawingSettings.offsetX = ( Canvas.width - (mapWidth + 1 + 1/2)*Math.sqrt(3)*(hexagonSize + 3) ) / 2;
+	DrawingSettings.offsetX = ( Canvas.width - (mapWidth + 1 + 1/2)*Math.sqrt(3)*(hexagonSize + (hexagonSize / CellMarginFactor)) ) / 2;
 	// половина разности высоты холста и высоты всех клеток
-	DrawingSettings.offsetY = ( Canvas.height - (mapHeight*3/4 + 1/2 + 1/2)*2*(hexagonSize + 3) ) / 2;
+	DrawingSettings.offsetY = ( Canvas.height - (mapHeight*3/4 + 1/2 + 1/2)*2*(hexagonSize + (hexagonSize / CellMarginFactor)) ) / 2;
 }
 
 function updateMap()
@@ -129,6 +130,7 @@ function updateMap()
 			if (changed) {
 				calcTeamsTerritory(); //update teams territory count
 				drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
+				drawBackground(BackCtx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
 			}
 		}
 
@@ -144,8 +146,8 @@ function drawMap(ctx, offsetX, offsetY, hexagonSize)
 	offsetX = (offsetX == undefined) ? 0 : offsetX;
 	offsetY = (offsetY == undefined) ? 0 : offsetY;
 	
-	let w = Math.sqrt(3) * (hexagonSize + 3);
-	let h = 2 * (hexagonSize + 3);
+	let w = Math.sqrt(3) * (hexagonSize + (hexagonSize / CellMarginFactor));
+	let h = 2 * (hexagonSize + (hexagonSize / CellMarginFactor));
 	
 	ctx.clearRect(0, 0, $(document).width(), $(document).height());
 	
@@ -209,19 +211,21 @@ function drawHexagon(ctx, x, y, color, hexagonSize, isSpawn)
 function drawBackground(ctx, offsetX, offsetY, hexagonSize)
 {
 	let image = document.getElementById("background");
-	let w = Math.sqrt(3) * (hexagonSize + 3);
-	let h = 2 * (hexagonSize + 3);
+	let w = Math.sqrt(3) * (hexagonSize + (hexagonSize / CellMarginFactor));
+	let h = 2 * (hexagonSize + (hexagonSize / CellMarginFactor));
 	
 	ctx.clearRect(0, 0, $(document).width(), $(document).height());
 
-	ctx.globalAlpha = 0.42; //TEMP
+	let zoom = hexagonSize / 16 * BackgroundCalibaration.size;
+	let width = image.width * zoom;
+	let height = image.height * zoom;
 	//Drawing background
 	ctx.drawImage(
 		image,
-		offsetX - w + BackgroundCalibaration.x,
-		offsetY - h + BackgroundCalibaration.y,
-		image.width * hexagonSize / 16 * BackgroundCalibaration.size,
-		image.height * hexagonSize / 16 * BackgroundCalibaration.size
+		offsetX + (BackgroundCalibaration.x * zoom) + hexagonSize,
+		offsetY + (BackgroundCalibaration.y * zoom) + hexagonSize,
+		width,
+		height
 	);
 }
 

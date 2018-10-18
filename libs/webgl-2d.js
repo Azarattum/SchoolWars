@@ -289,7 +289,7 @@
           gl.viewport(0, 0, gl2d.canvas.width, gl2d.canvas.height);
 
           // Default white background
-          gl.clearColor(1, 1, 1, 1);
+          gl.clearColor(0.051, 0.051, 0.051, 1);
           gl.clear(gl.COLOR_BUFFER_BIT); // | gl.DEPTH_BUFFER_BIT);
 
           // Disables writing to dest-alpha
