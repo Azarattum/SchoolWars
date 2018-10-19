@@ -30,8 +30,9 @@ function clearMap(callback)
 	setTimeout( function() {
 		var cell = 0;
 		var prevTime = new Date().getTime();
-		var clearingTimer = setInterval(function() {
-			let cellsToClear = Math.floor((new Date().getTime() - prevTime) / 100);
+		var clearingTimer = setInterval(function() {			
+			let cellsToClear = Math.floor((new Date().getTime() - prevTime) / 40);
+			prevTime = new Date().getTime();
 			for (let i = 0; i < cellsToClear; i++)
 			{
 				MapData[cell].holder = 0;
