@@ -152,6 +152,10 @@ function changeTeam(newTeamId)
 	request("change_team", [newTeamId], function(data) {
 		if (data) {
 			UserData.teamId = newTeamId;
+
+			if ( Field._Camera.FocusOnSpawn(newTeamId) )
+				Field.Render();
+			
 			showCapturePossibility();
 		} else {
 			//$("#"+newTeamId).css({"flex-grow": "1", "height": "auto"});

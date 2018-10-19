@@ -9,24 +9,34 @@ var ScreenSizerFactor = 0.0006;
 function initializeMap()
 {
 	let map = new Map(ColorMap);
+
 	map.onload = function() {
 		Field = new GameField(
 			document.getElementById("map"), 
 			document.getElementById("map-text"), 
 			document.getElementById("background"),
-			map);
+			map
+		);
+
 		Field.Zoom = Math.sqrt(Math.pow($(window).width(), 2) + Math.pow($(window).height(), 2) ) * ScreenSizerFactor;
+
 		setTimeout(function() {
 			Field.ParseCells(MapData, TeamsData);
-			Field.Render();
+
 			//End loading
 			$(".loader").animate({opacity: 0}, 1200, function(){
 				$(".loader").remove();
-				if (!UserData.teamId)
+				if (!UserData.teamId) {
+					Field.Render();
 					showTeams();
+				} else {
+					Field._Camera.FocusOnSpawn(UserData.teamId);
+					Field.Render();
+				}
 			});
 		}, 300);
 	};
+
 	initializeMapEvents();
 	
 	updateMap();

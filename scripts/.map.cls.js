@@ -270,9 +270,40 @@ class Camera
 	{
 		this.Width = width;
 		this.Height = height;
-		this.X = 50;
-		this.Y = 50;
+		this.X = 0;
+		this.Y = 0;
 		this.Zoom = 0.5;
+	}
+
+	FocusOnSpawn(teamId)
+	{
+		if (Field.SelectedCell)
+			return false;
+
+		for (let i in MapData) {
+			if (teamId === -MapData[i].holder) {
+				let spawn = MapData[i];
+				let x = spawn.coords.x;
+				let y = spawn.coords.y;
+
+				//x * (ширину клетки + расстояние между) + 1/2 ширина клетки или x * (ширину клетки + расстояние между) + 1 ширина клетки
+				//y * (высота клетки + расстояние между) + 1/2 высота клетки
+
+				//Расстояния между клетками = 64 * zoom / 5.5
+
+				let offsetX = x * (this.Zoom*64*Math.sqrt(3) + this.Zoom*64*2 / 5.5);
+
+				if (y % 2 != 0)
+					offsetX += this.Zoom*32*Math.sqrt(3);
+
+				let offsetY = y * (this.Zoom*64*3/4*2 + this.Zoom*64*2 / 5.5);
+
+				this.X = -offsetX + this.Width/2;
+				this.Y = -offsetY + this.Height/2;
+			}
+		}
+
+		return true;
 	}
 }
 
