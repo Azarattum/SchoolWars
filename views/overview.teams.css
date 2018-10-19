@@ -18,6 +18,8 @@
 	background-image: url("../assets/crown.svg");
 	
 	transition: 0.4s;
+	-ms-transition:  0.4s;
+
 	z-index: 99;
 }
 
@@ -37,6 +39,7 @@
 	
 	background-color: transparent;
 	transition: 0.4s;
+	-ms-transition:  0.4s;
 	
 	z-index: 100;
 }
@@ -54,6 +57,7 @@
 	background-color: rgb(53,212,124);
 	
 	transition: 0.3s;
+	-ms-transition:  0.3s;
 }
 
 .team-place > .team-name {
