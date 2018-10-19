@@ -29,18 +29,24 @@ function clearMap(callback)
 
 	setTimeout( function() {
 		var cell = 0;
+		var prevTime = new Date().getTime();
 		var clearingTimer = setInterval(function() {
-			if (cell > Lenght) {
-				clearInterval(clearingTimer);
-
-				if (callback)
-					callback();
-
-				return;
-			}
+			let cellsToClear = Math.floor((new Date().getTime() - prevTime) / 100);
+			for (let i = 0; i < cellsToClear; i++)
+			{
+				MapData[cell].holder = 0;
+				cell++;
 				
-			MapData[cell].holder = 0;
+				if (cell >= Lenght) {
+					clearInterval(clearingTimer);
 
+					if (callback)
+						callback();
+
+					return;
+				}
+			}			
+			
 			if (window.Field == undefined) {
 				initializeCanvas();
 				drawMap(Ctx, DrawingSettings.offsetX, DrawingSettings.offsetY, DrawingSettings.hexagonSize);
@@ -48,8 +54,6 @@ function clearMap(callback)
 				Field.ParseCells(MapData, TeamsData);
 				Field.Render();
 			}
-
-			cell++;
 		}, 100);
 	}, 2000);
 }
